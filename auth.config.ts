@@ -11,7 +11,7 @@ export const authConfig = {
         /\/profile/,
         /\/user\/(.*)/,
         /\/bookmark\/(.*)/,
-        /\/admin/,
+        // /\/admin/,
       ];
 
       // Get pathname from the req URL object

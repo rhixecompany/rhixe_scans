@@ -2,7 +2,7 @@ import ComicsTable from '@/components/admin/comics/ComicsTable';
 import comicdata from '@/data/comic';
 import { Folder, MessageCircle, Newspaper, User } from 'lucide-react';
 import AnalyticsChart from './AnalyticsChart';
-import DashboardCard from './DashboardCard';
+import AdminCard from './AdminCard';
 
 import chapterdata from '@/data/chapter';
 import userdata from '@/data/user';
@@ -10,7 +10,7 @@ import { Comic } from '@/types/comic';
 
 import { Chapter } from '@/types/chapter';
 import { User as MyUser } from '@/types/user';
-const DashboardContainer = ({
+const AdminContainer = ({
   query,
   currentPage,
 }: {
@@ -27,22 +27,22 @@ const DashboardContainer = ({
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between gap-5 mb-5">
-        <DashboardCard
+        <AdminCard
           title="Comics"
           count={comics.length}
           icon={<Newspaper className="text-neutral-500" size={72} />}
         />
-        <DashboardCard
+        <AdminCard
           title="Chapters"
           count={chapters.length}
           icon={<Folder className="text-neutral-500" size={72} />}
         />
-        <DashboardCard
+        <AdminCard
           title="Users"
           count={users.length}
           icon={<User className="text-neutral-500" size={72} />}
         />
-        <DashboardCard
+        <AdminCard
           title="Comments"
           count={1200}
           icon={<MessageCircle className="text-neutral-500" size={72} />}
@@ -54,4 +54,4 @@ const DashboardContainer = ({
   );
 };
 
-export default DashboardContainer;
+export default AdminContainer;

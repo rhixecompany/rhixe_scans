@@ -1,13 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { LucideIcon } from "lucide-react"
 
-interface DashboardCardProps {
+interface AdminCardProps {
   title: string
   count: number
   icon: React.ReactElement<LucideIcon>
 }
 
-const DashboardCard = ({ title, count, icon }: DashboardCardProps) => {
+const AdminCard = ({ title, count, icon }: AdminCardProps) => {
   return (
     <Card className="bg-neutral-100 dark:bg-neutral-800 p-4 pb-0">
       <CardContent>
@@ -25,4 +25,4 @@ const DashboardCard = ({ title, count, icon }: DashboardCardProps) => {
   )
 }
 
-export default DashboardCard
+export default AdminCard

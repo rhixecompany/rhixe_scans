@@ -14,6 +14,7 @@ const IndexGridItem = ({ comic }: IndexGridItemProps) => {
             <div className="w-[100%] h-32 relative">
               <Link href={`/series/${comic.slug}`}>
                 <Image
+                  unoptimized
                   width={100}
                   height={100}
                   alt=""

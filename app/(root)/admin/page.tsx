@@ -1,6 +1,6 @@
 import LoadingPage from '@/app/loading';
 
-import DashboardContainer from '@/components/dashboard/DashboardContainer';
+import AdminContainer from '@/components/shared/header/AdminContainer';
 
 import { Suspense } from 'react';
 export default async function Home(props: {
@@ -16,7 +16,7 @@ export default async function Home(props: {
   return (
     <>
       <Suspense key={query + currentPage} fallback={<LoadingPage />}>
-        <DashboardContainer query={query} currentPage={currentPage} />
+        <AdminContainer query={query} currentPage={currentPage} />
       </Suspense>
     </>
   );
