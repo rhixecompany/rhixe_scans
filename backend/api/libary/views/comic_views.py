@@ -73,7 +73,7 @@ def getcomics(request):
         page = 1
 
     newpage = int(page)
-    paginator = Paginator(comics, 20)
+    paginator = Paginator(comics, 300)
 
     try:
         comics = paginator.page(newpage)

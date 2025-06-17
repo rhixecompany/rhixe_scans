@@ -21,7 +21,7 @@ class ArtistSerializer(serializers.ModelSerializer[Artist]):
         model = Artist
         fields = [
             "name",
-            "id",
+            # "id",
         ]
 
 
@@ -31,7 +31,7 @@ class AuthorSerializer(serializers.ModelSerializer[Author]):
         model = Author
         fields = [
             "name",
-            "id",
+            # "id",
         ]
 
 
@@ -41,7 +41,7 @@ class CategorySerializer(serializers.ModelSerializer[Category]):
         model = Category
         fields = [
             "name",
-            "id",
+            # "id",
         ]
 
 
@@ -51,7 +51,7 @@ class WebsiteSerializer(serializers.ModelSerializer[Website]):
         model = Website
         fields = [
             "name",
-            "id",
+            # "id",
         ]
 
 
@@ -61,16 +61,18 @@ class GenreSerializer(serializers.ModelSerializer[Genre]):
         model = Genre
         fields = [
             "name",
-            "id",
+            # "id",
         ]
 
 
 class ComicSerializer(serializers.ModelSerializer[Comic]):
+    updated_at = serializers.DateTimeField()
+    rating = serializers.FloatField()
 
     class Meta:
         model = Comic
         fields = [
-            "id",
+            # "id",
             "title",
             "slug",
             "description",
@@ -85,7 +87,8 @@ class ComicSerializer(serializers.ModelSerializer[Comic]):
 
 
 class ChapterSerializer(serializers.ModelSerializer[Chapter]):
-    updated_at = serializers.DateField(format="%d %B, %Y")
+    updated_at = serializers.DateTimeField()
+    # updated_at = serializers.DateField(format="%d %B, %Y")
     comic = ComicSerializer(read_only=False, required=True)
 
     class Meta:
@@ -115,12 +118,13 @@ class UserComicSerializer(serializers.ModelSerializer[UserComic]):
 
 class ComicImageSerializer(serializers.ModelSerializer[ComicImage]):
     image = serializers.ImageField(use_url=True)
-    comic = ComicSerializer(read_only=True)
+    # comic = ComicSerializer(read_only=True)
+    comic = serializers.CharField(source="comic.slug")
 
     class Meta:
         model = ComicImage
         fields = [
-            "id",
+            # "id",
             "link",
             "image",
             "status",
@@ -131,13 +135,15 @@ class ComicImageSerializer(serializers.ModelSerializer[ComicImage]):
 
 class ChapterImageSerializer(serializers.ModelSerializer[ChapterImage]):
     image = serializers.ImageField(use_url=True)
-    comic = ComicSerializer(read_only=True)
-    chapter = ChapterSerializer(read_only=True)
+    comic = serializers.CharField(source="comic.slug")
+    chapter = serializers.CharField(source="chapter.slug")
+    # comic = ComicSerializer(read_only=True)
+    # chapter = ChapterSerializer(read_only=True)
 
     class Meta:
         model = ChapterImage
         fields = [
-            "id",
+            # "id",
             "link",
             "image",
             "status",
@@ -159,26 +165,25 @@ class CommentSerializer(serializers.ModelSerializer[Comment]):
             "chapter",
             "comic",
             "user",
-            "id",
+            # "id",
         ]
 
 
 class ComicsInfoSerializer(ComicSerializer):
-    updated_at = serializers.DateField(format="%d %B, %Y")
-    rating = serializers.DecimalField(max_digits=10, decimal_places=1)
-    user = UserSerializer(read_only=True)
+    # updated_at = serializers.DateField(format="%d/%B/%Y")
+
+    # website = WebsiteSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
-    website = WebsiteSerializer(read_only=True)
     author = AuthorSerializer(read_only=True)
     artist = ArtistSerializer(read_only=True)
     images = serializers.SerializerMethodField(read_only=True)
 
-    chapters = serializers.SerializerMethodField(read_only=True)
-    comments = serializers.SerializerMethodField(read_only=True)
-    users = serializers.SerializerMethodField(read_only=True)
+    # chapters = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
+    # comments = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
+    # users = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
     genres = serializers.SerializerMethodField(read_only=True)
-    first_chapter = serializers.SerializerMethodField(read_only=True)
-    last_chapter = serializers.SerializerMethodField(read_only=True)
+    # first_chapter = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
+    # last_chapter = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
 
     def get_genres(self, obj):
         items = obj.genres.all()
@@ -190,35 +195,35 @@ class ComicsInfoSerializer(ComicSerializer):
         serializer = ComicImageSerializer(items, many=True)
         return serializer.data
 
-    def get_chapters(self, obj):
-        items = obj.get_chapters()[0:3]
-        serializer = ChapterSerializer(items, many=True)
-        return serializer.data
+    # def get_chapters(self, obj):
+    #     items = obj.get_chapters()[0:3]  # noqa: ERA001
+    #     serializer = ChapterSerializer(items, many=True)  # noqa: ERA001
+    #     return serializer.data  # noqa: ERA001
 
-    def get_comments(self, obj):
-        items = obj.get_comments()
-        serializer = CommentSerializer(items, many=True)
-        return serializer.data
+    # def get_comments(self, obj):
+    #     items = obj.get_comments()  # noqa: ERA001
+    #     serializer = CommentSerializer(items, many=True)  # noqa: ERA001
+    #     return serializer.data  # noqa: ERA001
 
-    def get_users(self, obj):
-        items = obj.get_users()
-        serializer = UserSerializer(items, many=True)
-        return serializer.data
+    # def get_users(self, obj):
+    #     items = obj.get_users()  # noqa: ERA001
+    #     serializer = UserSerializer(items, many=True)  # noqa: ERA001
+    #     return serializer.data  # noqa: ERA001
 
-    def get_first_chapter(self, obj):
-        items = obj.get_chapters().last()
-        serializer = ChapterSerializer(items, many=False)
-        return serializer.data
+    # def get_first_chapter(self, obj):
+    #     items = obj.get_chapters().last()  # noqa: ERA001
+    #     serializer = ChapterSerializer(items, many=False)  # noqa: ERA001
+    #     return serializer.data  # noqa: ERA001
 
-    def get_last_chapter(self, obj):
-        items = obj.get_chapters().first()
-        serializer = ChapterSerializer(items, many=False)
-        return serializer.data
+    # def get_last_chapter(self, obj):
+    #     items = obj.get_chapters().first()  # noqa: ERA001
+    #     serializer = ChapterSerializer(items, many=False)  # noqa: ERA001
+    #     return serializer.data  # noqa: ERA001
 
     class Meta:
         model = Comic
         fields = [
-            "id",
+            # "id",
             "title",
             "slug",
             "description",
@@ -229,20 +234,20 @@ class ComicsInfoSerializer(ComicSerializer):
             "serialization",
             "status",
             "link",
-            "user",
+            # "user",
             "category",
-            "website",
+            # "website",
             "has_images",
             "has_chapters",
             "author",
             "artist",
             "genres",
             "images",
-            "chapters",
-            "comments",
-            "users",
-            "first_chapter",
-            "last_chapter",
+            # "chapters",
+            # "comments",
+            # "users",
+            # "first_chapter",
+            # "last_chapter",
         ]
 
 
@@ -333,7 +338,7 @@ class ComicInfoSerializer(ComicSerializer):
     class Meta:
         model = Comic
         fields = [
-            "id",
+            # "id",
             "title",
             "slug",
             "description",
@@ -363,44 +368,44 @@ class ComicInfoSerializer(ComicSerializer):
 
 
 class ChapterInfoSerializer(ChapterSerializer):
-    website = WebsiteSerializer(read_only=True)
+    # website = WebsiteSerializer(read_only=True)
     images = serializers.SerializerMethodField(read_only=True)
-    related_series = serializers.SerializerMethodField(read_only=True)
-    comments = serializers.SerializerMethodField(read_only=True)
+    # related_series = serializers.SerializerMethodField(read_only=True)
+    # comments = serializers.SerializerMethodField(read_only=True)
 
     def get_images(self, obj):
         items = obj.get_images()
         serializer = ChapterImageSerializer(items, many=True)
         return serializer.data
 
-    def get_related_series(self, obj):
+    # def get_related_series(self, obj):
 
-        category = obj.comic.category.name
+    #     category = obj.comic.category.name
 
-        items = (
-            Comic.objects.prefetch_related(
-                "comicimages",
-                "genres",
-                "users",
-                "comicchapters",
-            )
-            .select_related("user", "author", "category", "artist", "website")
-            .filter(
-                Q(author__name__icontains=category),
-            )[0:5]
-        )
-        serializer = ComicsInfoSerializer(items, many=True)
-        return serializer.data
+    #     items = (
+    #         Comic.objects.prefetch_related(
+    #             "comicimages",
+    #             "genres",
+    #             "users",
+    #             "comicchapters",
+    #         )
+    #         .select_related("user", "author", "category", "artist", "website")
+    #         .filter(
+    #             Q(author__name__icontains=category),
+    #         )[0:5]
+    #     )
+    #     serializer = ComicsInfoSerializer(items, many=True)
+    #     return serializer.data
 
-    def get_comments(self, obj):
-        items = obj.get_comments()
-        serializer = CommentSerializer(items, many=True)
-        return serializer.data
+    # def get_comments(self, obj):
+    #     items = obj.get_comments()
+    #     serializer = CommentSerializer(items, many=True)
+    #     return serializer.data
 
     class Meta:
         model = Chapter
         fields = [
-            "id",
+            # "id",
             "name",
             "title",
             "slug",
@@ -408,34 +413,37 @@ class ChapterInfoSerializer(ChapterSerializer):
             "numimages",
             "updated_at",
             "comic",
-            "website",
+            # "website",
             "has_images",
             "images",
-            "related_series",
-            "comments",
+            # "related_series",
+            # "comments",
         ]
 
 
 class ChaptersInfoSerializer(ChapterSerializer):
-    website = WebsiteSerializer(read_only=True)
-    images = serializers.SerializerMethodField(read_only=True)
+    # updated_at = serializers.DateField(format="%d/%B/%Y")
 
-    comments = serializers.SerializerMethodField(read_only=True)
+    # website = WebsiteSerializer(read_only=True)
+    images = serializers.SerializerMethodField(read_only=True)
+    # comicSlug = serializers.CharField(source="comic.slug")
+
+    # comments = serializers.SerializerMethodField(read_only=True)
 
     def get_images(self, obj):
         items = obj.get_images()
         serializer = ChapterImageSerializer(items, many=True)
         return serializer.data
 
-    def get_comments(self, obj):
-        items = obj.get_comments()
-        serializer = CommentSerializer(items, many=True)
-        return serializer.data
+    # def get_comments(self, obj):
+    #     items = obj.get_comments()
+    #     serializer = CommentSerializer(items, many=True)
+    #     return serializer.data
 
     class Meta:
         model = Chapter
         fields = [
-            "id",
+            # "id",
             "name",
             "title",
             "slug",
@@ -443,8 +451,8 @@ class ChaptersInfoSerializer(ChapterSerializer):
             "numimages",
             "updated_at",
             "comic",
-            "website",
+            # "website",
             "has_images",
             "images",
-            "comments",
+            # "comments",
         ]

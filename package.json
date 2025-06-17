@@ -10,6 +10,11 @@
     "clean": "shx rm -rf .next || shx true",
     "check-updates": "npm-check-updates --deep -i",
     "postinstall": "prisma generate",
+    "studio": "prisma studio",
+    "pull": "prisma db pull",
+    "migrate": "prisma migrate dev --name init",
+    "format": "prisma format",
+    "seed": "npx tsx ./src/db/seed",
     "test": "jest",
     "test:watch": "jest --watch",
     "email": "cp .env ./node_modules/react-email && email dev --dir email --port 3001"

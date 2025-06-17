@@ -143,7 +143,7 @@ class Comic(StandardMetadata):
     description = CKEditor5Field("Description", config_name="extends")
     status = models.CharField(_("Status"), max_length=15, choices=ComicStatus.choices)
     rating = models.DecimalField(_("Rating"), max_digits=10, decimal_places=1)
-    updated_at = models.DateField(
+    updated_at = models.DateTimeField(
         _("Updated At"),
     )
     link = models.URLField(
@@ -176,22 +176,18 @@ class Comic(StandardMetadata):
         Category,
         on_delete=models.CASCADE,
         related_name="categorycomics",
-        null=True,
-        blank=True,
     )
     author = models.ForeignKey(
         Author,
         on_delete=models.CASCADE,
         related_name="authorcomics",
         null=True,
-        blank=True,
     )
     artist = models.ForeignKey(
         Artist,
         on_delete=models.CASCADE,
         related_name="artistcomics",
         null=True,
-        blank=True,
     )
     user = models.ForeignKey(
         User,
@@ -273,7 +269,7 @@ class Chapter(StandardMetadata):
         blank=True,
     )
     title = models.CharField(_("Title"), max_length=5000, blank=True)
-    updated_at = models.DateField(
+    updated_at = models.DateTimeField(
         _("Updated At"),
     )
     link = models.URLField(

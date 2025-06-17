@@ -24,7 +24,7 @@ class ChapterListAPIView(generics.ListCreateAPIView):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    pagination_class = StandardResultsSetPagination
+    # pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         return super().get_queryset()
