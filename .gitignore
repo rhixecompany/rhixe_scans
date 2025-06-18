@@ -1372,3 +1372,4 @@ yarn-error.log*
 /media
 /myvenv
 .gitignore_bak
+!/src/lib
