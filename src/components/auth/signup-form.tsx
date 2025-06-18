@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
+import { auth, signIn } from '@/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Github } from '@/components/ui/github';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { signUp } from '@/lib/actions/user.actions';
-import { auth, signIn } from '@/lib/auth';
 import { cn } from '@/lib/utils';
 
 import Link from 'next/link';

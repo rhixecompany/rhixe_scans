@@ -1,13 +1,12 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "name" TEXT NOT NULL DEFAULT 'NO_NAME',
+    "id" TEXT NOT NULL,
+    "name" TEXT,
     "email" TEXT NOT NULL,
-    "emailVerified" TIMESTAMP(6),
+    "password" TEXT NOT NULL,
+    "emailVerified" TIMESTAMP(3),
     "image" TEXT,
-    "password" TEXT,
-    "role" TEXT NOT NULL DEFAULT 'user',
-    "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -15,7 +14,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Account" (
-    "userId" UUID NOT NULL,
+    "userId" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
     "providerAccountId" TEXT NOT NULL,
@@ -26,7 +25,7 @@ CREATE TABLE "Account" (
     "scope" TEXT,
     "id_token" TEXT,
     "session_state" TEXT,
-    "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("provider","providerAccountId")
@@ -35,12 +34,10 @@ CREATE TABLE "Account" (
 -- CreateTable
 CREATE TABLE "Session" (
     "sessionToken" TEXT NOT NULL,
-    "userId" UUID NOT NULL,
-    "expires" TIMESTAMP(6) NOT NULL,
-    "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Session_pkey" PRIMARY KEY ("sessionToken")
+    "userId" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL
 );
 
 -- CreateTable
@@ -55,7 +52,7 @@ CREATE TABLE "VerificationToken" (
 -- CreateTable
 CREATE TABLE "Authenticator" (
     "credentialID" TEXT NOT NULL,
-    "userId" UUID NOT NULL,
+    "userId" TEXT NOT NULL,
     "providerAccountId" TEXT NOT NULL,
     "credentialPublicKey" TEXT NOT NULL,
     "counter" INTEGER NOT NULL,
@@ -67,16 +64,6 @@ CREATE TABLE "Authenticator" (
 );
 
 -- CreateTable
-CREATE TABLE "Bookmark" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "userId" UUID,
-    "sessionBookmarkId" TEXT NOT NULL,
-    "items" JSON[] DEFAULT ARRAY[]::JSON[],
-
-    CONSTRAINT "Bookmark_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Comic" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "title" TEXT NOT NULL,
@@ -84,6 +71,9 @@ CREATE TABLE "Comic" (
     "description" TEXT NOT NULL,
     "status" TEXT NOT NULL,
     "rating" DECIMAL(10,1) NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updated_at" TIMESTAMP(6) NOT NULL,
     "link" TEXT NOT NULL,
     "serialization" TEXT,
     "numchapters" INTEGER NOT NULL DEFAULT 0,
@@ -95,8 +85,6 @@ CREATE TABLE "Comic" (
     "artist" JSON,
     "images" JSON[] DEFAULT ARRAY[]::JSON[],
     "genres" JSON[] DEFAULT ARRAY[]::JSON[],
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Comic_pkey" PRIMARY KEY ("id")
 );
@@ -107,15 +95,26 @@ CREATE TABLE "Chapter" (
     "name" TEXT NOT NULL,
     "title" TEXT,
     "slug" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updated_at" TIMESTAMP(6) NOT NULL,
     "link" TEXT NOT NULL,
     "numimages" INTEGER NOT NULL DEFAULT 0,
     "has_images" BOOLEAN NOT NULL DEFAULT false,
     "images" JSON[] DEFAULT ARRAY[]::JSON[],
     "comic" JSON NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Chapter_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Bookmark" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "sessionBookmarkId" TEXT NOT NULL,
+    "items" JSON[] DEFAULT ARRAY[]::JSON[],
+
+    CONSTRAINT "Bookmark_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -170,13 +169,16 @@ CREATE TABLE "ChapterImage" (
     "status" TEXT,
     "checksum" TEXT,
     "comic" TEXT NOT NULL,
-    "chapter" TEXT NOT NULL,
+    "chapter" TEXT,
 
     CONSTRAINT "ChapterImage_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_email_idx" ON "User"("email");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Authenticator_credentialID_key" ON "Authenticator"("credentialID");

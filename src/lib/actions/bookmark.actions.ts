@@ -2,7 +2,7 @@
 
 import { auth } from '@/lib/auth';
 
-import db from "@/lib/db/db";
+import db from '@/lib/prisma';
 import { BookmarkItem } from '@/types';
 import { Prisma } from '@prisma/client';
 import { revalidatePath } from 'next/cache';

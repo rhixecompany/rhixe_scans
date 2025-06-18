@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
+import { signIn } from '@/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Github } from '@/components/ui/github';
-import { signIn } from '@/lib/auth';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

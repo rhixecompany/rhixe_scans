@@ -1,5 +1,5 @@
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   // Check if the user has a valid session token
@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
 
   if (!token) {
     // If no token is found, redirect to the login page
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
   // If the user is logged in, allow the request to continue
@@ -18,5 +18,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ['/admin/:path*'],
 };

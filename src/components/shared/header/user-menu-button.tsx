@@ -1,5 +1,7 @@
 import profilePicture from '@/assets/profile-picture.webp';
 
+import { auth } from '@/auth';
+import { SignOut } from '@/components/sign-out';
 import {
   Sheet,
   SheetContent,
@@ -8,12 +10,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { auth } from '@/lib/auth';
 import { Bookmark, House, Library, LogIn, Menu, Settings } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { SignOut } from './sign-out';
-
 const UserMenuButton = async () => {
   const session = await auth();
 
@@ -25,6 +24,9 @@ const UserMenuButton = async () => {
         </SheetTrigger>
         <SheetContent className='fixed z-50 gap-4 bg-background shadow-lg transition ease-in-out data-open:animate-in data-closed:animate-out data-closed:duration-300 data-open:duration-500 inset-y-0 right-0 h-full data-closed:slide-out-to-right data-open:slide-in-from-right sm:max-w-sm w-full max-w-xs border-l-0 bg-gradient-to-b from-[#1a1a1a] to-purple-900 p-0 pointer-events-auto'>
           <SheetHeader className='flex flex-col h-full'>
+            <SheetTitle>
+              <span className='sr-only'>Title</span>
+            </SheetTitle>
             <SheetDescription className='flex-1 space-y-1 p-4'>
               <Link
                 className='flex items-center space-x-2 rounded-lg px-4 py-3 text-white hover:bg-white/10 transition-colors duration-200'

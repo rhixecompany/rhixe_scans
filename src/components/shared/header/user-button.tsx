@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -6,7 +7,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { auth } from '@/lib/auth';
 
 import { SignOut } from '@/components/sign-out';
 import { UserIcon } from 'lucide-react';

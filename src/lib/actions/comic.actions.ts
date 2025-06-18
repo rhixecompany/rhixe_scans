@@ -1,5 +1,5 @@
 'use server';
-import db from "@/lib/db/db";
+import db from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
@@ -59,12 +59,9 @@ export async function getAllComics({
         }
       : {};
 
-
   const data = await db.comic.findMany({
     where: {
       ...queryFilter,
-
-
     },
     orderBy:
       sort === 'lowest'

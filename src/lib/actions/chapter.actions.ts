@@ -1,5 +1,5 @@
 'use server';
-import db from "@/lib/db/db";
+import db from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
@@ -59,19 +59,16 @@ export async function getAllChapters({
         }
       : {};
 
-
   const data = await db.chapter.findMany({
     where: {
       ...queryFilter,
-
-
     },
     orderBy:
       sort === 'lowest'
         ? { title: 'asc' }
         : sort === 'highest'
           ? { numimages: 'desc' }
-            : { createdAt: 'desc' },
+          : { createdAt: 'desc' },
     skip: (page - 1) * limit,
     take: limit,
   });
@@ -148,8 +145,6 @@ export async function updateChapter(data: z.infer<typeof updateChapterSchema>) {
     return { success: false, message: formatError(error) };
   }
 }
-
-
 
 // Get featured chapters
 export async function getFeaturedChapters() {

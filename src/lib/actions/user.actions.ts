@@ -1,24 +1,24 @@
-import db from '@/lib/db/db';
+import db from '@/lib/db';
 import { executeAction } from '@/lib/executeAction';
-import { signupschema } from '@/types';
+import { userschema } from '@/lib/schema';
 
 const signUp = async (formData: FormData) => {
   return executeAction({
     actionFn: async () => {
-      const name = formData.get('name');
       const email = formData.get('email');
+      const name = formData.get('name');
       const password = formData.get('password');
       const confirmPassword = formData.get('confirmPassword');
-      const validatedData = signupschema.parse({
+      const validatedData = userschema.parse({
         email,
-        password,
         name,
+        password,
         confirmPassword,
       });
       await db.user.create({
         data: {
-          name: validatedData.name.toLocaleLowerCase(),
           email: validatedData.email.toLocaleLowerCase(),
+          name: validatedData.name,
           password: validatedData.password,
         },
       });

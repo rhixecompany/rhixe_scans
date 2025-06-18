@@ -3,32 +3,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
 }
 
-
 model User {
-  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String     @default("NO_NAME")
-  email         String     @unique(map: "user_email_idx")
-  emailVerified DateTime?  @db.Timestamp(6)
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  password      String
+  emailVerified DateTime?
   image         String?
-  password      String?
-  role          String     @default("user")
-  createdAt     DateTime   @default(now()) @db.Timestamp(6)
-  updatedAt     DateTime   @updatedAt
-  accounts       Account[]
-  bookmarks      Bookmark[]
+  accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookmarks Bookmark[]
 }
 
 model Account {
-  userId            String   @db.Uuid
+  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -39,20 +37,23 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  createdAt         DateTime @default(now()) @db.Timestamp(6)
-  updatedAt         DateTime @updatedAt
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
 }
 
 model Session {
-  sessionToken String   @id
-  userId       String   @db.Uuid
-  expires      DateTime @db.Timestamp(6)
-  createdAt    DateTime @default(now()) @db.Timestamp(6)
-  updatedAt    DateTime @updatedAt
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -66,7 +67,7 @@ model VerificationToken {
 // Optional for WebAuthn support
 model Authenticator {
   credentialID         String  @unique
-  userId       String   @db.Uuid
+  userId               String
   providerAccountId    String
   credentialPublicKey  String
   counter              Int
@@ -80,16 +81,6 @@ model Authenticator {
 }
 
 
-
-
-model Bookmark {
-  id                String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId            String? @db.Uuid
-  sessionBookmarkId String
-  items             Json[]  @default([]) @db.Json
-  user              User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
 model Comic {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title         String   @unique(map: "comic_title_idx")
@@ -97,6 +88,9 @@ model Comic {
   description   String
   status        String
   rating        Decimal  @default(0) @db.Decimal(10, 1)
+  createdAt     DateTime @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime @updatedAt
+  updated_at    DateTime @db.Timestamp(6)
   link          String
   serialization String?
   numchapters   Int      @default(0)
@@ -108,8 +102,6 @@ model Comic {
   artist        Json?    @db.Json
   images        Json[]   @default([]) @db.Json
   genres        Json[]   @default([]) @db.Json
-  createdAt     DateTime @default(now())
-  updated_at    DateTime
 }
 
 model Chapter {
@@ -117,15 +109,24 @@ model Chapter {
   name       String
   title      String?
   slug       String   @unique(map: "chapter_slug_idx")
+  createdAt  DateTime @default(now()) @db.Timestamp(6)
+  updatedAt  DateTime @updatedAt
+  updated_at DateTime @db.Timestamp(6)
   link       String
   numimages  Int      @default(0)
   has_images Boolean  @default(false)
   images     Json[]   @default([]) @db.Json
   comic      Json     @db.Json
-  createdAt     DateTime @default(now())
-  updated_at    DateTime
 }
 
+
+model Bookmark {
+  id            String          @id @default(cuid())
+  userId            String
+  sessionBookmarkId String
+  items             Json[]  @default([]) @db.Json
+  user              User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
 model Genre {
   id   String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -163,5 +164,5 @@ model ChapterImage {
   status   String?
   checksum String?
   comic    String
-  chapter  String
+  chapter  String?
 }
