@@ -1,6 +1,6 @@
 -i https://pypi.org/simple
 # python-slugify==8.0.4  # https://github.com/un33k/python-slugify
-Pillow==11.2.1 # pyup: != 11.2.0  # https://github.com/python-pillow/Pillow
+Pillow==11.3.0 # pyup: != 11.2.0  # https://github.com/python-pillow/Pillow
 # argon2-cffi==23.1.0  # https://github.com/hynek/argon2_cffi
 # whitenoise==6.9.0  # https://github.com/evansd/whitenoise
 # redis==5.2.1  # https://github.com/redis/redis-py
@@ -12,7 +12,7 @@ Pillow==11.2.1 # pyup: != 11.2.0  # https://github.com/python-pillow/Pillow
 
 # Django
 # ------------------------------------------------------------------------------
-django==5.1.9 # pyup: < 5.2 # https://www.djangoproject.com/
+django==5.2.6 # pyup: < 5.2 # https://www.djangoproject.com/
 # django-environ==0.12.0  # https://github.com/joke2k/django-environ
 # django-model-utils==5.0.0  # https://github.com/jazzband/django-model-utils
 # django-allauth[mfa]==65.8.0  # https://github.com/pennersr/django-allauth
@@ -49,7 +49,7 @@ django==5.1.9 # pyup: < 5.2 # https://www.djangoproject.com/
 # pyjwt
 # django-template-partials==24.4
 
-Scrapy==2.13.0
+Scrapy==2.13.3
 # scrapy-headless-selenium==0.1.2
 # selenium==4.28.1
 
