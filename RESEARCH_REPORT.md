@@ -2,118 +2,114 @@
 
 ## Project: rhixe_scans
 
-**Type:** Comic / scan reader platform
-**Tech Stack:** Next.js 15, React 19, TypeScript strict, Prisma 6, PostgreSQL, Tailwind 3, shadcn/ui, Radix, NextAuth v5, Zustand, TanStack Query, Stripe, PayPal, UploadThing, Resend, WebSocket
+**Type:** Comic/scan reader platform
+**Stack:** Next.js 15, React 19, TypeScript strict, Prisma 6, PostgreSQL, Tailwind 3, shadcn/ui, NextAuth v5, Zustand,
+TanStack Query, Stripe, PayPal, UploadThing, Resend, WebSocket
 **Status:** Active
 
 ---
 
 ## Similar Projects
 
-| Project | URL | Why Relevant |
-|---------|-----|--------------|
-| comicwise | `projects/comicwise` | Shared comic reader; Stripe + NextAuth + Tailwind |
-| rhixecompany-comics | `projects/rhixecompany-comics` | Shared comic reader; consolidation target |
-| university-libary-jsm | `projects/university-libary-jsm` | Shared Next.js + Prisma + PostgreSQL catalog |
-| Banking | `projects/Banking` | Shared NextAuth + payment patterns |
+| Project | Why Relevant |
+|---------|--------------|
+| comicwise (workspace) | Shared comic reader; Stripe + NextAuth + Tailwind |
+| rhixecompany-comics (workspace) | Consolidation target; shared comic patterns |
+| MangaReader (GitHub: siwachs) | Next.js manga reader, client-side patterns |
 
 ---
 
 ## Key Findings
 
-### Next.js 15 App Router + WebSocket Streams
-- WebSockets do NOT work on Vercel serverless — require custom Node server or Fly.io
-- **Alternative**: Server-Sent Events (SSE) for serverless-compatible real-time updates
-- SSE is built-in browser API, works over standard HTTP, ideal for notifications/progress
-- For WebSocket: use custom Node server with `ws` library or Socket.io with adapter
+**Docker multi-stage build** — 3-stage (deps → builder → runner) with `output: "standalone"` cuts image from ~1.6GB to ~200MB. Run Prisma migrations in a **separate init container** to avoid multi-replica race conditions.
 
-### Prisma 6 Patterns
-- Global singleton in `lib/prisma.ts` prevents hot-reload connection leaks
-- `prisma.config.ts` (new in 6.x) for configuration; migration from 5.x updates setup
-- Prisma Accelerate for serverless connection pooling
-- **Performance**: JOIN strategy selection (`relationLoadStrategy: "join" | "query"`)
-- Nested creates batched in single round-trip since v5.11
+**Prisma 6** (verified 2026) — Global singleton on `globalThis` prevents hot-reload leaks. Set `connection_limit` + `pool_timeout` in DATABASE_URL; PgBouncer transaction pooling saves serverless connections. CUID over UUID. `relationLoadStrategy: "join"` for relational queries. Prisma 6.19 added pooled Postgres connections.
 
-### Stripe + PayPal Dual Payment
-- Stripe webhooks in App Router: **must use `request.text()` (not `request.json()`)** for signature verification
-- PayPal: `@paypal/react-paypal-js` frontend + server-side order capture validation
-- Always idempotent webhook handlers using database transactions
-- Webhook router pattern: typed handlers per event type for maintainability
+**Dual payments** — Stripe webhooks need `request.text()` (raw body) before `constructEvent()`. PayPal: client approves → server calls `POST /v2/checkout/orders/{id}/capture`; verify `COMPLETED` server-side. Unify in `Subscription` table with `@@unique([provider, providerId])`. Use `PayPal-Request-Id` header for 6-hour idempotency. 2026 guidance: acknowledge webhooks fast, process async via queue, wrap idempotency + business logic in one DB transaction, run daily reconciliation.
+
+**WebSockets** — Do not work on Vercel serverless. Use SSE (built-in, lower overhead) or custom Node/Fly.io server.
+
+**Tailwind v4 note** — if migrating, v4 is CSS-first (`@import "tailwindcss"` + `@theme`), Rust engine (3–10× faster builds), drops `tailwind.config.js`.
 
 ---
 
-## Cheatsheets & Quick Reference
+## Docker Details
 
-| Topic | Resource | Type |
-|-------|----------|------|
-| Next.js 15 App Router | <https://nextjs.org/docs/app> | Docs |
-| Prisma 6 | <https://www.prisma.io/docs> | Docs |
-| Stripe Webhooks | <https://docs.stripe.com/webhooks> | Guide |
-| PayPal Orders API | <https://developer.paypal.com/docs/api/orders/v2> | API Docs |
+| Practice | Detail |
+|----------|--------|
+| Multi-stage | deps → builder (prisma generate + build) → runner (Alpine, non-root) |
+| Standalone | `output: "standalone"` in next.config.ts |
+| Init container | `prisma migrate deploy` — never from app replicas |
+| Alpine | Add `libc6-compat` if native modules fail; use `sh` not `bash` |
+
+---
+
+## Dual Payment Strategy
+Stripe Checkout (primary) + PayPal Orders v2 API (secondary). Unified `Subscription` model tracks `provider` + `providerId`. Webhook handlers use database transaction dedup for idempotency.
 
 ---
 
 ## Best Practices
-
-1. **Prisma singleton** — global instance in `lib/prisma.ts` for connection lifecycle
-2. **Webhook idempotency** — database-event-id dedup before processing
-3. **SSE over WebSocket** — when targeting Vercel serverless deployment
-4. **Stripe `request.text()` before parsing** — signature verification requires raw body
-5. **Dual payment provider fallback** — PayPal as Stripe backup reduces left-on-table
+1. Prisma singleton on `globalThis` with explicit `connection_limit`
+2. Webhook idempotency via DB event-id dedup + `PayPal-Request-Id`
+3. `request.text()` for Stripe raw body before signature verification
+4. SSE over WebSocket for serverless real-time
+5. Zod at every API boundary — never `as` cast
+6. Server Actions for mutations (`"use server"`)
 
 ---
 
 ## Common Pitfalls
 
-| Pitfall | Impact | Avoidance |
-|---------|--------|-----------|
-| WebSocket on Vercel | Runtime failure | Use SSE or custom Node server |
-| Stripe raw body parsing | Signature verify fails | `request.text()` before JSON parsing |
-| Prisma connection leaks | Memory exhaustion | Global singleton pattern |
-| Missing idempotency | Duplicate charges | DB event ID dedup in webhook handlers |
+| Pitfall | Avoidance |
+|---------|-----------|
+| WebSocket on Vercel | SSE or custom Node server |
+| Stripe body parsed as JSON | `request.text()` before parsing |
+| Prisma connection leaks | Singleton + connection_limit |
+| Missing idempotency | DB event ID dedup |
+| Migrations from app container | Separate init container |
+| Webhook routes behind auth middleware | Exclude `/api/webhooks/*` in matcher |
 
 ---
 
 ## Performance
-
-1. **Prisma JOIN strategy** — `relationLoadStrategy: "join"` for relational data
-2. **TanStack Query caching** — cache chapter listings, invalidate on new releases
-3. **Image optimization** — UploadThing CDN for comic page images
-4. **SSE for real-time** — lower overhead than WebSocket for serverless
-5. **Preload next chapter** — prefetch via `<link rel="preload">` or TanStack Query prefetch
+1. **Composite indexes** — `@@index([comicId, chapterNumber])` for listing queries
+2. **Prisma JOIN strategy** — `relationLoadStrategy: "join"` for relational data
+3. **TanStack Query caching** — cache listings, invalidate on releases
+4. **Standalone Docker** — ~8x smaller production images
+5. **Preload next chapter** — TanStack Query prefetch or `<link rel="prefetch">`
 
 ---
 
 ## Security
-
-1. **Stripe webhook verification** — `constructEvent()` with endpoint secret
-2. **Signed image URLs** — UploadThing secure URL tokens for paywalled content
-3. **NextAuth v5 CSRF** — built-in protection for all auth flows
-4. **Rate limit auth endpoints** — protect against brute force
-5. **Idempotent webhooks** — prevent duplicate payment processing
+1. **Webhook verification** — Stripe `constructEvent()` with raw body; PayPal header/cert validation
+2. **Paywalled content** — verify subscription server-side before serving pages/API; signed URLs prevent bypass
+3. **Preview gate** — server-side filter: unauthenticated users get first N pages
+4. **NextAuth v5 CSRF** — built-in; never disable
+5. **Rate limit auth + payment endpoints**
+6. **Env validation** — Zod schema at startup; never commit `.env`
 
 ---
 
-## Related Projects (in workspace)
+## Related Workspace Projects
 
-- **comicwise** — shared comic reader; Stripe + NextAuth + Tailwind patterns
-- **rhixecompany-comics** — consolidation target; shared comic domain patterns
-- **university-libary-jsm** — Next.js + Prisma + PostgreSQL catalog reference
-- **Banking** — shared NextAuth + payment flow patterns
+| Project | Relevance |
+|---------|-----------|
+| comicwise | Stripe + NextAuth + Tailwind patterns |
+| rhixecompany-comics | Consolidation target, shared domain |
+| university-libary-jsm | Next.js + Prisma + PostgreSQL catalog |
 
 ---
 
 ## Resources
 
-| Resource | URL | Description |
-|----------|-----|-------------|
-| Next.js 15 | <https://nextjs.org/docs> | Framework documentation |
-| Prisma 6 | <https://www.prisma.io/docs> | ORM documentation |
-| Stripe Webhooks | <https://docs.stripe.com/webhooks> | Webhook integration |
-| UploadThing | <https://docs.uploadthing.com> | File uploads |
+| Topic | URL |
+|-------|-----|
+| Next.js 15 | https://nextjs.org/docs |
+| Prisma 6 | https://www.prisma.io/docs |
+| Stripe Webhooks | https://docs.stripe.com/webhooks |
+| PayPal Orders v2 | https://developer.paypal.com/docs/api/orders/v2 |
+| Zod | https://zod.dev |
+| UploadThing | https://docs.uploadthing.com |
 
-### Research Methodology
-- **Web search:** web_search (2026 Next.js + Prisma patterns)
-- **Documentation:** web_extract (Prisma, Stripe, PayPal docs)
-- **Real-time research:** SSE vs WebSocket for serverless
-- **Last verified:** 2026-07-16
+**Methodology:** 9 web queries + 8 source extractions + official docs. Prisma 6 pooling, dual-payment idempotency, Tailwind v4 verified (2026-07-16).
