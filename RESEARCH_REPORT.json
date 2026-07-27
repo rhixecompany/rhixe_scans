@@ -1,0 +1,290 @@
+{
+  "project": "rhixe_scans",
+  "techStack": [
+    "Next.js 15.3.3",
+    "TypeScript 5 (strict)",
+    "React 19",
+    "Radix UI",
+    "shadcn/ui",
+    "Tailwind CSS 3.4",
+    "TanStack Query",
+    "Zustand",
+    "TanStack Table",
+    "PostgreSQL via Prisma 6",
+    "NextAuth v5 (beta)",
+    "Supabase",
+    "Stripe",
+    "PayPal",
+    "UploadThing",
+    "Resend",
+    "React Email",
+    "WebSocket (ws)",
+    "Jest + ts-jest",
+    "Docker"
+  ],
+  "queries": [
+    "Next.js 15 Prisma 6 NextAuth v5 Supabase Stripe PayPal UploadThing WebSocket Jest best practices",
+    "Prisma 6 Next.js 15 Supabase Stripe PayPal best practices production",
+    "NextAuth v5 beta Next.js 15 authentication best practices",
+    "UploadThing Next.js 15 file upload best practices Supabase storage",
+    "WebSocket ws Next.js 15 real-time Server Components best practices",
+    "Jest ts-jest Next.js 15 App Router testing React 19 best practices",
+    "Supabase Next.js 15 production best practices RLS Row Level Security performance",
+    "PayPal Next.js 15 integration best practices server actions",
+    "Stripe webhooks Next.js App Router server actions security best practices",
+    "Next.js 15 security best practices 2026 authentication middleware"
+  ],
+  "findings": [
+    {
+      "category": "Similar Projects",
+      "items": [
+        {
+          "name": "comicwise (workspace)",
+          "relevance": "Shared comic reader; Stripe + NextAuth + Tailwind patterns"
+        },
+        {
+          "name": "rhixecompany-comics (workspace)",
+          "relevance": "Consolidation target; shared comic patterns"
+        },
+        {
+          "name": "MangaReader (GitHub: siwachs)",
+          "relevance": "Next.js manga reader, client-side patterns"
+        },
+        {
+          "name": "university-libary-jsm (workspace)",
+          "relevance": "Next.js + Prisma + PostgreSQL catalog patterns"
+        },
+        {
+          "name": "selenium_webdriver (workspace)",
+          "relevance": "Selenium/Playwright scraping for comic sources"
+        }
+      ]
+    },
+    {
+      "category": "Docker & Deployment",
+      "items": [
+        {
+          "title": "Multi-stage Docker Build",
+          "detail": "3-stage (deps → builder → runner) with `output: \"standalone\"` cuts image from ~1.6GB to ~200MB. Run Prisma migrations in a separate init container to avoid multi-replica race conditions."
+        },
+        {
+          "title": "Prisma in Docker",
+          "detail": "`npx prisma generate` must run during build. Copy `prisma/` directory into final stage for migrations at startup. Alpine needs `libc6-compat` for native modules; use `sh` not `bash`."
+        },
+        {
+          "title": "Standalone Output",
+          "detail": "Enable `output: \"standalone\"` in `next.config.ts` for minimal production images. Essential for Docker deployment size optimization."
+        }
+      ]
+    },
+    {
+      "category": "Prisma 6 Best Practices",
+      "items": [
+        {
+          "title": "Singleton Client Pattern (Critical)",
+          "detail": "Store PrismaClient on `globalThis` to survive hot reloads and prevent connection pool exhaustion. Default pool size is `num_cpus * 2 + 1`."
+        },
+        {
+          "title": "Connection Pooling for Serverless",
+          "detail": "Start with `connection_limit=1` and `pool_timeout=30` in DATABASE_URL, optimize upward. For scale, use Prisma Accelerate (HTTP-based pooling, global caching). PgBouncer transaction pooling saves serverless connections."
+        },
+        {
+          "title": "Schema Design",
+          "detail": "Use native DB types (`@db.VarChar`, `@db.Text`, `@db.Timestamptz`), strategic indexes (`@@index([comicId, chapterNumber])`), CUID over UUID, `relationLoadStrategy: \"join\"` for relational queries."
+        },
+        {
+          "title": "Migration Strategy",
+          "detail": "`prisma migrate dev` in development, `prisma migrate deploy` in production. Never `db:push` in production. Run migrations via separate init container."
+        },
+        {
+          "title": "Performance",
+          "detail": "Use `relationLoadStrategy: \"join\"`, batch nested creates (single round-trip since Prisma 5.11), enable fullTextSearch/Index preview features, monitor slow queries via Prisma log config."
+        }
+      ]
+    },
+    {
+      "category": "Next.js 15 App Router",
+      "items": [
+        {
+          "title": "Project Structure (2026)",
+          "detail": "Route groups: `(auth)/`, `(reader)/` for layout isolation. Server Components by default. Server Actions for mutations. Zod validation at every API boundary — never `as` cast."
+        },
+        {
+          "title": "Type Safety",
+          "detail": "Next.js has an \"inconsistent\" type safety story. Use Zod for runtime validation, infer types from Prisma (`Prisma.UserGetPayload`), avoid type assertions without validation."
+        },
+        {
+          "title": "Common Pitfalls",
+          "detail": "Forgetting `\"use client\"` causes hydration errors. Stripe webhook body must use `req.text()` not `req.json()`. Middleware must exclude `/api/webhooks/*` paths. Missing `output: \"standalone\"` creates 1.6GB images. Mutate via Server Actions, not client-side API calls."
+        },
+        {
+          "title": "Performance",
+          "detail": "Standalone output reduces Docker 8x. Turbopack (15.5+/16.x) 400% faster dev rebuilds. Streaming via `loading.tsx` + Suspense. Prefetch next chapter via TanStack Query or `<link rel=\"prefetch\">`. Lazy load non-visible reader components."
+        }
+      ]
+    },
+    {
+      "category": "Authentication (NextAuth v5)",
+      "items": [
+        {
+          "title": "v5 Architecture",
+          "detail": "Config moved to root `auth.ts`. Single `auth()` function call replaces `getServerSession`/`getToken`. Built-in CSRF protection — never disable. Middleware for route protection; server-side session verification in API routes and Server Actions."
+        },
+        {
+          "title": "Best Practices",
+          "detail": "Never trust client-side auth state. Use `auth()` in Server Components, `useSession()` in Client Components. Rate limit auth endpoints. Module augmentation via `next-auth.d.ts` for custom user properties (roles, etc.)."
+        },
+        {
+          "title": "Edge Runtime",
+          "detail": "Prisma client needs special setup for Edge middleware. Use `@prisma/adapter-pg` or connection pooling for Edge compatibility."
+        }
+      ]
+    },
+    {
+      "category": "Payment Integration (Stripe + PayPal)",
+      "items": [
+        {
+          "title": "Stripe Webhooks (Critical Pattern)",
+          "detail": "Use `req.text()` for raw body BEFORE `stripe.webhooks.constructEvent()`. Never use `req.json()`. Handle events: `checkout.session.completed`, `invoice.paid`, `customer.subscription.updated`. Idempotency via DB event ID deduplication in transaction."
+        },
+        {
+          "title": "PayPal Orders v2 API",
+          "detail": "Client renders PayPal buttons → buyer approves → client sends order ID to server → server calls `POST /v2/checkout/orders/{id}/capture` with `PayPal-Request-Id` header (6-hour idempotency). Always verify `status === 'COMPLETED'` server-side. Sandbox vs live URLs differ."
+        },
+        {
+          "title": "Dual Payment Architecture",
+          "detail": "Stripe (primary) + PayPal (secondary). Unified `Subscription` model with `provider` + `providerId` + `@@unique([provider, providerId])`. Track both `stripeCustomerId` and `paypalPayerId` on User. Webhook handlers share idempotency pattern."
+        },
+        {
+          "title": "Security",
+          "detail": "Stripe: `constructEvent()` with raw body. PayPal: verify `PAYPAL-AUTH-ALGO`/`PAYPAL-CERT-URL` headers against PayPal's cert chain. Both: database transaction deduplication for idempotency. Rate limit payment endpoints. Exclude webhook routes from auth middleware."
+        }
+      ]
+    },
+    {
+      "category": "File Uploads (UploadThing)",
+      "items": [
+        {
+          "title": "App Router Setup",
+          "detail": "Use `createUploadthing` from `uploadthing/next`. Define FileRouter with `f({ image: { maxFileSize: \"4MB\", maxFileCount: 20 } })`. Middleware for auth validation. `createRouteHandler` for App Router integration."
+        },
+        {
+          "title": "Best Practices",
+          "detail": "4TB free tier on R2 backend. Server-side file type/size validation via middleware before upload. `onUploadComplete` callback for database records. Direct browser→R2 uploads bypass origin bandwidth."
+        }
+      ]
+    },
+    {
+      "category": "Real-time (WebSocket vs SSE)",
+      "items": [
+        {
+          "title": "WebSocket Limitation",
+          "detail": "WebSockets do NOT work on Vercel serverless (stateless). Requires custom Node server (Fly.io, Railway, custom VPS)."
+        },
+        {
+          "title": "SSE Alternative",
+          "detail": "Server-Sent Events work on Vercel/App Router. Lower overhead, unidirectional (server→client). Perfect for notifications, chapter release alerts, live updates. Use `TextEncoderStream` in Route Handler."
+        },
+        {
+          "title": "Recommendation for rhixe_scans",
+          "detail": "Use SSE for Vercel deployment. If WebSocket required for bidirectional chat/collaboration, deploy custom Node server on Fly.io with `ws` library."
+        }
+      ]
+    },
+    {
+      "category": "Testing (Jest + ts-jest)",
+      "items": [
+        {
+          "title": "Configuration",
+          "detail": "Use `next/jest` wrapper in `jest.config.ts`. Mock `next/navigation` hooks (`useRouter`, `usePathname`, `useSearchParams`). Configure `moduleNameMapper` for `@/` path aliases matching `tsconfig.json`. Add `@testing-library/jest-dom` in setup file."
+        },
+        {
+          "title": "Server Component Testing",
+          "detail": "Jest does NOT support async Server Components. Test synchronous Server/Client Components with RTL. Use E2E tests (Playwright) for async Server Components."
+        },
+        {
+          "title": "Best Practices",
+          "detail": "Mock only external APIs (fetch) and Next.js modules. Don't mock code under test. Use `waitFor`/`act` for async operations. Check coverage with `npm test -- --coverage`. Ensure React 19 + Jest version compatibility."
+        }
+      ]
+    },
+    {
+      "category": "Security (Platform-wide)",
+      "items": [
+        {
+          "title": "Webhook Verification",
+          "detail": "Stripe: raw body + signature. PayPal: header/cert validation. Both: DB transaction deduplication for idempotency."
+        },
+        {
+          "title": "Content Protection",
+          "detail": "Verify subscription server-side before serving paywalled content. UploadThing secure URL tokens for comic pages. Preview gate: server-side filter shows first N pages to non-subscribers. CDN referrer checking for download prevention."
+        },
+        {
+          "title": "Auth & API Security",
+          "detail": "NextAuth v5 CSRF built-in. Zod validation at EVERY API boundary. Rate limit auth + payment endpoints. Generic error messages in production (no stack traces). Never commit `.env`; use Zod schema validation at startup."
+        },
+        {
+          "title": "Supply Chain",
+          "detail": "Regular `npm audit` / `bun audit`. Dependabot/Renovate for automated updates. Vet new dependencies carefully."
+        }
+      ]
+    },
+    {
+      "category": "Performance Optimization",
+      "items": [
+        {
+          "title": "Database",
+          "detail": "Composite indexes (`@@index([comicId, chapterNumber])`), Prisma JOIN strategy (`relationLoadStrategy: \"join\"`), prepared statements (default), monitor queries >1s via Prisma logs."
+        },
+        {
+          "title": "Application",
+          "detail": "TanStack Query caching for listings, invalidate on chapter release. UploadThing CDN + Next.js `<Image>` for responsive images. Prefetch next chapter via `queryClient.prefetchQuery()` or `<link rel=\"prefetch\">`. SSE over WebSocket for serverless real-time. Streaming with `loading.tsx` + Suspense boundaries."
+        },
+        {
+          "title": "Deployment",
+          "detail": "Standalone Docker output (~200MB vs ~1.6GB). CDN for static assets (`public/`, `.next/static/`). Multi-stage builds. Init containers for migrations (no race conditions)."
+        },
+        {
+          "title": "Image Delivery (Comic-specific)",
+          "detail": "Cloudflare R2 (S3-compatible, zero egress) + Cloudflare Images for on-the-fly resizing/variants (WebP/AVIF). Presigned URLs for direct browser upload to R2. Workers + Images transform API for automatic `srcset` generation."
+        }
+      ]
+    },
+    {
+      "category": "Common Pitfalls",
+      "items": [
+        { "pitfall": "WebSocket on Vercel", "avoidance": "Use SSE or custom Node server (Fly.io)" },
+        { "pitfall": "Stripe body parsed as JSON", "avoidance": "Use `request.text()` before `constructEvent()`" },
+        { "pitfall": "Prisma connection leaks", "avoidance": "Singleton + `connection_limit` in DATABASE_URL" },
+        { "pitfall": "Missing idempotency", "avoidance": "DB event ID deduplication in transaction" },
+        { "pitfall": "Migrations from app container", "avoidance": "Separate init container" },
+        { "pitfall": "Webhook routes behind auth middleware", "avoidance": "Exclude `/api/webhooks/*` in middleware matcher" },
+        { "pitfall": "Forgetting `\"use client\"`", "avoidance": "Explicit directive on interactive components" },
+        { "pitfall": "Global middleware protecting webhooks", "avoidance": "Exclude webhook paths in `config.matcher`" },
+        { "pitfall": "No `output: \"standalone\"`", "avoidance": "Enable in next.config.ts for minimal Docker images" },
+        { "pitfall": "Mutating without Server Actions", "avoidance": "Use `\"use server\"` functions for all mutations" }
+      ]
+    },
+    {
+      "category": "Resources & References",
+      "items": [
+        { "topic": "Next.js 15", "url": "https://nextjs.org/docs" },
+        { "topic": "Prisma 6", "url": "https://www.prisma.io/docs" },
+        { "topic": "Stripe Webhooks", "url": "https://docs.stripe.com/webhooks" },
+        { "topic": "PayPal Orders v2", "url": "https://developer.paypal.com/docs/api/orders/v2/" },
+        { "topic": "Zod", "url": "https://zod.dev" },
+        { "topic": "UploadThing", "url": "https://docs.uploadthing.com" },
+        { "topic": "Resend", "url": "https://resend.com/docs" },
+        { "topic": "Cloudflare R2", "url": "https://developers.cloudflare.com/r2" },
+        { "topic": "Cloudflare Images", "url": "https://developers.cloudflare.com/images" },
+        { "topic": "React Email", "url": "https://react.email" },
+        { "topic": "NextAuth v5 Migration", "url": "https://authjs.dev/getting-started/migrating-to-v5" },
+        { "topic": "Supabase RLS Best Practices", "url": "https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices" },
+        { "topic": "Prisma Production Guide", "url": "https://www.digitalapplied.com/blog/prisma-orm-production-guide-nextjs" },
+        { "topic": "Next.js Security 2026", "url": "https://www.turbostarter.dev/blog/complete-nextjs-security-guide-2025-authentication-api-protection-and-best-practices" },
+        { "topic": "Stripe Next.js Integration", "url": "https://designrevision.com/blog/stripe-nextjs" },
+        { "topic": "Docker Next.js Prisma", "url": "https://blog.jonrshar.pe/2024/Dec/24/nextjs-prisma-docker.html" }
+      ]
+    }
+  ]
+}

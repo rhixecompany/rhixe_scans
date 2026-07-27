@@ -3,63 +3,63 @@
 ## Project: rhixe_scans
 
 **Type:** Comic / scan reader platform
-**Tech Stack:** Next.js 15, React 19, TypeScript strict, Prisma 6, PostgreSQL, Tailwind 3, shadcn/ui, Radix, NextAuth v5, Zustand, TanStack Query, Stripe, PayPal, UploadThing, Resend, WebSocket
+**Tech Stack:** Next.js 15, React 19, TypeScript strict, Prisma 6, PostgreSQL, Tailwind 3, shadcn/ui, NextAuth v5, Zustand, TanStack Query, Stripe, PayPal, UploadThing, Resend, WebSocket
 **Status:** Active
 
 ---
 
 ## Similar Projects
 
-| Project | URL | Why Relevant |
-|---------|-----|--------------|
-| comicwise | `projects/comicwise` | Shared comic reader; Stripe + NextAuth + Tailwind |
-| rhixecompany-comics | `projects/rhixecompany-comics` | Shared comic reader; consolidation target |
-| university-libary-jsm | `projects/university-libary-jsm` | Shared Next.js + Prisma + PostgreSQL catalog |
-| Banking | `projects/Banking` | Shared NextAuth + payment patterns |
+| Project | Relevance |
+|---------|-----------|
+| comicwise | Shared comic reader; Stripe + NextAuth + Tailwind + Drizzle migration |
+| rhixecompany-comics | Shared comic domain; consolidation target |
+| university-libary-jsm | Shared Next.js + Prisma + PostgreSQL catalog patterns |
+| Banking | Shared NextAuth + payment flow patterns |
 
 ---
 
 ## Key Findings
 
-### Next.js 15 App Router + WebSocket Streams
-- WebSockets do NOT work on Vercel serverless — require custom Node server or Fly.io
-- **Alternative**: Server-Sent Events (SSE) for serverless-compatible real-time updates
-- SSE is built-in browser API, works over standard HTTP, ideal for notifications/progress
-- For WebSocket: use custom Node server with `ws` library or Socket.io with adapter
+### Prisma 6 Production Patterns (2026)
+- **Global singleton** — prevents hot-reload connection leaks; configure per-environment
+- **Connection pooling** — `DATABASE_URL` (pooled) + `DATABASE_DIRECT_URL` (migrations)
+- **Prisma Accelerate** — production pooling for serverless; $49/mo Starter with free tier
+- **Prisma 7 note:** TypeScript-only engine (3× faster queries); migrate when ecosystem matures
 
-### Prisma 6 Patterns
-- Global singleton in `lib/prisma.ts` prevents hot-reload connection leaks
-- `prisma.config.ts` (new in 6.x) for configuration; migration from 5.x updates setup
-- Prisma Accelerate for serverless connection pooling
-- **Performance**: JOIN strategy selection (`relationLoadStrategy: "join" | "query"`)
-- Nested creates batched in single round-trip since v5.11
+### Stripe + PayPal Dual Payment 2026
+- **Stripe webhooks:** always `req.text()` then `constructEvent()`; return 200 fast, process async
+- **PayPal:** `@paypal/react-paypal-js` frontend + server-side order capture verification
+- **Embedded Checkout** — Stripe promotes iframe-based checkout keeping users on-domain
+- **Webhook idempotency** — DB event-ID dedup prevents duplicate charges
 
-### Stripe + PayPal Dual Payment
-- Stripe webhooks in App Router: **must use `request.text()` (not `request.json()`)** for signature verification
-- PayPal: `@paypal/react-paypal-js` frontend + server-side order capture validation
-- Always idempotent webhook handlers using database transactions
-- Webhook router pattern: typed handlers per event type for maintainability
+### SSE vs WebSocket for Serverless
+- **WebSocket breaks on Vercel serverless** — needs custom Node server or Fly.io
+- **SSE (Server-Sent Events)** — built-in browser API, works over HTTP, ideal for notifications
+- **Upstash QStash** — alternative for event-driven messaging without persistent connections
 
 ---
 
-## Cheatsheets & Quick Reference
+## Cheatsheets
 
-| Topic | Resource | Type |
-|-------|----------|------|
-| Next.js 15 App Router | <https://nextjs.org/docs/app> | Docs |
-| Prisma 6 | <https://www.prisma.io/docs> | Docs |
-| Stripe Webhooks | <https://docs.stripe.com/webhooks> | Guide |
-| PayPal Orders API | <https://developer.paypal.com/docs/api/orders/v2> | API Docs |
+| Topic | Resource |
+|-------|----------|
+| Next.js 15 | <https://nextjs.org/docs/app> |
+| Prisma 6 | <https://www.prisma.io/docs> |
+| Stripe Webhooks | <https://docs.stripe.com/webhooks> |
+| PayPal Orders | <https://developer.paypal.com/docs/api/orders/v2> |
+| UploadThing | <https://docs.uploadthing.com> |
 
 ---
 
 ## Best Practices
 
 1. **Prisma singleton** — global instance in `lib/prisma.ts` for connection lifecycle
-2. **Webhook idempotency** — database-event-id dedup before processing
-3. **SSE over WebSocket** — when targeting Vercel serverless deployment
-4. **Stripe `request.text()` before parsing** — signature verification requires raw body
-5. **Dual payment provider fallback** — PayPal as Stripe backup reduces left-on-table
+2. **Separate connection strings** — `DATABASE_DIRECT_URL` for migrations, pooled URL for app
+3. **Stripe `req.text()` first** — raw body required for signature verification
+4. **Webhook idempotency** — database-event-id dedup before processing
+5. **SSE over WebSocket** — when targeting Vercel serverless deployment
+6. **Dual payment provider fallback** — PayPal as Stripe backup reduces left-on-table
 
 ---
 
@@ -68,16 +68,17 @@
 | Pitfall | Impact | Avoidance |
 |---------|--------|-----------|
 | WebSocket on Vercel | Runtime failure | Use SSE or custom Node server |
-| Stripe raw body parsing | Signature verify fails | `request.text()` before JSON parsing |
+| Stripe `req.json()` | Signature verify fails | Always `req.text()` before parsing |
 | Prisma connection leaks | Memory exhaustion | Global singleton pattern |
 | Missing idempotency | Duplicate charges | DB event ID dedup in webhook handlers |
+| Single connection string for Prisma | Migration vs pooling conflict | Separate `DATABASE_DIRECT_URL` + pooled URL |
 
 ---
 
 ## Performance
 
 1. **Prisma JOIN strategy** — `relationLoadStrategy: "join"` for relational data
-2. **TanStack Query caching** — cache chapter listings, invalidate on new releases
+2. **TanStack Query caching** — cache chapter listings; invalidate on new releases
 3. **Image optimization** — UploadThing CDN for comic page images
 4. **SSE for real-time** — lower overhead than WebSocket for serverless
 5. **Preload next chapter** — prefetch via `<link rel="preload">` or TanStack Query prefetch
@@ -87,33 +88,33 @@
 ## Security
 
 1. **Stripe webhook verification** — `constructEvent()` with endpoint secret
-2. **Signed image URLs** — UploadThing secure URL tokens for paywalled content
-3. **NextAuth v5 CSRF** — built-in protection for all auth flows
-4. **Rate limit auth endpoints** — protect against brute force
+2. **PayPal order validation** — server-side capture verification (never trust client-only)
+3. **Signed image URLs** — UploadThing secure URL tokens for paywalled content
+4. **Rate limit auth endpoints** — protect against brute force (5 req/15min per IP)
 5. **Idempotent webhooks** — prevent duplicate payment processing
+6. **TanStack Query staleTime** — configurable cache invalidation to prevent stale data leaks
 
 ---
 
 ## Related Projects (in workspace)
 
-- **comicwise** — shared comic reader; Stripe + NextAuth + Tailwind patterns
-- **rhixecompany-comics** — consolidation target; shared comic domain patterns
-- **university-libary-jsm** — Next.js + Prisma + PostgreSQL catalog reference
+- **comicwise** — shared comic reader; Stripe + NextAuth + Tailwind; Drizzle migration patterns
+- **rhixecompany-comics** — consolidation target; shared comic domain architecture
 - **Banking** — shared NextAuth + payment flow patterns
+- **university-libary-jsm** — shared Next.js + Prisma/PostgreSQL catalog reference
 
 ---
 
 ## Resources
 
-| Resource | URL | Description |
-|----------|-----|-------------|
-| Next.js 15 | <https://nextjs.org/docs> | Framework documentation |
-| Prisma 6 | <https://www.prisma.io/docs> | ORM documentation |
-| Stripe Webhooks | <https://docs.stripe.com/webhooks> | Webhook integration |
-| UploadThing | <https://docs.uploadthing.com> | File uploads |
+| Resource | URL |
+|----------|-----|
+| Next.js 15 | <https://nextjs.org/docs> |
+| Prisma 6 | <https://www.prisma.io/docs> |
+| Stripe Webhooks | <https://docs.stripe.com/webhooks> |
+| PayPal API | <https://developer.paypal.com/docs/api/orders/v2> |
+| SSE MDN | <https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events> |
 
 ### Research Methodology
-- **Web search:** web_search (2026 Next.js + Prisma patterns)
-- **Documentation:** web_extract (Prisma, Stripe, PayPal docs)
-- **Real-time research:** SSE vs WebSocket for serverless
-- **Last verified:** 2026-07-16
+- **Web search:** Tavily search (2026 Prisma 6, Stripe, PayPal, SSE patterns)
+- **Last verified:** 2026-07-28

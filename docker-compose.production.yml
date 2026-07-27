@@ -2,10 +2,8 @@ volumes:
   production_postgres_data: {}
   production_postgres_data_backups: {}
   production_traefik: {}
-  
-  production_redis_data: {}
-  
 
+  production_redis_data: {}
 
 services:
   django: &django
@@ -13,7 +11,7 @@ services:
       context: .
       dockerfile: ./compose/production/django/Dockerfile
 
-    image: api_production_django
+    image: rhixe_scans_production_django
     depends_on:
       - postgres
       - redis
@@ -26,7 +24,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
-    image: api_production_postgres
+    image: rhixe_scans_production_postgres
     volumes:
       - production_postgres_data:/var/lib/postgresql/data
       - production_postgres_data_backups:/backups
@@ -37,36 +35,53 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/traefik/Dockerfile
-    image: api_production_traefik
+    image: rhixe_scans_production_traefik
     depends_on:
       - django
     volumes:
       - production_traefik:/etc/traefik/acme
     ports:
-      - '0.0.0.0:80:80'
-      - '0.0.0.0:443:443'
-      - '0.0.0.0:5555:5555'
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
 
   redis:
-    image: docker.io/redis:6
-    
+    image: redis:6
+
     volumes:
       - production_redis_data:/data
-    
 
   celeryworker:
     <<: *django
-    image: api_production_celeryworker
+    image: rhixe_scans_production_celeryworker
+    depends_on:
+      - redis
+      - postgres
+
+    ports: []
+
     command: /start-celeryworker
 
   celerybeat:
     <<: *django
-    image: api_production_celerybeat
+    image: rhixe_scans_production_celerybeat
+    depends_on:
+      - redis
+      - postgres
+
+    ports: []
+
     command: /start-celerybeat
 
   flower:
     <<: *django
-    image: api_production_flower
+    image: rhixe_scans_production_flower
+    depends_on:
+      - redis
+      - postgres
+
+    ports:
+      - "5555:5555"
+
     command: /start-flower
 
   awscli:
