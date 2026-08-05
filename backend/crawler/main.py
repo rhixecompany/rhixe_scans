@@ -17,7 +17,7 @@ async def scraper(url):
     products = await page.select_all(".product")
 
     # wait for the content to load
-    page.sleep(15)  # type: ignore  # noqa: PGH003
+    page.sleep(15)  # type: ignore
 
     # product array to collect data
     product_data = []
@@ -29,14 +29,14 @@ async def scraper(url):
         product_price = await product.query_selector(".price")
 
         # get all product texts into a dictionary
-        data = {"Name": product_name.text_all, "Price": product_price.text_all}  # type: ignore  # noqa: PGH003
+        data = {"Name": product_name.text_all, "Price": product_price.text_all}  # type: ignore
 
         # append each product data to the product data array
         product_data.append(data)
 
     # save the data to a CSV file
     keys = product_data[0].keys()
-    with open(  # noqa: ASYNC230, PTH123
+    with open(
         "product_data.csv",
         "w",
         newline="",
@@ -45,7 +45,7 @@ async def scraper(url):
         dict_writer = csv.DictWriter(output_file, fieldnames=keys)
         dict_writer.writeheader()
         dict_writer.writerows(product_data)
-        print("CSV created successfully")  # noqa: T201
+        print("CSV created successfully")
 
     # close the page
     await page.close()

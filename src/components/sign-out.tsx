@@ -1,6 +1,6 @@
-'use client';
-import { Button } from '@/components/ui/button';
-import { signOut } from 'next-auth/react';
+"use client";
+import { Button } from "@/components/ui/button";
+import { signOut } from "next-auth/react";
 
 const SignOut = () => {
   const handleSignOut = async () => {
@@ -8,8 +8,8 @@ const SignOut = () => {
   };
 
   return (
-    <div className='w-full'>
-      <Button variant='destructive' onClick={handleSignOut}>
+    <div className="w-full">
+      <Button variant="destructive" onClick={handleSignOut}>
         Sign Out
       </Button>
     </div>

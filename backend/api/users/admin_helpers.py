@@ -1,11 +1,8 @@
 from django.core.validators import EMPTY_VALUES
 from django.utils.translation import gettext_lazy as _
-from django_celery_beat.admin import PeriodicTaskForm
-from django_celery_beat.admin import TaskSelectWidget
-from unfold.contrib.filters.admin import DropdownFilter
-from unfold.contrib.filters.admin import TextFilter
-from unfold.widgets import UnfoldAdminSelectWidget
-from unfold.widgets import UnfoldAdminTextInputWidget
+from django_celery_beat.admin import PeriodicTaskForm, TaskSelectWidget
+from unfold.contrib.filters.admin import DropdownFilter, TextFilter
+from unfold.widgets import UnfoldAdminSelectWidget, UnfoldAdminTextInputWidget
 
 
 class UnfoldTaskSelectWidget(UnfoldAdminSelectWidget, TaskSelectWidget):

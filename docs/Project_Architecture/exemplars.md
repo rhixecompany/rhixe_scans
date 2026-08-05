@@ -21,22 +21,25 @@ A full-featured comic reading platform with Next.js 15, Prisma ORM, NextAuth, an
 **Category:** API / Data Access
 
 ```typescript
-'use server';
-import db from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
+"use server";
+import db from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 export async function getLatestComics() {
   const data = await db.comic.findMany({
     take: LATEST_COMICS_LIMIT,
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
   return convertToPlainObject(data);
 }
 
 export async function getAllComics({
-  query, limit = PAGE_SIZE, page, sort,
+  query,
+  limit = PAGE_SIZE,
+  page,
+  sort,
 }: {
   query: string;
   limit?: number;
@@ -44,9 +47,7 @@ export async function getAllComics({
   sort?: string;
 }) {
   const queryFilter: Prisma.ComicWhereInput =
-    query && query !== 'all'
-      ? { title: { contains: query, mode: 'insensitive' } as Prisma.StringFilter }
-      : {};
+    query && query !== "all" ? { title: { contains: query, mode: "insensitive" } as Prisma.StringFilter } : {};
   // ... pagination and sorting
 }
 ```
@@ -77,8 +78,8 @@ NextAuth v5 configuration with Prisma adapter.
 **Category:** Auth
 
 ```typescript
-import NextAuth from 'next-auth';
-import authConfig from './auth.config';
+import NextAuth from "next-auth";
+import authConfig from "./auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,

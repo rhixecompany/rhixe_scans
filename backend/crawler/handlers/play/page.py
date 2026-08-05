@@ -1,6 +1,8 @@
-from typing import Any
-from typing import Callable  # noqa: UP035
-from typing import Union
+from collections.abc import Callable
+from typing import (
+    Any,
+    Union,
+)
 
 __all__ = ["PageMethod"]
 

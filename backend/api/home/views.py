@@ -1,13 +1,10 @@
-from django.core.paginator import EmptyPage
-from django.core.paginator import PageNotAnInteger
-from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 from django.shortcuts import render
 
 from api.libary.constants import ComicStatus
 from api.libary.filters import SearchFilterSet
-from api.libary.models import Comic
-from api.libary.models import UserComic
+from api.libary.models import Comic, UserComic
 
 
 def index(request):

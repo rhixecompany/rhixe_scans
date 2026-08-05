@@ -1,7 +1,6 @@
 from typing import Iterable  # noqa: UP035
 
-from allauth.account.forms import LoginForm
-from allauth.account.forms import SignupForm
+from allauth.account.forms import LoginForm, SignupForm
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django import forms
 from django.contrib.auth import forms as admin_forms
@@ -24,7 +23,7 @@ class CustomeBoundField(forms.BoundField):
 class UserAdminChangeForm(admin_forms.UserChangeForm):
     class Meta(admin_forms.UserChangeForm.Meta):  # type: ignore[name-defined]
         model = User
-        fields = ("email", "username", "first_name", "last_name", "image","full_name")
+        fields = ("email", "username", "first_name", "last_name", "image", "full_name")
         field_classes = {"email": EmailField}
 
 

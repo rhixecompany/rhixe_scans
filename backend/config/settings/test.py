@@ -2,16 +2,15 @@
 With these settings, tests run faster.
 """
 
-from .base import *  # noqa: F403
-from .base import TEMPLATES
-from .base import env
+from .base import *
+from .base import TEMPLATES, env
 
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env(
     "DJANGO_SECRET_KEY",
-    default="jOM4g4VM7D3I7SG7YtKAqHQswp3JuesOz6YinWd6AWAxyfySGDYxpa6vauKMhNR6",  # type: ignore  # noqa: PGH003
+    default="jOM4g4VM7D3I7SG7YtKAqHQswp3JuesOz6YinWd6AWAxyfySGDYxpa6vauKMhNR6",  # type: ignore
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#test-runner
 TEST_RUNNER = "django.test.runner.DiscoverRunner"
@@ -36,7 +35,7 @@ TEMPLATES[0]["OPTIONS"]["debug"] = True  # type: ignore[index]
 MEDIA_URL = "http://media.testserver/"
 # django-webpack-loader
 # ------------------------------------------------------------------------------
-WEBPACK_LOADER["DEFAULT"]["LOADER_CLASS"] = "webpack_loader.loaders.FakeWebpackLoader"  # noqa: F405
+WEBPACK_LOADER["DEFAULT"]["LOADER_CLASS"] = "webpack_loader.loaders.FakeWebpackLoader"
 # Your stuff...
 # ------------------------------------------------------------------------------
 # DATABASES

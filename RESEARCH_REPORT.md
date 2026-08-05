@@ -10,30 +10,33 @@
 
 ## Similar Projects
 
-| Project | Relevance |
-|---------|-----------|
-| comicwise | Shared comic reader; Stripe + NextAuth + Tailwind + Drizzle migration |
-| rhixecompany-comics | Shared comic domain; consolidation target |
-| university-libary-jsm | Shared Next.js + Prisma + PostgreSQL catalog patterns |
-| Banking | Shared NextAuth + payment flow patterns |
+| Project               | Relevance                                                             |
+| --------------------- | --------------------------------------------------------------------- |
+| comicwise             | Shared comic reader; Stripe + NextAuth + Tailwind + Drizzle migration |
+| rhixecompany-comics   | Shared comic domain; consolidation target                             |
+| university-libary-jsm | Shared Next.js + Prisma + PostgreSQL catalog patterns                 |
+| Banking               | Shared NextAuth + payment flow patterns                               |
 
 ---
 
 ## Key Findings
 
 ### Prisma 6 Production Patterns (2026)
+
 - **Global singleton** — prevents hot-reload connection leaks; configure per-environment
 - **Connection pooling** — `DATABASE_URL` (pooled) + `DATABASE_DIRECT_URL` (migrations)
 - **Prisma Accelerate** — production pooling for serverless; $49/mo Starter with free tier
 - **Prisma 7 note:** TypeScript-only engine (3× faster queries); migrate when ecosystem matures
 
 ### Stripe + PayPal Dual Payment 2026
+
 - **Stripe webhooks:** always `req.text()` then `constructEvent()`; return 200 fast, process async
 - **PayPal:** `@paypal/react-paypal-js` frontend + server-side order capture verification
 - **Embedded Checkout** — Stripe promotes iframe-based checkout keeping users on-domain
 - **Webhook idempotency** — DB event-ID dedup prevents duplicate charges
 
 ### SSE vs WebSocket for Serverless
+
 - **WebSocket breaks on Vercel serverless** — needs custom Node server or Fly.io
 - **SSE (Server-Sent Events)** — built-in browser API, works over HTTP, ideal for notifications
 - **Upstash QStash** — alternative for event-driven messaging without persistent connections
@@ -42,13 +45,13 @@
 
 ## Cheatsheets
 
-| Topic | Resource |
-|-------|----------|
-| Next.js 15 | <https://nextjs.org/docs/app> |
-| Prisma 6 | <https://www.prisma.io/docs> |
-| Stripe Webhooks | <https://docs.stripe.com/webhooks> |
-| PayPal Orders | <https://developer.paypal.com/docs/api/orders/v2> |
-| UploadThing | <https://docs.uploadthing.com> |
+| Topic           | Resource                                          |
+| --------------- | ------------------------------------------------- |
+| Next.js 15      | <https://nextjs.org/docs/app>                     |
+| Prisma 6        | <https://www.prisma.io/docs>                      |
+| Stripe Webhooks | <https://docs.stripe.com/webhooks>                |
+| PayPal Orders   | <https://developer.paypal.com/docs/api/orders/v2> |
+| UploadThing     | <https://docs.uploadthing.com>                    |
 
 ---
 
@@ -65,12 +68,12 @@
 
 ## Common Pitfalls
 
-| Pitfall | Impact | Avoidance |
-|---------|--------|-----------|
-| WebSocket on Vercel | Runtime failure | Use SSE or custom Node server |
-| Stripe `req.json()` | Signature verify fails | Always `req.text()` before parsing |
-| Prisma connection leaks | Memory exhaustion | Global singleton pattern |
-| Missing idempotency | Duplicate charges | DB event ID dedup in webhook handlers |
+| Pitfall                             | Impact                        | Avoidance                                   |
+| ----------------------------------- | ----------------------------- | ------------------------------------------- |
+| WebSocket on Vercel                 | Runtime failure               | Use SSE or custom Node server               |
+| Stripe `req.json()`                 | Signature verify fails        | Always `req.text()` before parsing          |
+| Prisma connection leaks             | Memory exhaustion             | Global singleton pattern                    |
+| Missing idempotency                 | Duplicate charges             | DB event ID dedup in webhook handlers       |
 | Single connection string for Prisma | Migration vs pooling conflict | Separate `DATABASE_DIRECT_URL` + pooled URL |
 
 ---
@@ -107,14 +110,15 @@
 
 ## Resources
 
-| Resource | URL |
-|----------|-----|
-| Next.js 15 | <https://nextjs.org/docs> |
-| Prisma 6 | <https://www.prisma.io/docs> |
-| Stripe Webhooks | <https://docs.stripe.com/webhooks> |
-| PayPal API | <https://developer.paypal.com/docs/api/orders/v2> |
-| SSE MDN | <https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events> |
+| Resource        | URL                                                                   |
+| --------------- | --------------------------------------------------------------------- |
+| Next.js 15      | <https://nextjs.org/docs>                                             |
+| Prisma 6        | <https://www.prisma.io/docs>                                          |
+| Stripe Webhooks | <https://docs.stripe.com/webhooks>                                    |
+| PayPal API      | <https://developer.paypal.com/docs/api/orders/v2>                     |
+| SSE MDN         | <https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events> |
 
 ### Research Methodology
+
 - **Web search:** Tavily search (2026 Prisma 6, Stripe, PayPal, SSE patterns)
 - **Last verified:** 2026-07-28

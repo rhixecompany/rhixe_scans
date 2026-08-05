@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
 const SignOut = () => {
   const handleSignOut = async () => {};
 
   return (
-    <Button variant='destructive' onClick={handleSignOut}>
+    <Button variant="destructive" onClick={handleSignOut}>
       Sign Out
     </Button>
   );

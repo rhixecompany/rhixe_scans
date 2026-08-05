@@ -49,7 +49,7 @@ class CrawlerSpiderMiddleware:
             yield r
 
     def spider_opened(self, spider):
-        logger.info("Spider opened: %s" % spider.name)  # noqa: G002, UP031
+        logger.info("Spider opened: %s" % spider.name)  # noqa: UP031
 
 
 class CrawlerDownloaderMiddleware:
@@ -96,4 +96,4 @@ class CrawlerDownloaderMiddleware:
         pass
 
     def spider_opened(self, spider):
-        logger.info("Spider opened: %s" % spider.name)  # noqa: G002, UP031
+        logger.info("Spider opened: %s" % spider.name)  # noqa: UP031

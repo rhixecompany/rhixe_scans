@@ -14,7 +14,7 @@ class QoutesSpider(scrapy.Spider):
             "https://python-forum.io/Thread-Exploring-async-await-without-knowing-how-they-work-ahead-of-time?pid=17292",
             callback=self.parse_deffered,
         )
-        deferred = self.crawler.engine.download(additional_request)  # type: ignore  # noqa: PGH003
+        deferred = self.crawler.engine.download(additional_request)  # type: ignore
         additional_response = await deferred_to_future(deferred)
         yield additional_response
 

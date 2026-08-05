@@ -5,15 +5,13 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.db.models import UUIDField
 
-# from django.db.models import Q  # noqa: ERA001
+# from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_ckeditor_5.fields import CKEditor5Field
 
-from api.libary.constants import ComicStatus
-from api.libary.constants import ImageStatus
-from api.libary.managers import ActiveManager
-from api.libary.managers import StandardMetadata
+from api.libary.constants import ComicStatus, ImageStatus
+from api.libary.managers import ActiveManager, StandardMetadata
 from api.users.models import User
 
 ext_validator = FileExtensionValidator(
@@ -37,11 +35,7 @@ ext_validator = FileExtensionValidator(
 
 def chapter_image_location(instance, filename):
     return "{}/{}/{}".format(
-        str(instance.comic.slug)
-        .replace(" ", "_")
-        .replace(":", " ")
-        .replace("/", "")
-        .replace("\\", ""),
+        str(instance.comic.slug).replace(" ", "_").replace(":", " ").replace("/", "").replace("\\", ""),
         instance.chapter.slug,
         filename,
     )
@@ -49,11 +43,7 @@ def chapter_image_location(instance, filename):
 
 def comic_image_location(instance, filename):
     return "{}/{}".format(
-        str(instance.comic.slug)
-        .replace(" ", "_")
-        .replace(":", " ")
-        .replace("/", "")
-        .replace("\\", ""),
+        str(instance.comic.slug).replace(" ", "_").replace(":", " ").replace("/", "").replace("\\", ""),
         filename,
     )
 
@@ -70,7 +60,7 @@ class Genre(models.Model):
         return self.name
 
     def get_comics_children(self):
-        return self.genrecomics.all()  # type: ignore  # noqa: PGH003
+        return self.genrecomics.all()  # type: ignore
 
 
 class Author(models.Model):
@@ -85,7 +75,7 @@ class Author(models.Model):
         return self.name
 
     def get_comics_children(self):
-        return self.authorcomics.all()  # type: ignore  # noqa: PGH003
+        return self.authorcomics.all()  # type: ignore
 
 
 class Artist(models.Model):
@@ -100,7 +90,7 @@ class Artist(models.Model):
         return self.name
 
     def get_comics_children(self):
-        return self.artistcomics.all()  # type: ignore  # noqa: PGH003
+        return self.artistcomics.all()  # type: ignore
 
 
 class Category(models.Model):
@@ -115,7 +105,7 @@ class Category(models.Model):
         return self.name
 
     def get_comics_children(self):
-        return self.categorycomics.all()  # type: ignore  # noqa: PGH003
+        return self.categorycomics.all()  # type: ignore
 
 
 class Website(models.Model):
@@ -130,10 +120,10 @@ class Website(models.Model):
         return self.name
 
     def get_spider_comics_children(self):
-        return self.websitecomics.all()  # type: ignore  # noqa: PGH003
+        return self.websitecomics.all()  # type: ignore
 
     def get_spider_chapters_children(self):
-        return self.websitechapters.all()  # type: ignore  # noqa: PGH003
+        return self.websitechapters.all()  # type: ignore
 
 
 class Comic(StandardMetadata):
@@ -159,7 +149,7 @@ class Comic(StandardMetadata):
         null=True,
         blank=True,
     )
-    serialization = models.CharField(  # noqa: DJ001
+    serialization = models.CharField(
         _("Serialization"),
         max_length=5000,
         blank=True,
@@ -235,16 +225,16 @@ class Comic(StandardMetadata):
         return self.numimages > 1
 
     def get_images(self):
-        return self.comicimages.all()  # type: ignore  # noqa: PGH003
+        return self.comicimages.all()  # type: ignore
 
     def get_chapters(self):
-        return self.comicchapters.all()  # type: ignore  # noqa: PGH003
+        return self.comicchapters.all()  # type: ignore
 
     def get_comments(self):
-        return self.comiccomments.all()  # type: ignore  # noqa: PGH003
+        return self.comiccomments.all()  # type: ignore
 
     def get_users(self):
-        return self.comicusers.all()  # type: ignore  # noqa: PGH003
+        return self.comicusers.all()  # type: ignore
 
 
 class Chapter(StandardMetadata):
@@ -305,10 +295,10 @@ class Chapter(StandardMetadata):
         return self.numimages > 0
 
     def get_images(self):
-        return self.chapterimages.all()  # type: ignore  # noqa: PGH003
+        return self.chapterimages.all()  # type: ignore
 
     def get_comments(self):
-        return self.chaptercomments.all()  # type: ignore  # noqa: PGH003
+        return self.chaptercomments.all()  # type: ignore
 
 
 class UserComic(models.Model):
@@ -346,13 +336,13 @@ class ComicImage(StandardMetadata):
         blank=True,
         null=True,
     )
-    status = models.CharField(  # noqa: DJ001
+    status = models.CharField(
         max_length=13,
         choices=ImageStatus.choices,
         blank=True,
         null=True,
     )
-    checksum = models.CharField(max_length=500, blank=True, null=True)  # noqa: DJ001
+    checksum = models.CharField(max_length=500, blank=True, null=True)
     objects: ClassVar[ActiveManager] = ActiveManager()
 
     class Meta:
@@ -395,13 +385,13 @@ class ChapterImage(StandardMetadata):
         blank=True,
         null=True,
     )
-    status = models.CharField(  # noqa: DJ001
+    status = models.CharField(
         max_length=13,
         choices=ImageStatus.choices,
         blank=True,
         null=True,
     )
-    checksum = models.CharField(max_length=500, blank=True, null=True)  # noqa: DJ001
+    checksum = models.CharField(max_length=500, blank=True, null=True)
     objects: ClassVar[ActiveManager] = ActiveManager()
 
     class Meta:
@@ -453,7 +443,7 @@ class Comment(StandardMetadata):
         return self.text
 
     def get_chapter_children(self):
-        return self.chaptercomments.all()  # type: ignore  # noqa: PGH003
+        return self.chaptercomments.all()  # type: ignore
 
     def get_comic_children(self):
-        return self.comiccomments.all()  # type: ignore  # noqa: PGH003
+        return self.comiccomments.all()  # type: ignore

@@ -7,19 +7,13 @@ import os
 
 from dateparser import parse
 from django.utils.text import slugify
-from itemloaders.processors import Join
-from itemloaders.processors import MapCompose
-from itemloaders.processors import TakeFirst
-from scrapy.item import Field
-from scrapy.item import Item
-from w3lib.html import remove_comments
-from w3lib.html import remove_tags
-from w3lib.html import replace_entities
-from w3lib.html import strip_html5_whitespace
+from itemloaders.processors import Join, MapCompose, TakeFirst
+from scrapy.item import Field, Item
+from w3lib.html import remove_comments, remove_tags, replace_entities, strip_html5_whitespace
 
 
 def remove_extension(value):
-    return os.path.splitext(value)[0]  # noqa: PTH122
+    return os.path.splitext(value)[0]
 
 
 def gen_slug(value):
@@ -60,7 +54,7 @@ def clean_description(value):
 
 
 def get_date(value):
-    return parse(value, languages=["en"], date_formats=["F j, Y"]).date()  # type: ignore  # noqa: PGH003
+    return parse(value, languages=["en"], date_formats=["F j, Y"]).date()  # type: ignore
 
 
 def strip_html(value):

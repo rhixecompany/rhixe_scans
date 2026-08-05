@@ -1,15 +1,11 @@
 import logging
 
-from api.libary.models import Chapter
-from api.libary.models import ChapterImage
-from api.libary.models import Comic
-from api.libary.models import ComicImage
+from api.libary.models import Chapter, ChapterImage, Comic, ComicImage
 from django.core.management.base import BaseCommand
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
-from twisted.internet import defer
-from twisted.internet import reactor
+from twisted.internet import defer, reactor
 
 from crawler.pipelines.redis import connection
 from crawler.spiders.asuracomic import AsuracomicSpider
@@ -34,10 +30,10 @@ class Command(BaseCommand):
         def run():
             yield runner.crawl(AsuracomicSpider)
 
-            reactor.stop()  # type: ignore  # noqa: PGH003
+            reactor.stop()  # type: ignore
 
         run()
-        reactor.run()  # type: ignore  # noqa: PGH003
+        reactor.run()  # type: ignore
         comics = (
             Comic.objects.prefetch_related(
                 "comicitems",
@@ -50,11 +46,7 @@ class Command(BaseCommand):
         )
 
         comic_images = ComicImage.objects.select_related("comic").all()
-        chapters = (
-            Chapter.objects.prefetch_related("chapteritems")
-            .select_related("comic")
-            .all()
-        )
+        chapters = Chapter.objects.prefetch_related("chapteritems").select_related("comic").all()
 
         chapter_images = ChapterImage.objects.select_related("comic", "chapter").all()
         context = {

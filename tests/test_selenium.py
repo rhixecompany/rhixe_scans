@@ -7,13 +7,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 options = ChromeOptions()
-options.add_argument("start-maximized")  # noqa: ERA001
+options.add_argument("start-maximized")
 # run in headless mode
 # options.add_argument("--headless")
 
 # Chrome is controlled by automated test software
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
-options.add_experimental_option("useAutomationExtension", False)  # noqa: FBT003
+options.add_experimental_option("useAutomationExtension", False)
 s = ChromeService(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=s, options=options)
 

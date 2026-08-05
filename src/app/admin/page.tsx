@@ -1,6 +1,6 @@
 // import DeleteDialog from '@/components/shared/delete-dialog';
 // import Pagination from '@/components/shared/pagination';
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Table,
   // TableBody,
@@ -8,13 +8,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 // import { deleteComic, getAllComics } from '@/lib/actions/comic.actions';
 // import { requireAdmin } from '@/lib/auth-guard';
 // import { formatId } from '@/lib/utils';
-import LoadingPage from '@/app/loading';
-import Link from 'next/link';
-import { Suspense } from 'react';
+import LoadingPage from "@/app/loading";
+import Link from "next/link";
+import { Suspense } from "react";
 
 const AdmincomicsPage = async (props: {
   searchParams: Promise<{
@@ -28,8 +28,8 @@ const AdmincomicsPage = async (props: {
   const searchParams = await props.searchParams;
 
   const page = Number(searchParams.page) || 1;
-  const searchText = searchParams.query || '';
-  const category = searchParams.category || '';
+  const searchText = searchParams.query || "";
+  const category = searchParams.category || "";
   console.log({ page, category });
 
   // const comics = await getAllComics({
@@ -41,23 +41,23 @@ const AdmincomicsPage = async (props: {
   return (
     <>
       <Suspense key={searchText + page} fallback={<LoadingPage />}>
-        <div className='space-y-2'>
-          <div className='flex-between'>
-            <div className='flex items-center gap-3'>
-              <h1 className='h2-bold'>comics</h1>
+        <div className="space-y-2">
+          <div className="flex-between">
+            <div className="flex items-center gap-3">
+              <h1 className="h2-bold">comics</h1>
               {searchText && (
                 <div>
-                  Filtered by <i>&quot;{searchText}&quot;</i>{' '}
-                  <Link href='/admin/comics'>
-                    <Button variant='outline' size='sm'>
+                  Filtered by <i>&quot;{searchText}&quot;</i>{" "}
+                  <Link href="/admin/comics">
+                    <Button variant="outline" size="sm">
                       Remove Filter
                     </Button>
                   </Link>
                 </div>
               )}
             </div>
-            <Button asChild variant='default'>
-              <Link href='/admin/comics/create'>Create comic</Link>
+            <Button asChild variant="default">
+              <Link href="/admin/comics/create">Create comic</Link>
             </Button>
           </div>
 
@@ -66,10 +66,10 @@ const AdmincomicsPage = async (props: {
               <TableRow>
                 <TableHead>ID</TableHead>
                 <TableHead>TITLE</TableHead>
-                <TableHead className='text-right'>STATUS</TableHead>
+                <TableHead className="text-right">STATUS</TableHead>
 
                 <TableHead>RATING</TableHead>
-                <TableHead className='w-[100px]'>ACTIONS</TableHead>
+                <TableHead className="w-[100px]">ACTIONS</TableHead>
               </TableRow>
             </TableHeader>
             {/* <TableBody>

@@ -14,7 +14,7 @@ import django
 from django.conf import settings
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-sys.path.append(os.path.join(BASE_DIR, "config"))  # noqa: PTH118
+sys.path.append(os.path.join(BASE_DIR, "config"))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 os.environ.setdefault("DJANGO_ALLOW_ASYNC_UNSAFE", "true")
 django.setup()
@@ -26,18 +26,18 @@ NEWSPIDER_MODULE = "crawler.spiders"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"  # noqa: E501
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
 
 USER_AGENT_LIST = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36",  # noqa: E501
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv.0) Gecko/20100101 Firefox/97.0",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15",  # noqa: E501
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 13_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.1 Mobile/15E148 Safari/604.1",  # noqa: E501
-    " Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59",  # noqa: E501
-    "Mozilla/5.0 (Linux; Android 5.0.2; SAMSUNG SM-T550 Build/LRX22G) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/3.3 Chrome/38.0.2125.102 Safari/537.36",  # noqa: E501
-    "Mozilla/5.0 (PlayStation 4 3.11) AppleWebKit/537.73 (KHTML, like Gecko) PlayStation Vita Mozilla/5.0 (PlayStation Vita 3.61) AppleWebKit/537.73 (KHTML, like Gecko) Silk/3.2",  # noqa: E501
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox Series X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36 Edge/20.02",  # noqa: E501
-    "Mozilla/5.0 (Nintendo Switch; WifiWebAuthApplet) AppleWebKit/601.6 (KHTML, like Gecko) NF/4.0.0.5.10 NintendoBrowser/5.1.0.13343",  # noqa: E501
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 13_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.1 Mobile/15E148 Safari/604.1",
+    " Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59",
+    "Mozilla/5.0 (Linux; Android 5.0.2; SAMSUNG SM-T550 Build/LRX22G) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/3.3 Chrome/38.0.2125.102 Safari/537.36",
+    "Mozilla/5.0 (PlayStation 4 3.11) AppleWebKit/537.73 (KHTML, like Gecko) PlayStation Vita Mozilla/5.0 (PlayStation Vita 3.61) AppleWebKit/537.73 (KHTML, like Gecko) Silk/3.2",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox Series X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36 Edge/20.02",
+    "Mozilla/5.0 (Nintendo Switch; WifiWebAuthApplet) AppleWebKit/601.6 (KHTML, like Gecko) NF/4.0.0.5.10 NintendoBrowser/5.1.0.13343",
     "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
     "Mozilla/5.0 (compatible; YandexAccessibilityBot/3.0; +http://yandex.com/bots",
 ]
@@ -58,14 +58,14 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 64
 CONCURRENT_REQUESTS_PER_IP = 64
 
 # Disable cookies (enabled by default)
-# COOKIES_ENABLED = False  # noqa: ERA001
+# COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
-# TELNETCONSOLE_ENABLED = False  # noqa: ERA001
+# TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
 # DEFAULT_REQUEST_HEADERS = {  # noqa: ERA001, RUF100
-#    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",  # noqa: E501, ERA001
+#    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 #    "Accept-Language": "en",
 # }  # noqa: ERA001, RUF100
 
@@ -103,16 +103,16 @@ ITEM_PIPELINES = {
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
-# AUTOTHROTTLE_ENABLED = True  # noqa: ERA001
+# AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-# AUTOTHROTTLE_START_DELAY = 5 # noqa: ERA001
+# AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies
-# AUTOTHROTTLE_MAX_DELAY = 60 # noqa: ERA001
+# AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to
 # each remote server
-# AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0 # noqa: ERA001
+# AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 # Enable showing throttling stats for every response received:
-# AUTOTHROTTLE_DEBUG = False # noqa: ERA001
+# AUTOTHROTTLE_DEBUG = False
 
 # Enable and configure HTTP caching (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
@@ -128,15 +128,15 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
 FEED_EXPORT_ENCODING = "utf-8"
 # DOWNLOAD_HANDLERS = {  # noqa: ERA001, RUF100
-#     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",  # noqa: E501, ERA001
-#     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",  # noqa: E501, ERA001
+#     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+#     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
 # }  # noqa: ERA001, RUF100
 # FEEDS = {  # noqa: ERA001, RUF100
 #     "comics.json": {
-#         "format": "json",  # noqa: ERA001
-#         "encoding": "utf8",  # noqa: ERA001
-#         "store_empty": False,  # noqa: ERA001
-#         "indent": 4,  # noqa: ERA001
+#         "format": "json",
+#         "encoding": "utf8",
+#         "store_empty": False,
+#         "indent": 4,
 #     },
 # }  # noqa: ERA001, RUF100
 FEEDS = {
@@ -166,29 +166,29 @@ LOG_LEVEL = "DEBUG"
 # LOG_LEVEL = "INFO"  # noqa: ERA001, RUF100
 
 # AWS
-# IMAGES_STORE = "s3://bucket/images"  # noqa: ERA001
-# IMAGES_STORE_S3_ACL = "public-read"  # noqa: ERA001
-# AWS_ENDPOINT_URL = "http://minio.example.com:9000"  # noqa: ERA001
-# AWS_USE_SSL = False  # or True (None by default)  # noqa: ERA001
-# AWS_VERIFY = False  # or True (None by default)  # noqa: ERA001
+# IMAGES_STORE = "s3://bucket/images"
+# IMAGES_STORE_S3_ACL = "public-read"
+# AWS_ENDPOINT_URL = "http://minio.example.com:9000"
+# AWS_USE_SSL = False  # or True (None by default)
+# AWS_VERIFY = False  # or True (None by default)
 
 # GCLOUD
-# IMAGES_STORE = "gs://bucket/images/"  # noqa: ERA001
-# GCS_PROJECT_ID = "project_id"  # noqa: ERA001
-# IMAGES_STORE_GCS_ACL = "publicRead"  # noqa: ERA001
+# IMAGES_STORE = "gs://bucket/images/"
+# GCS_PROJECT_ID = "project_id"
+# IMAGES_STORE_GCS_ACL = "publicRead"
 
 # Aws
-# AWS_ACCESS_KEY_ID = "ae187701acd22a77779ce3ebfa32e101"  # noqa: ERA001
-# AWS_SECRET_ACCESS_KEY = "c92576a34dd08fbd5932efe0a32cf363f5a17c5af1da5ec4c390da815dab6962"  # noqa: E501, ERA001
-# AWS_REGION_NAME =  "us-east-2"  # noqa: ERA001
-# AWS_ENDPOINT_URL = "https://fowvdrdkbqhmevigbkyb.supabase.co/storage/v1/s3"  # noqa: E501, ERA001
-# IMAGES_STORE_S3_ACL = "bucket-owner-full-control"  # noqa: ERA001
-# # IMAGES_STORE_S3_ACL = "public-read"  # noqa: ERA001
-# # AWS_USE_SSL = False  # noqa: ERA001
-# # AWS_VERIFY = False  # noqa: ERA001
-# AWS_USE_SSL = True  # noqa: ERA001
-# AWS_VERIFY = True  # noqa: ERA001
-# IMAGES_STORE = "s3://mystore/media/"  # noqa: ERA001
+# AWS_ACCESS_KEY_ID = "ae187701acd22a77779ce3ebfa32e101"
+# AWS_SECRET_ACCESS_KEY = "c92576a34dd08fbd5932efe0a32cf363f5a17c5af1da5ec4c390da815dab6962"
+# AWS_REGION_NAME =  "us-east-2"
+# AWS_ENDPOINT_URL = "https://fowvdrdkbqhmevigbkyb.supabase.co/storage/v1/s3"
+# IMAGES_STORE_S3_ACL = "bucket-owner-full-control"
+# # IMAGES_STORE_S3_ACL = "public-read"
+# # AWS_USE_SSL = False
+# # AWS_VERIFY = False
+# AWS_USE_SSL = True
+# AWS_VERIFY = True
+# IMAGES_STORE = "s3://mystore/media/"
 
 
 # # LOCAL
@@ -205,8 +205,8 @@ IMAGES_EXPIRES = 730
 
 
 # IMAGES_THUMBS = {  # noqa: ERA001, RUF100
-#     "small": (50, 50),  # noqa: ERA001
-#     "big": (270, 270),  # noqa: ERA001
+#     "small": (50, 50),
+#     "big": (270, 270),
 # }  # noqa: ERA001, RUF100
 
 
@@ -215,22 +215,22 @@ IMAGES_MIN_WIDTH = 110
 
 MEDIA_ALLOW_REDIRECTS = True
 
-# REDIS_URL = settings.CELERY_BROKER_URL  # noqa: ERA001
-# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"  # noqa: ERA001
-# SCHEDULER = "scrapy_redis.scheduler.Scheduler"  # noqa: ERA001
-# SCHEDULER_PERSIST = False  # noqa: ERA001
+# REDIS_URL = settings.CELERY_BROKER_URL
+# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+# SCHEDULER_PERSIST = False
 
-# # SELENIUM_DRIVER_NAME = "firefox"  # noqa: ERA001
-# # SELENIUM_DRIVER_EXECUTABLE_PATH = which("geckodriver")  # noqa: ERA001
-# # SELENIUM_BROWSER_EXECUTABLE_PATH = which("firefox")  # noqa: ERA001
-# SELENIUM_DRIVER_NAME = "chrome"  # noqa: ERA001
-# SELENIUM_DRIVER_EXECUTABLE_PATH = None  # noqa: ERA001
-# # SELENIUM_DRIVER_EXECUTABLE_PATH = which("chromedriver")  # noqa: ERA001
-# # SELENIUM_BROWSER_EXECUTABLE_PATH = which("chrome")  # noqa: ERA001
+# # SELENIUM_DRIVER_NAME = "firefox"
+# # SELENIUM_DRIVER_EXECUTABLE_PATH = which("geckodriver")
+# # SELENIUM_BROWSER_EXECUTABLE_PATH = which("firefox")
+# SELENIUM_DRIVER_NAME = "chrome"
+# SELENIUM_DRIVER_EXECUTABLE_PATH = None
+# # SELENIUM_DRIVER_EXECUTABLE_PATH = which("chromedriver")
+# # SELENIUM_BROWSER_EXECUTABLE_PATH = which("chrome")
 
 # SELENIUM_DRIVER_ARGUMENTS = [  # noqa: ERA001, RUF100
 #     # "--headless",
-#     "--disable-blink-features=AutomationControlled",  # noqa: ERA001
+#     "--disable-blink-features=AutomationControlled",
 #     "--no-sandbox",
 #     "--disable-gpu",
 #     "--enable-javascript",
@@ -238,7 +238,7 @@ MEDIA_ALLOW_REDIRECTS = True
 #     "--block-ads",
 #     "--enable-unsafe-swiftshader",
 # ]  # change it to ['-headless'] to run in headless mode
-# PLAYWRIGHT_PROCESS_REQUEST_HEADERS = None  # noqa: ERA001
+# PLAYWRIGHT_PROCESS_REQUEST_HEADERS = None
 # settings.py
 DOWNLOAD_HANDLERS = {
     "http": "crawler.handlers.play.handler.ScrapyPlaywrightDownloadHandler",

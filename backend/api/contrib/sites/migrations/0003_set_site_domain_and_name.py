@@ -3,13 +3,14 @@ To understand why this file is here, please read:
 
 https://cookiecutter-django.readthedocs.io/en/latest/5-help/faq.html#why-is-there-a-django-contrib-sites-directory-in-cookiecutter-django
 """
+
 from django.conf import settings
 from django.db import migrations
 
 
 def _update_or_create_site_with_sequence(site_model, connection, domain, name):
     """Update or create the site with default ID and keep the DB sequence in sync."""
-    site, created = site_model.objects.update_or_create(
+    _, created = site_model.objects.update_or_create(
         id=settings.SITE_ID,
         defaults={
             "domain": domain,
@@ -57,7 +58,6 @@ def update_site_backward(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("sites", "0002_alter_domain_unique")]
 
     operations = [migrations.RunPython(update_site_forward, update_site_backward)]

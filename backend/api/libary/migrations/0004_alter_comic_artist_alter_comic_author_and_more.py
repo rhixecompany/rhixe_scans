@@ -5,25 +5,30 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('libary', '0003_alter_comic_user'),
+        ("libary", "0003_alter_comic_user"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='comic',
-            name='artist',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='artistcomics', to='libary.artist'),
+            model_name="comic",
+            name="artist",
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.CASCADE, related_name="artistcomics", to="libary.artist"
+            ),
         ),
         migrations.AlterField(
-            model_name='comic',
-            name='author',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='authorcomics', to='libary.author'),
+            model_name="comic",
+            name="author",
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.CASCADE, related_name="authorcomics", to="libary.author"
+            ),
         ),
         migrations.AlterField(
-            model_name='comic',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='categorycomics', to='libary.category'),
+            model_name="comic",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, related_name="categorycomics", to="libary.category"
+            ),
         ),
     ]

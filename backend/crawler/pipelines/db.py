@@ -1,14 +1,6 @@
 import logging
 
-from api.libary.models import Artist
-from api.libary.models import Author
-from api.libary.models import Category
-from api.libary.models import Chapter
-from api.libary.models import ChapterImage
-from api.libary.models import Comic
-from api.libary.models import ComicImage
-from api.libary.models import Genre
-from api.libary.models import Website
+from api.libary.models import Artist, Author, Category, Chapter, ChapterImage, Comic, ComicImage, Genre, Website
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.db.utils import IntegrityError
@@ -19,19 +11,18 @@ logger = logging.getLogger(__name__)
 
 
 class DbPipeline:
-    def process_item(self, item, spider):  # noqa: C901, PLR0912, PLR0915
+    def process_item(self, item, spider):
         adapter = ItemAdapter(item)
         if adapter.get("image_urls"):
             usermodel = get_user_model()
             user = usermodel.objects.filter(
-                Q(email__icontains="admin@rhixe.company")
-                | Q(username__icontains="adminbot"),
+                Q(email__icontains="admin@rhixe.company") | Q(username__icontains="adminbot"),
             ).first()
             if not user:
-                user = usermodel.objects.create_superuser(  # type: ignore  # noqa: PGH003
+                user = usermodel.objects.create_superuser(  # type: ignore
                     email="admin@rhixe.company",
                     username="adminbot",
-                    password="R4I7gcJHX",  # noqa: S106
+                    password="R4I7gcJHX",
                 )
             if adapter.get("image_urls") and adapter.get("slug"):
                 image_urls = item.get("image_urls")
@@ -61,7 +52,7 @@ class DbPipeline:
                     oldwebsite = Website.objects.update_or_create(
                         name=item["spider"],
                     )[0]
-                comic = Comic.objects.get_comic_search(  # type: ignore  # noqa: PGH003
+                comic = Comic.objects.get_comic_search(  # type: ignore
                     slug,
                     title,
                 )
@@ -131,11 +122,7 @@ class DbPipeline:
                     msg = f"{slug} - {title} Exists "
                     raise DropItem(msg)  # noqa: B904, RUF100, TRY400
                 return item
-            if (
-                adapter.get("image_urls")
-                and adapter.get("comicslug")
-                and adapter.get("chapterslug")
-            ):
+            if adapter.get("image_urls") and adapter.get("comicslug") and adapter.get("chapterslug"):
                 image_urls = item.get("image_urls")
                 images = item.get("images")
                 comicslug = item["comicslug"]
@@ -153,15 +140,15 @@ class DbPipeline:
                     oldwebsite = Website.objects.update_or_create(
                         name=item["spider"],
                     )[0]
-                comic = Comic.objects.get_comic_search(  # type: ignore  # noqa: PGH003
+                comic = Comic.objects.get_comic_search(  # type: ignore
                     comictitle,
                     comicslug,
                 )
                 if (
-                    comic.exists()  # type: ignore  # noqa: PGH003
+                    comic.exists()  # type: ignore
                 ):
                     dbcomic = comic.first()
-                    chapter = Chapter.objects.get_chapter_search(  # type: ignore  # noqa: PGH003
+                    chapter = Chapter.objects.get_chapter_search(  # type: ignore
                         slug,
                     )
                     if chapter.exists():

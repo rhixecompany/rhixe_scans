@@ -9,7 +9,7 @@ Google Style documentation for core TypeScript/JavaScript files.
 ### src/lib/prisma.ts
 
 ```typescript
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
@@ -27,7 +27,7 @@ export const prisma =
     },
   });
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 ```
 
 **Description:** Prisma client singleton with extended computed fields.
@@ -41,7 +41,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 ### src/lib/db.ts
 
 ```typescript
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const prismaClientSingleton = () => {
   return new PrismaClient().$extends({
@@ -65,7 +65,7 @@ const db = globalThis.prismaGlobal ?? prismaClientSingleton();
 
 export default db;
 
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = db;
+if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = db;
 ```
 
 **Description:** Alternative Prisma client instance with singleton pattern.
@@ -122,7 +122,7 @@ Zod validation schemas for forms and API requests.
 ### src/lib/schema.ts
 
 ```typescript
-import { z } from 'zod';
+import { z } from "zod";
 
 const schema = z.object({
   email: z.string().email(),
@@ -143,8 +143,8 @@ export { schema, type Schema };
 ### src/auth.ts
 
 ```typescript
-import NextAuth from 'next-auth';
-import authConfig from './auth.config';
+import NextAuth from "next-auth";
+import authConfig from "./auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -180,8 +180,8 @@ NextAuth configuration with GitHub and Credentials providers.
 ### src/middleware.ts
 
 ```typescript
-import { getToken } from 'next-auth/jwt';
-import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const token = await getToken({
@@ -190,14 +190,14 @@ export async function middleware(request: NextRequest) {
   });
 
   if (!token) {
-    return NextResponse.redirect(new URL('/sign-in', request.url));
+    return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ["/admin/:path*"],
 };
 ```
 

@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -85,9 +84,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="comic",
             name="genres",
-            field=models.ManyToManyField(
-                blank=True, related_name="genrecomics", to="libary.genre"
-            ),
+            field=models.ManyToManyField(blank=True, related_name="genrecomics", to="libary.genre"),
         ),
         migrations.AddField(
             model_name="usercomic",
@@ -110,9 +107,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="comic",
             name="users",
-            field=models.ManyToManyField(
-                blank=True, through="libary.UserComic", to=settings.AUTH_USER_MODEL
-            ),
+            field=models.ManyToManyField(blank=True, through="libary.UserComic", to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name="comic",

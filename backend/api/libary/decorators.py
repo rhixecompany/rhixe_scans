@@ -19,12 +19,12 @@ class MessageMixin:
     """
 
     def delete(self, request, *args, **kwargs):
-        messages.success(self.request, self.success_message)  # type: ignore  # noqa: PGH003
-        return super().delete(request, *args, **kwargs)  # type: ignore  # noqa: PGH003
+        messages.success(self.request, self.success_message)  # type: ignore
+        return super().delete(request, *args, **kwargs)  # type: ignore
 
     def form_valid(self, form):
-        messages.success(self.request, self.success_message)  # type: ignore  # noqa: PGH003
-        return super().form_valid(form)  # type: ignore  # noqa: PGH003
+        messages.success(self.request, self.success_message)  # type: ignore
+        return super().form_valid(form)  # type: ignore
 
 
 class LoginMixin(AccessMixin):
@@ -33,7 +33,7 @@ class LoginMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)  # type: ignore  # noqa: PGH003
+        return super().dispatch(request, *args, **kwargs)  # type: ignore
 
 
 class AdminLoginMixin(AccessMixin):
@@ -42,7 +42,7 @@ class AdminLoginMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)  # type: ignore  # noqa: PGH003
+        return super().dispatch(request, *args, **kwargs)  # type: ignore
 
 
 def user_only(view_func):

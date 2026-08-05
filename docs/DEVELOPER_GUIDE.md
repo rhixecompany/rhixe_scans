@@ -67,18 +67,18 @@ The application will be available at `http://localhost:3000`.
 
 ## Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with Turbo |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run db:migrate` | Run Prisma migrations |
-| `npm run db:reset` | Reset database and re-migrate |
-| `npm run db:studio` | Open Prisma Studio |
-| `npm run db:format` | Format Prisma schema |
-| `npm run db:seed` | Seed database |
-| `npm test` | Run Jest tests |
+| Command              | Description                         |
+| -------------------- | ----------------------------------- |
+| `npm run dev`        | Start development server with Turbo |
+| `npm run build`      | Build for production                |
+| `npm run start`      | Start production server             |
+| `npm run lint`       | Run ESLint                          |
+| `npm run db:migrate` | Run Prisma migrations               |
+| `npm run db:reset`   | Reset database and re-migrate       |
+| `npm run db:studio`  | Open Prisma Studio                  |
+| `npm run db:format`  | Format Prisma schema                |
+| `npm run db:seed`    | Seed database                       |
+| `npm test`           | Run Jest tests                      |
 
 ## Project Structure
 

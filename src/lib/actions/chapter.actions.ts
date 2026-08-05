@@ -1,17 +1,17 @@
-'use server';
-import db from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
-import { LATEST_COMICS_LIMIT, PAGE_SIZE } from '../constants';
-import { convertToPlainObject, formatError } from '../utils';
-import { insertChapterSchema, updateChapterSchema } from '../validators';
+"use server";
+import db from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { LATEST_COMICS_LIMIT, PAGE_SIZE } from "../constants";
+import { convertToPlainObject, formatError } from "../utils";
+import { insertChapterSchema, updateChapterSchema } from "../validators";
 
 // Get latest chapters
 export async function getLatestChapters() {
   const data = await db.chapter.findMany({
     take: LATEST_COMICS_LIMIT,
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 
   return convertToPlainObject(data);
@@ -50,11 +50,11 @@ export async function getAllChapters({
 }) {
   // Query filter
   const queryFilter: Prisma.ChapterWhereInput =
-    query && query !== 'all'
+    query && query !== "all"
       ? {
           name: {
             contains: query,
-            mode: 'insensitive',
+            mode: "insensitive",
           } as Prisma.StringFilter,
         }
       : {};
@@ -63,12 +63,7 @@ export async function getAllChapters({
     where: {
       ...queryFilter,
     },
-    orderBy:
-      sort === 'lowest'
-        ? { title: 'asc' }
-        : sort === 'highest'
-          ? { numimages: 'desc' }
-          : { createdAt: 'desc' },
+    orderBy: sort === "lowest" ? { title: "asc" } : sort === "highest" ? { numimages: "desc" } : { createdAt: "desc" },
     skip: (page - 1) * limit,
     take: limit,
   });
@@ -88,15 +83,15 @@ export async function deleteChapter(id: string) {
       where: { id },
     });
 
-    if (!chapterExists) throw new Error('Chapter not found');
+    if (!chapterExists) throw new Error("Chapter not found");
 
     await db.chapter.delete({ where: { id } });
 
-    revalidatePath('/admin/chapters');
+    revalidatePath("/admin/chapters");
 
     return {
       success: true,
-      message: 'Chapter deleted successfully',
+      message: "Chapter deleted successfully",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -109,11 +104,11 @@ export async function createChapter(data: z.infer<typeof insertChapterSchema>) {
     const chapter = insertChapterSchema.parse(data);
     await db.chapter.create({ data: chapter });
 
-    revalidatePath('/admin/chapters');
+    revalidatePath("/admin/chapters");
 
     return {
       success: true,
-      message: 'Chapter created successfully',
+      message: "Chapter created successfully",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -128,18 +123,18 @@ export async function updateChapter(data: z.infer<typeof updateChapterSchema>) {
       where: { id: chapter.id },
     });
 
-    if (!chapterExists) throw new Error('Chapter not found');
+    if (!chapterExists) throw new Error("Chapter not found");
 
     await db.chapter.update({
       where: { id: chapter.id },
       data: chapter,
     });
 
-    revalidatePath('/admin/chapters');
+    revalidatePath("/admin/chapters");
 
     return {
       success: true,
-      message: 'Chapter updated successfully',
+      message: "Chapter updated successfully",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -150,7 +145,7 @@ export async function updateChapter(data: z.infer<typeof updateChapterSchema>) {
 export async function getFeaturedChapters() {
   const data = await db.chapter.findMany({
     where: { has_images: true },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     take: 4,
   });
 

@@ -1,10 +1,5 @@
-# ruff: noqa: E501
-from .base import *  # noqa: F403
-from .base import BASE_DIR
-from .base import INSTALLED_APPS
-from .base import MIDDLEWARE
-from .base import WEBPACK_LOADER
-from .base import env
+from .base import *
+from .base import BASE_DIR, INSTALLED_APPS, MIDDLEWARE, WEBPACK_LOADER, env
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -13,11 +8,11 @@ DEBUG = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env(
     "DJANGO_SECRET_KEY",
-    default="UOSOKcOEulAWWuSm3T0fJmNJEVIBcuses60B2Lalb4Rsp43OGlAbUbR0LdI3n3wt",  # type: ignore  # noqa: PGH003
+    default="UOSOKcOEulAWWuSm3T0fJmNJEVIBcuses60B2Lalb4Rsp43OGlAbUbR0LdI3n3wt",  # type: ignore
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 # ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]  # noqa: ERA001, RUF100, S104
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost"])  # type: ignore  # noqa: PGH003
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost"])  # type: ignore
 
 # CACHES
 # ------------------------------------------------------------------------------
@@ -30,11 +25,11 @@ CACHES = {
 }
 
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-# AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID",default="ae187701acd22a77779ce3ebfa32e101")  # type: ignore  # noqa: PGH003
+# AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID",default="ae187701acd22a77779ce3ebfa32e101")  # type: ignore
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-# AWS_SECRET_ACCESS_KEY = env("DJANGO_AWS_SECRET_ACCESS_KEY",default="c92576a34dd08fbd5932efe0a32cf363f5a17c5af1da5ec4c390da815dab6962") # type: ignore  # noqa: PGH003
+# AWS_SECRET_ACCESS_KEY = env("DJANGO_AWS_SECRET_ACCESS_KEY",default="c92576a34dd08fbd5932efe0a32cf363f5a17c5af1da5ec4c390da815dab6962") # type: ignore
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-# AWS_STORAGE_BUCKET_NAME = env("DJANGO_AWS_STORAGE_BUCKET_NAME",default="mystore") # type: ignore  # noqa: PGH003
+# AWS_STORAGE_BUCKET_NAME = env("DJANGO_AWS_STORAGE_BUCKET_NAME",default="mystore") # type: ignore
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 # AWS_QUERYSTRING_AUTH = False
 # # DO NOT change these unless you know what you're doing.
@@ -46,12 +41,12 @@ CACHES = {
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 # AWS_S3_MAX_MEMORY_SIZE = env.int(
 #     "DJANGO_AWS_S3_MAX_MEMORY_SIZE",
-#     default=100_000_000,  # 100MB # type: ignore  # noqa: PGH003
+#     default=100_000_000,  # 100MB # type: ignore
 # )
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-# AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default="us-east-2")  # type: ignore  # noqa: PGH003
+# AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default="us-east-2")  # type: ignore
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#cloudfront
-# AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default="fowvdrdkbqhmevigbkyb.supabase.co/storage/v1/s3")  # type: ignore  # noqa: PGH003
+# AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default="fowvdrdkbqhmevigbkyb.supabase.co/storage/v1/s3")  # type: ignore
 # aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 # # STATIC & MEDIA
 # # ------------------------
@@ -74,7 +69,7 @@ CACHES = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
-    default="django.core.mail.backends.console.EmailBackend",  # type: ignore  # noqa: PGH003
+    default="django.core.mail.backends.console.EmailBackend",  # type: ignore
 )
 
 # WhiteNoise
@@ -105,7 +100,7 @@ if env("USE_DOCKER") == "yes":
     import socket
 
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-    INTERNAL_IPS += [".".join(ip.split(".")[:-1] + ["1"]) for ip in ips]
+    INTERNAL_IPS += [".".join([*ip.split(".")[:-1], "1"]) for ip in ips]
     try:
         _, _, ips = socket.gethostbyname_ex("node")
         INTERNAL_IPS.extend(ips)
@@ -139,27 +134,27 @@ WEBPACK_LOADER["DEFAULT"]["CACHE"] = not DEBUG
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASE_ENGINE = env(
     "POSTGRES_ENGINE",
-    default="django.db.backends.sqlite3",  # type: ignore  # noqa: PGH003
+    default="django.db.backends.sqlite3",  # type: ignore
 )
 DATABASE_HOST = env(
     "POSTGRES_HOST",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 DATABASE_PORT = env(
     "POSTGRES_PORT",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 DATABASE_DB = env(
     "POSTGRES_DB",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 DATABASE_USER = env(
     "POSTGRES_USER",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 DATABASE_PASSWORD = env(
     "POSTGRES_PASSWORD",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 if DATABASE_ENGINE == "django.db.backends.postgresql":
     DATABASES = {
@@ -183,5 +178,5 @@ else:
             "PORT": "",
         },
     }
-# DATABASES = {"default": env.db("DATABASE_URL")}  # noqa: ERA001
+# DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True

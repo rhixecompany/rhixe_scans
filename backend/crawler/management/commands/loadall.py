@@ -1,15 +1,7 @@
 import json
 import logging
 
-from api.libary.models import Artist
-from api.libary.models import Author
-from api.libary.models import Category
-from api.libary.models import Chapter
-from api.libary.models import ChapterImage
-from api.libary.models import Comic
-from api.libary.models import ComicImage
-from api.libary.models import Genre
-from api.libary.models import Website
+from api.libary.models import Artist, Author, Category, Chapter, ChapterImage, Comic, ComicImage, Genre, Website
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
@@ -22,18 +14,17 @@ logger = logging.getLogger(__name__)
 class Command(BaseCommand):
     help = "Generates comics for apps"
 
-    def handle(self, *args, **options):  # noqa: C901, PLR0915
-        def save_comics(comics_data):  # noqa: C901, PLR0912, PLR0915
+    def handle(self, *args, **options):
+        def save_comics(comics_data):
             usermodel = get_user_model()
             user = usermodel.objects.filter(
-                Q(email__icontains="admin@rhixe.company")
-                | Q(username__icontains="adminbot"),
+                Q(email__icontains="admin@rhixe.company") | Q(username__icontains="adminbot"),
             ).first()
             if not user:
-                user = usermodel.objects.create_superuser(  # type: ignore  # noqa: PGH003
+                user = usermodel.objects.create_superuser(  # type: ignore
                     email="admin@rhixe.company",
                     username="adminbot",
-                    password="R4I7gcJHX",  # noqa: S106
+                    password="R4I7gcJHX",
                 )
             for item in comics_data:
                 image_urls = item.get("image_urls")
@@ -63,7 +54,7 @@ class Command(BaseCommand):
                     oldwebsite = Website.objects.update_or_create(
                         name=item["spider"],
                     )[0]
-                comic = Comic.objects.get_comic_search(  # type: ignore  # noqa: PGH003
+                comic = Comic.objects.get_comic_search(  # type: ignore
                     slug,
                     title,
                 )
@@ -134,7 +125,7 @@ class Command(BaseCommand):
                     msg = f"{slug} - {title} Exists "
                     logger.error(msg)  # noqa: B904, RUF100, TRY400
 
-        def save_chapters(chapters_data):  # noqa: C901, PLR0912
+        def save_chapters(chapters_data):
             for item in chapters_data:
                 image_urls = item.get("image_urls")
                 images = item.get("images")
@@ -153,13 +144,13 @@ class Command(BaseCommand):
                     oldwebsite = Website.objects.update_or_create(
                         name=item["spider"],
                     )[0]
-                comic = Comic.objects.get_comic_search(  # type: ignore  # noqa: PGH003
+                comic = Comic.objects.get_comic_search(  # type: ignore
                     comictitle,
                     comicslug,
                 )
-                if comic.exists():  # type: ignore  # noqa: PGH003
+                if comic.exists():  # type: ignore
                     dbcomic = comic.first()
-                    chapter = Chapter.objects.get_chapter_search(  # type: ignore  # noqa: PGH003
+                    chapter = Chapter.objects.get_chapter_search(  # type: ignore
                         slug,
                     )
                     if chapter.exists():
@@ -243,11 +234,11 @@ class Command(BaseCommand):
             )
             base = settings.BASE_DIR
             comics_file = str(base / "comicsdata2.json")
-            with open(comics_file, encoding="utf-8") as comic_file:  # noqa: PTH123
+            with open(comics_file, encoding="utf-8") as comic_file:
                 comics_data = json.load(comic_file)
                 save_comics(comics_data=comics_data)
             chapters_file = str(base / "chaptersdata2.json")
-            with open(chapters_file, encoding="utf-8") as chapter_file:  # noqa: PTH123
+            with open(chapters_file, encoding="utf-8") as chapter_file:
                 chapters_data = json.load(chapter_file)
                 save_chapters(chapters_data=chapters_data)
 

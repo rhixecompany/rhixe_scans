@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { Input } from '../ui/input';
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Input } from "../ui/input";
 
 const AdminSearch = () => {
   const pathname = usePathname();
-  const formActionUrl = pathname.includes('/admin/comics')
-    ? '/admin/comics'
-    : pathname.includes('/admin/users')
-      ? '/admin/users'
-      : '/admin/chapters';
+  const formActionUrl = pathname.includes("/admin/comics")
+    ? "/admin/comics"
+    : pathname.includes("/admin/users")
+      ? "/admin/users"
+      : "/admin/chapters";
 
   const searchParams = useSearchParams();
-  const [queryValue, setQueryValue] = useState(searchParams.get('query') || '');
+  const [queryValue, setQueryValue] = useState(searchParams.get("query") || "");
 
   useEffect(() => {
-    setQueryValue(searchParams.get('query') || '');
+    setQueryValue(searchParams.get("query") || "");
   }, [searchParams]);
 
   return (

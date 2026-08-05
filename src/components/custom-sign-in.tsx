@@ -1,6 +1,6 @@
-import { signIn } from '@/auth';
-import { Button } from '@/components/ui/button';
-import { LucideIcon } from 'lucide-react';
+import { signIn } from "@/auth";
+import { Button } from "@/components/ui/button";
+import { LucideIcon } from "lucide-react";
 
 interface CustomSignInProps {
   text: string;
@@ -12,14 +12,14 @@ const CustomSignIn = ({ text, provider, icon }: CustomSignInProps) => {
   return (
     <form
       action={async () => {
-        'use server';
+        "use server";
         await signIn(`${provider}`);
       }}
     >
-      <Button className='w-full' variant='outline'>
+      <Button className="w-full" variant="outline">
         {icon}
 
-        <span className='sr-only'>{text}</span>
+        <span className="sr-only">{text}</span>
       </Button>
     </form>
   );

@@ -147,12 +147,12 @@ For additional help:
 
 ## Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| ← | Previous image/chapter |
-| → | Next image/chapter |
-| F | Toggle fullscreen |
-| Esc | Exit fullscreen |
-| B | Toggle bookmark |
+| Key | Action                 |
+| --- | ---------------------- |
+| ←   | Previous image/chapter |
+| →   | Next image/chapter     |
+| F   | Toggle fullscreen      |
+| Esc | Exit fullscreen        |
+| B   | Toggle bookmark        |
 
 Enjoy reading on Rhixescans!

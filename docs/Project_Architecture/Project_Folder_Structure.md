@@ -94,13 +94,13 @@ rhixe_scans/
 
 ## Naming Conventions
 
-| Convention | Pattern | Examples |
-|---|---|---|
-| **Django apps** | lowercase | `api/`, `home/`, `libary/`, `users/` |
-| **Next.js source** | kebab-case | `src/auth.config.ts`, `tailwind.config.ts` |
-| **Docker compose** | docker-compose.<env>.yml | `docker-compose.local.yml` |
-| **Seed data** | lowercase.json | `comic.json`, `chapter.json`, `author.json` |
-| **Tests** | test_*.py /*.test.ts | `test_selenium.py`, `paypal.test.ts` |
+| Convention         | Pattern                  | Examples                                    |
+| ------------------ | ------------------------ | ------------------------------------------- |
+| **Django apps**    | lowercase                | `api/`, `home/`, `libary/`, `users/`        |
+| **Next.js source** | kebab-case               | `src/auth.config.ts`, `tailwind.config.ts`  |
+| **Docker compose** | docker-compose.<env>.yml | `docker-compose.local.yml`                  |
+| **Seed data**      | lowercase.json           | `comic.json`, `chapter.json`, `author.json` |
+| **Tests**          | test__.py /_.test.ts     | `test_selenium.py`, `paypal.test.ts`        |
 
 ---
 
@@ -117,16 +117,16 @@ rhixe_scans/
 
 ## Project Type Indicators
 
-| Indicator | Value |
-|---|---|
-| Has `backend/manage.py` | ✅ Django project |
-| Has `next.config.ts` | ✅ Next.js frontend |
-| Has `backend/crawler/` | ✅ Scrapy crawler |
-| Has `.devcontainer/` | ✅ VS Code dev container |
-| Has `components.json` | ✅ shadcn/ui |
-| Has Jest config | ✅ Jest testing |
-| Has Tailwind config | ✅ Tailwind CSS |
-| Multi-test types | ✅ Python tests + TypeScript tests |
+| Indicator               | Value                              |
+| ----------------------- | ---------------------------------- |
+| Has `backend/manage.py` | ✅ Django project                  |
+| Has `next.config.ts`    | ✅ Next.js frontend                |
+| Has `backend/crawler/`  | ✅ Scrapy crawler                  |
+| Has `.devcontainer/`    | ✅ VS Code dev container           |
+| Has `components.json`   | ✅ shadcn/ui                       |
+| Has Jest config         | ✅ Jest testing                    |
+| Has Tailwind config     | ✅ Tailwind CSS                    |
+| Multi-test types        | ✅ Python tests + TypeScript tests |
 
 ---
 

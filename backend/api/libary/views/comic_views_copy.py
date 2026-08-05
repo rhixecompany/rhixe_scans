@@ -2,19 +2,15 @@ from datetime import timedelta
 
 from django.db.models import Q
 from django.utils.timezone import now
-from rest_framework import filters
-from rest_framework import generics
+from rest_framework import filters, generics
 from rest_framework.decorators import api_view
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAdminUser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 from api.libary.constants import ComicStatus
 from api.libary.models import Comic
 from api.libary.pagination import StandardResultsSetPagination
-from api.libary.serializers import ComicInfoSerializer
-from api.libary.serializers import ComicsInfoSerializer
+from api.libary.serializers import ComicInfoSerializer, ComicsInfoSerializer
 
 
 class ComicListAPIView(generics.ListCreateAPIView):

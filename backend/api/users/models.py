@@ -3,10 +3,7 @@ from typing import ClassVar
 
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import FileExtensionValidator
-from django.db.models import CharField
-from django.db.models import EmailField
-from django.db.models import ImageField
-from django.db.models import UUIDField
+from django.db.models import CharField, EmailField, ImageField, UUIDField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -15,11 +12,7 @@ from .managers import UserManager
 
 def user_image_location(instance, filename):
     return "{}/{}".format(
-        str(instance.email)
-        .replace(" ", "_")
-        .replace(":", " ")
-        .replace("/", "")
-        .replace("\\", ""),
+        str(instance.email).replace(" ", "_").replace(":", " ").replace("/", "").replace("\\", ""),
         filename,
     )
 
@@ -85,4 +78,4 @@ class User(AbstractUser):
         return reverse("users:detail", kwargs={"pk": self.pk})
 
     def get_comics(self):
-        return self.usercomics.all()  # type: ignore  # noqa: PGH003
+        return self.usercomics.all()  # type: ignore

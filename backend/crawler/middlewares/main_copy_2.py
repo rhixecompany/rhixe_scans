@@ -2,8 +2,7 @@ from importlib import import_module
 
 from scrapy import signals
 from scrapy.exceptions import NotConfigured
-from scrapy_headless.http import SeleniumRequest
-from scrapy_headless.http import SeleniumResponse
+from scrapy_headless.http import SeleniumRequest, SeleniumResponse
 from selenium.webdriver.support.ui import WebDriverWait
 
 
@@ -48,45 +47,22 @@ class SeleniumMiddleware:
             capabilities = driver_options.to_capabilities()
             self.driver = webdriver.Remote(
                 command_executor=command_executor,
-                desired_capabilities=capabilities,  # type: ignore  # noqa: PGH003
+                desired_capabilities=capabilities,  # type: ignore
             )
         # webdriver-manager
-        elif driver_name and driver_name.lower() == "chrome":
+        else:
             # selenium4+ & webdriver-manager
-            from selenium import webdriver  # type: ignore  # noqa: PGH003
-            from selenium.webdriver.chrome.service import Service as ChromeService
-            from webdriver_manager.chrome import ChromeDriverManager
+            from selenium_driverless import webdriver  # type: ignore
 
-            self.driver = webdriver.Chrome(
-                options=driver_options,
-                service=ChromeService(
-                    ChromeDriverManager().install(),
-                    log_output="logs.txt",
-                    service_args=["--log", "info"],
-                    prefs={  # noqa: ERA001, RUF100
-                        "dom.ipc.processCount": 8,
-                        "javascript.options.showInConsole": True,
-                    },
-                ),
-            )
-        elif driver_name and driver_name.lower() == "firefox":
-            # selenium4+ & webdriver-manager
-            from selenium import webdriver  # type: ignore  # noqa: PGH003
-            from selenium.webdriver.firefox.service import Service as FirefoxService
-            from webdriver_manager.firefox import GeckoDriverManager
+            if driver_name and driver_name.lower() == "chrome":
+                from selenium_driverless.webdriver import ChromeOptions
 
-            self.driver = webdriver.Firefox(
-                options=driver_options,
-                service=FirefoxService(
-                    GeckoDriverManager().install(),
-                    log_output="logs.txt",
-                    service_args=["--log", "info"],
-                    prefs={  # noqa: ERA001, RUF100
-                        "dom.ipc.processCount": 8,
-                        "javascript.options.showInConsole": True,
-                    },
-                ),
-            )
+                new_options = ChromeOptions()
+                for argument in driver_arguments:
+                    new_options.add_argument(argument)
+                self.driver = webdriver.Chrome(
+                    options=new_options,
+                )
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -104,14 +80,9 @@ class SeleniumMiddleware:
             msg = "SELENIUM_DRIVER_NAME must be set"
             raise NotConfigured(msg)
 
-        # let's use webdriver-manager when nothing specified instead | RN just for Chrome  # noqa: E501
-        if (driver_name.lower() != "chrome") and (
-            driver_executable_path is None and command_executor is None
-        ):
-            msg = (
-                "Either SELENIUM_DRIVER_EXECUTABLE_PATH "
-                "or SELENIUM_COMMAND_EXECUTOR must be set"
-            )
+        # let's use webdriver-manager when nothing specified instead | RN just for Chrome
+        if (driver_name.lower() != "chrome") and (driver_executable_path is None and command_executor is None):
+            msg = "Either SELENIUM_DRIVER_EXECUTABLE_PATH or SELENIUM_COMMAND_EXECUTOR must be set"
             raise NotConfigured(
                 msg,
             )
@@ -124,7 +95,7 @@ class SeleniumMiddleware:
             driver_arguments=driver_arguments,
         )
 
-        crawler.signals.connect(middleware.spider_closed, signals.spider_closed)  # type: ignore  # noqa: PGH003
+        crawler.signals.connect(middleware.spider_closed, signals.spider_closed)  # type: ignore
 
         return middleware
 
@@ -136,11 +107,11 @@ class SeleniumMiddleware:
 
         self.driver.get(request.url)
 
-        for cookie_name, cookie_value in request.cookies.items():  # type: ignore  # noqa: PGH003
+        for cookie_name, cookie_value in request.cookies.items():  # type: ignore
             self.driver.add_cookie({"name": cookie_name, "value": cookie_value})
 
         if request.wait_until:
-            WebDriverWait(self.driver, request.wait_time).until(request.wait_until)  # type: ignore  # noqa: PGH003
+            WebDriverWait(self.driver, request.wait_time).until(request.wait_until)  # type: ignore
 
         if request.screenshot:
             request.meta["screenshot"] = self.driver.get_screenshot_as_png()
@@ -148,7 +119,7 @@ class SeleniumMiddleware:
         if request.script:
             self.driver.execute_script(request.script)
 
-        body = str.encode(self.driver.page_source)
+        body = str.encode(self.driver.page_source)  # type: ignore
 
         # Expose the driver via the "meta" attribute
         request.meta.update({"driver": self.driver})

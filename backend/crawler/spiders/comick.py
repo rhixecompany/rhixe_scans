@@ -52,7 +52,7 @@ class ComickSpider(Spider):
                 comics = data["props"]["pageProps"]["data"][f"{tag}"]
         for comic in comics:
             yield response.follow(
-                response.urljoin(f"/comic/{comic["slug"]}/"),
+                response.urljoin(f"/comic/{comic['slug']}/"),
                 callback=self.comicpage,
             )
 

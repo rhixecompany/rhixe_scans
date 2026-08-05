@@ -1,8 +1,8 @@
-import UserMenuButton from './user-menu-button';
+import UserMenuButton from "./user-menu-button";
 
 const HeaderMenu = () => {
   return (
-    <div className='block md:hidden'>
+    <div className="block md:hidden">
       <UserMenuButton />
     </div>
   );

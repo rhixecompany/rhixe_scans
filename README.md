@@ -8,19 +8,19 @@ A full-featured comic/manga reading platform built with Next.js 15, featuring Pr
 
 ## Technology Stack
 
-| Category | Technology |
-|---|---|
-| **Framework** | Next.js ^15.3.3 (App Router) |
-| **Language** | TypeScript ^5 (strict) |
-| **UI** | React 19, Radix UI, shadcn/ui, Tailwind CSS 3.4 |
-| **State/Data** | TanStack Query, Zustand, TanStack Table |
-| **Database** | PostgreSQL via Prisma 6 |
-| **Authentication** | NextAuth v5 (beta), Supabase |
-| **Payments** | Stripe, PayPal |
-| **File Uploads** | UploadThing |
-| **Email** | Resend, React Email |
-| **Real-time** | WebSocket (ws) |
-| **Testing** | Jest + ts-jest |
+| Category           | Technology                                      |
+| ------------------ | ----------------------------------------------- |
+| **Framework**      | Next.js ^15.3.3 (App Router)                    |
+| **Language**       | TypeScript ^5 (strict)                          |
+| **UI**             | React 19, Radix UI, shadcn/ui, Tailwind CSS 3.4 |
+| **State/Data**     | TanStack Query, Zustand, TanStack Table         |
+| **Database**       | PostgreSQL via Prisma 6                         |
+| **Authentication** | NextAuth v5 (beta), Supabase                    |
+| **Payments**       | Stripe, PayPal                                  |
+| **File Uploads**   | UploadThing                                     |
+| **Email**          | Resend, React Email                             |
+| **Real-time**      | WebSocket (ws)                                  |
+| **Testing**        | Jest + ts-jest                                  |
 
 ## Architecture
 
@@ -144,10 +144,10 @@ npm run clean            # Clean build artifacts
 
 ## Deployment
 
-| Platform | Notes |
-|---|---|
+| Platform   | Notes                     |
+| ---------- | ------------------------- |
 | **Vercel** | Primary deployment target |
-| **Docker** | Available as alternative |
+| **Docker** | Available as alternative  |
 
 ## License
 

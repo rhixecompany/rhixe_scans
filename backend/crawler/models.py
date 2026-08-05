@@ -1,11 +1,8 @@
 from __future__ import annotations
 
 from typing import Any
-from typing import List  # noqa: UP035
-from typing import Optional
 
-from pydantic import BaseModel
-from pydantic import Field
+from pydantic import BaseModel, Field
 
 
 class Links(BaseModel):
@@ -24,7 +21,7 @@ class Relates(BaseModel):
     title: str
     slug: str
     hid: str
-    md_covers: List[MdCover]  # noqa: UP006
+    md_covers: list[MdCover]
 
 
 class Recommendation(BaseModel):
@@ -41,7 +38,7 @@ class MdTitle(BaseModel):
 
 class MdGenres(BaseModel):
     name: str
-    type: Optional[str]  # noqa: UP007
+    type: str | None
     slug: str
     group: str
 
@@ -78,9 +75,9 @@ class MuComicCategory(BaseModel):
 
 
 class MuComics(BaseModel):
-    mu_comic_publishers: List[MuComicPublisher]  # noqa: UP006
+    mu_comic_publishers: list[MuComicPublisher]
     licensed_in_english: Any
-    mu_comic_categories: List[MuComicCategory]  # noqa: UP006
+    mu_comic_categories: list[MuComicCategory]
 
 
 class Comic(BaseModel):
@@ -111,12 +108,12 @@ class Comic(BaseModel):
     noindex: bool
     adsense: bool
     login_required: bool
-    recommendations: List[Recommendation]  # noqa: UP006
-    relate_from: List  # noqa: UP006
+    recommendations: list[Recommendation]
+    relate_from: list
     is_english_title: Any
-    md_titles: List[MdTitle]  # noqa: UP006
-    md_comic_md_genres: List[MdComicMdGenre]  # noqa: UP006
-    md_covers: List[MdCover1]  # noqa: UP006
+    md_titles: list[MdTitle]
+    md_comic_md_genres: list[MdComicMdGenre]
+    md_covers: list[MdCover1]
     mu_comics: MuComics
     iso639_1: str
     lang_name: str
@@ -140,8 +137,8 @@ class FirstChapter(BaseModel):
     lang: str
     created_at: str
     up_count: int
-    group_name: List[str]  # noqa: UP006
-    md_chapters_groups: List[MdChaptersGroup]  # noqa: UP006
+    group_name: list[str]
+    md_chapters_groups: list[MdChaptersGroup]
 
 
 class Artist(BaseModel):
@@ -155,20 +152,20 @@ class Author(BaseModel):
 
 
 class Model(BaseModel):
-    comic: Optional[Comic] = None  # noqa: UP007
-    first_chapters: Optional[List[FirstChapter]] = Field(  # noqa: UP006, UP007
+    comic: Comic | None = None
+    first_chapters: list[FirstChapter] | None = Field(
         None,
         alias="firstChapters",
     )
-    artists: Optional[List[Artist]] = None  # noqa: UP006, UP007
-    authors: Optional[List[Author]] = None  # noqa: UP006, UP007
-    lang_list: Optional[List[str]] = Field(None, alias="langList")  # noqa: UP006, UP007
-    recommendable: Optional[bool] = None  # noqa: UP007
-    demographic: Optional[Any] = None  # noqa: UP007
-    english_link: Optional[Any] = Field(None, alias="englishLink")  # noqa: UP007
-    mature_content: Optional[bool] = Field(None, alias="matureContent")  # noqa: UP007
-    selector_position: Optional[str] = None  # noqa: UP007
-    check_vol2_chap1: Optional[bool] = Field(  # noqa: UP007
+    artists: list[Artist] | None = None
+    authors: list[Author] | None = None
+    lang_list: list[str] | None = Field(None, alias="langList")
+    recommendable: bool | None = None
+    demographic: Any | None = None
+    english_link: Any | None = Field(None, alias="englishLink")
+    mature_content: bool | None = Field(None, alias="matureContent")
+    selector_position: str | None = None
+    check_vol2_chap1: bool | None = Field(
         None,
         alias="checkVol2Chap1",
     )

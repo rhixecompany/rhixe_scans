@@ -14,7 +14,7 @@ SETTINGS_PARAMS_MAP = {
     "REDIS_ENCODING": "encoding",
 }
 
-if sys.version_info > (3,):  # noqa: PYI006, UP036
+if sys.version_info > (3,):  # noqa: UP036
     SETTINGS_PARAMS_MAP["REDIS_DECODE_RESPONSES"] = "decode_responses"
 
 

@@ -1,13 +1,10 @@
 """This module contains the ``SeleniumMiddleware`` scrapy middleware"""
 
 from importlib import import_module
-from os.path import abspath
-from os.path import dirname
-from os.path import join
+from os.path import abspath, dirname, join
 
 from scrapy.exceptions import NotConfigured
-from scrapy_headless.http import SeleniumRequest
-from scrapy_headless.http import SeleniumResponse
+from scrapy_headless.http import SeleniumRequest, SeleniumResponse
 from selenium.webdriver.support.ui import WebDriverWait
 
 
@@ -93,18 +90,18 @@ class SeleniumMiddleware:
 
         driver = self.driver_class(**self.driver_kwargs)
         if self.driver_name == "firefox" and self._block_ads:
-            addon_path = join(  # noqa: PTH118
-                dirname(abspath(__file__)),  # noqa: PTH100, PTH120
+            addon_path = join(
+                dirname(abspath(__file__)),
                 "uBlock0@raymondhill.net.xpi",
             )
             driver.install_addon(addon_path, temporary=True)
         driver.get(request.url)
 
-        for cookie_name, cookie_value in request.cookies.items():  # type: ignore  # noqa: PGH003
+        for cookie_name, cookie_value in request.cookies.items():  # type: ignore
             driver.add_cookie({"name": cookie_name, "value": cookie_value})
 
         if request.wait_until:
-            WebDriverWait(driver, request.wait_time).until(request.wait_until)  # type: ignore  # noqa: PGH003
+            WebDriverWait(driver, request.wait_time).until(request.wait_until)  # type: ignore
 
         if request.screenshot:
             request.meta["screenshot"] = driver.get_screenshot_as_png()

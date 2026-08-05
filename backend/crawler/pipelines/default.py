@@ -9,11 +9,7 @@ class CrawlerDefaultPipeline:
             if adapter.get("image_urls") and adapter.get("slug"):
                 item["spider"] = spider.name
                 return item
-            if (
-                adapter.get("image_urls")
-                and adapter.get("comicslug")
-                and adapter.get("chapterslug")
-            ):
+            if adapter.get("image_urls") and adapter.get("comicslug") and adapter.get("chapterslug"):
                 item["spider"] = spider.name
                 return item
             return None

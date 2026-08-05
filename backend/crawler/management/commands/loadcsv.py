@@ -1,14 +1,7 @@
 import csv
 import logging
 
-from api.libary.models import Artist
-from api.libary.models import Author
-from api.libary.models import Category
-from api.libary.models import Chapter
-from api.libary.models import ChapterImage
-from api.libary.models import Comic
-from api.libary.models import ComicImage
-from api.libary.models import Genre
+from api.libary.models import Artist, Author, Category, Chapter, ChapterImage, Comic, ComicImage, Genre
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
@@ -18,8 +11,8 @@ logger = logging.getLogger(__name__)
 class Command(BaseCommand):
     help = "Generates comics for apps"
 
-    def handle(self, *args, **options):  # noqa: C901, PLR0915
-        def save_comics():  # noqa: PLR0915
+    def handle(self, *args, **options):
+        def save_comics():
             # save the data to a CSV file
             base = settings.BASE_DIR
             comic_file = str(base / "comic_data.csv")
@@ -62,7 +55,6 @@ class Command(BaseCommand):
                         "genres": ["_"],
                     }
                 else:
-
                     item = {
                         "user_id": "ce9d78e6-dcc1-4850-b6a9-5814f821482d",
                         "title": comic.title,
@@ -84,7 +76,6 @@ class Command(BaseCommand):
                 mycomics_data.append(item)
 
             for comicimage in comicimages:
-
                 item = {
                     "image": comicimage.image.url,
                     "status": comicimage.status,
@@ -99,7 +90,7 @@ class Command(BaseCommand):
 
             comicimagekeys = mycomicimages_data[0].keys()
 
-            with open(  # noqa: PTH123
+            with open(
                 genre_file,
                 "w",
                 newline="",
@@ -109,7 +100,7 @@ class Command(BaseCommand):
                 dict_writer.writeheader()
                 dict_writer.writerows(genres_data)
                 logger.info("Genre CSV created successfully")
-            with open(  # noqa: PTH123
+            with open(
                 artist_file,
                 "w",
                 newline="",
@@ -119,7 +110,7 @@ class Command(BaseCommand):
                 dict_writer.writeheader()
                 dict_writer.writerows(artists_data)
                 logger.info("Artist CSV created successfully")
-            with open(  # noqa: PTH123
+            with open(
                 author_file,
                 "w",
                 newline="",
@@ -129,7 +120,7 @@ class Command(BaseCommand):
                 dict_writer.writeheader()
                 dict_writer.writerows(authors_data)
                 logger.info("Author CSV created successfully")
-            with open(  # noqa: PTH123
+            with open(
                 category_file,
                 "w",
                 newline="",
@@ -139,7 +130,7 @@ class Command(BaseCommand):
                 dict_writer.writeheader()
                 dict_writer.writerows(categorys_data)
                 logger.info("Category CSV created successfully")
-            with open(  # noqa: PTH123
+            with open(
                 comic_file,
                 "w",
                 newline="",
@@ -148,10 +139,9 @@ class Command(BaseCommand):
                 dict_writer = csv.DictWriter(output_file, fieldnames=comickeys)
                 dict_writer.writeheader()
                 for row in mycomics_data:
-
                     dict_writer.writerow(row)
                 logger.info("Comic CSV created successfully")
-            with open(  # noqa: PTH123
+            with open(
                 comic_image_file,
                 "w",
                 newline="",
@@ -172,7 +162,6 @@ class Command(BaseCommand):
             mychapterimages_data = []
             chapterimages = ChapterImage.objects.all()
             for chapter in chapters:
-
                 item = {
                     "name": chapter.name,
                     "title": chapter.title,
@@ -209,7 +198,7 @@ class Command(BaseCommand):
                 mychapterimages_data.append(item)
             chapterimagekeys = mychapterimages_data[0].keys()
 
-            with open(  # noqa: PTH123
+            with open(
                 chapter_file,
                 "w",
                 newline="",
@@ -219,7 +208,7 @@ class Command(BaseCommand):
                 dict_writer.writeheader()
                 dict_writer.writerows(mychapters_data)
                 logger.info("CSV created successfully")
-            with open(  # noqa: PTH123
+            with open(
                 chapter_image_file,
                 "w",
                 newline="",

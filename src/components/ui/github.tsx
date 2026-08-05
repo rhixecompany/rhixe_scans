@@ -1,4 +1,4 @@
-import { GithubIcon } from 'lucide-react';
+import { GithubIcon } from "lucide-react";
 
 const Github = () => {
   return <GithubIcon />;

@@ -1,16 +1,12 @@
-# ruff: noqa: E501
-from .base import *  # noqa: F403
-from .base import BASE_DIR
-from .base import INSTALLED_APPS
-from .base import REDIS_URL
-from .base import env
+from .base import *
+from .base import BASE_DIR, INSTALLED_APPS, REDIS_URL, env
 
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost"])  # type: ignore  # noqa: PGH003
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost"])  # type: ignore
 
 
 # CACHES
@@ -33,7 +29,7 @@ CACHES = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
-SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)  # type: ignore  # noqa: PGH003
+SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)  # type: ignore
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-secure
 SESSION_COOKIE_SECURE = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-name
@@ -49,14 +45,14 @@ SECURE_HSTS_SECONDS = 60
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-include-subdomains
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool(
     "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS",
-    default=True,  # type: ignore  # noqa: PGH003
+    default=True,  # type: ignore
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-hsts-preload
-SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)  # type: ignore  # noqa: PGH003
+SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)  # type: ignore
 # https://docs.djangoproject.com/en/dev/ref/middleware/#x-content-type-options-nosniff
 SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
     "DJANGO_SECURE_CONTENT_TYPE_NOSNIFF",
-    default=True,  # type: ignore  # noqa: PGH003
+    default=True,  # type: ignore
 )
 
 
@@ -77,12 +73,12 @@ AWS_S3_OBJECT_PARAMETERS = {
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 AWS_S3_MAX_MEMORY_SIZE = env.int(
     "DJANGO_AWS_S3_MAX_MEMORY_SIZE",
-    default=100_000_000,  # 100MB # type: ignore  # noqa: PGH003
+    default=100_000_000,  # 100MB # type: ignore
 )
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default=None)  # type: ignore  # noqa: PGH003
+AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default=None)  # type: ignore
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#cloudfront
-AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default=None)  # type: ignore  # noqa: PGH003
+AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default=None)  # type: ignore
 aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 # STATIC & MEDIA
 # ------------------------
@@ -105,14 +101,14 @@ MEDIA_URL = f"https://{aws_s3_domain}/media/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
 DEFAULT_FROM_EMAIL = env(
     "DJANGO_DEFAULT_FROM_EMAIL",
-    default="Rhixescans <noreply@localhost>",  # type: ignore  # noqa: PGH003
+    default="Rhixescans <noreply@localhost>",  # type: ignore
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#server-email
-SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)  # type: ignore  # noqa: PGH003
+SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)  # type: ignore
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env(
     "DJANGO_EMAIL_SUBJECT_PREFIX",
-    default="[Rhixescans] ",  # type: ignore  # noqa: PGH003
+    default="[Rhixescans] ",  # type: ignore
 )
 ACCOUNT_EMAIL_SUBJECT_PREFIX = EMAIL_SUBJECT_PREFIX
 
@@ -185,27 +181,27 @@ LOGGING = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASE_ENGINE = env(
     "POSTGRES_ENGINE",
-    default="django.db.backends.sqlite3",  # type: ignore  # noqa: PGH003
+    default="django.db.backends.sqlite3",  # type: ignore
 )
 DATABASE_HOST = env(
     "POSTGRES_HOST",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 DATABASE_PORT = env(
     "POSTGRES_PORT",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 DATABASE_DB = env(
     "POSTGRES_DB",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 DATABASE_USER = env(
     "POSTGRES_USER",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 DATABASE_PASSWORD = env(
     "POSTGRES_PASSWORD",
-    default="",  # type: ignore  # noqa: PGH003
+    default="",  # type: ignore
 )
 if DATABASE_ENGINE == "django.db.backends.postgresql":
     DATABASES = {
@@ -229,6 +225,6 @@ else:
             "PORT": "",
         },
     }
-# DATABASES = {"default": env.db("DATABASE_URL")}  # noqa: ERA001
+# DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
-DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # type: ignore  # noqa: PGH003
+DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # type: ignore

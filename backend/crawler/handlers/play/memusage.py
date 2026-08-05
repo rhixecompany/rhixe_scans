@@ -4,8 +4,7 @@ from typing import List  # noqa: UP035
 
 from scrapy.exceptions import NotConfigured
 from scrapy.extensions.memusage import MemoryUsage
-from scrapy_playwright.handler import ScrapyPlaywrightDownloadHandler
-from scrapy_playwright.handler import logger
+from scrapy_playwright.handler import ScrapyPlaywrightDownloadHandler, logger
 
 _MIB_FACTOR = 1024**2
 
@@ -24,10 +23,9 @@ class ScrapyPlaywrightMemoryUsageExtension(MemoryUsage):
             return [
                 handler.playwright_context_manager._connection._transport._proc.pid  # noqa: PGH003, RUF100, SLF001 # type: ignore
                 for handler in self.crawler.engine.downloader.handlers._handlers.values()  # noqa: E501, PGH003, RUF100, SLF001 # type: ignore
-                if isinstance(handler, ScrapyPlaywrightDownloadHandler)
-                and handler.playwright_context_manager
+                if isinstance(handler, ScrapyPlaywrightDownloadHandler) and handler.playwright_context_manager
             ]
-        except Exception:  # noqa: BLE001
+        except Exception:
             return []
 
     def _get_descendant_processes(self, process) -> list:
@@ -38,9 +36,7 @@ class ScrapyPlaywrightMemoryUsageExtension(MemoryUsage):
         return result
 
     def _get_total_playwright_process_memory(self) -> int:
-        process_list = [
-            self.psutil.Process(pid) for pid in self._get_main_process_ids()
-        ]
+        process_list = [self.psutil.Process(pid) for pid in self._get_main_process_ids()]
         for proc in process_list.copy():
             process_list.extend(self._get_descendant_processes(proc))
         total_process_size = 0

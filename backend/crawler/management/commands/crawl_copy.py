@@ -22,6 +22,6 @@ class Command(BaseCommand):
         process = CrawlerProcess(settings=crawlsettings)
         logger.info("starting spider")
         process.crawl(Asuracomic2Spider)
-        process.start()  # type: ignore  # noqa: PGH003
+        process.start()  # type: ignore
 
         logger.info("ending spider")

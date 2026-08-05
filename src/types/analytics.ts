@@ -1,6 +1,6 @@
 export interface AnalyticsItem {
-  name: string
-  uv: number
-  pv: number
-  amt: number
+  name: string;
+  uv: number;
+  pv: number;
+  amt: number;
 }

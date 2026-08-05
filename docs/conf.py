@@ -1,4 +1,3 @@
-# ruff: noqa: ERA001, PTH100
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -29,7 +28,7 @@ django.setup()
 # -- Project information -----------------------------------------------------
 
 project = "Rhixescans"
-copyright = """2025, Alexander E Iseghohi"""  # noqa: A001
+copyright = """2025, Alexander E Iseghohi"""
 author = "Alexander E Iseghohi"
 
 

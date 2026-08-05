@@ -1,7 +1,6 @@
 import json
 import logging
 
-from api.libary.models import Chapter
 from api.libary.models import Comic
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -33,7 +32,7 @@ class Command(BaseCommand):
             base = settings.BASE_DIR
             comics_file = str(base / "comicsdata1.json")
 
-            with open(comics_file, encoding="utf-8") as comic_file:  # noqa: PTH123
+            with open(comics_file, encoding="utf-8") as comic_file:
                 comics_data = json.load(comic_file)
                 comics = save_comics(comics_data=comics_data)
                 logger.info({"comics": comics})

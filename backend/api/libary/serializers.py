@@ -1,22 +1,23 @@
 from django.db.models import Q
 from rest_framework import serializers
 
-from api.libary.models import Artist
-from api.libary.models import Author
-from api.libary.models import Category
-from api.libary.models import Chapter
-from api.libary.models import ChapterImage
-from api.libary.models import Comic
-from api.libary.models import ComicImage
-from api.libary.models import Comment
-from api.libary.models import Genre
-from api.libary.models import UserComic
-from api.libary.models import Website
+from api.libary.models import (
+    Artist,
+    Author,
+    Category,
+    Chapter,
+    ChapterImage,
+    Comic,
+    ComicImage,
+    Comment,
+    Genre,
+    UserComic,
+    Website,
+)
 from api.users.serializers import UserSerializer
 
 
 class ArtistSerializer(serializers.ModelSerializer[Artist]):
-
     class Meta:
         model = Artist
         fields = [
@@ -26,7 +27,6 @@ class ArtistSerializer(serializers.ModelSerializer[Artist]):
 
 
 class AuthorSerializer(serializers.ModelSerializer[Author]):
-
     class Meta:
         model = Author
         fields = [
@@ -36,7 +36,6 @@ class AuthorSerializer(serializers.ModelSerializer[Author]):
 
 
 class CategorySerializer(serializers.ModelSerializer[Category]):
-
     class Meta:
         model = Category
         fields = [
@@ -46,7 +45,6 @@ class CategorySerializer(serializers.ModelSerializer[Category]):
 
 
 class WebsiteSerializer(serializers.ModelSerializer[Website]):
-
     class Meta:
         model = Website
         fields = [
@@ -56,7 +54,6 @@ class WebsiteSerializer(serializers.ModelSerializer[Website]):
 
 
 class GenreSerializer(serializers.ModelSerializer[Genre]):
-
     class Meta:
         model = Genre
         fields = [
@@ -178,12 +175,12 @@ class ComicsInfoSerializer(ComicSerializer):
     artist = ArtistSerializer(read_only=True)
     images = serializers.SerializerMethodField(read_only=True)
 
-    # chapters = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
-    # comments = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
-    # users = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
+    # chapters = serializers.SerializerMethodField(read_only=True)
+    # comments = serializers.SerializerMethodField(read_only=True)
+    # users = serializers.SerializerMethodField(read_only=True)
     genres = serializers.SerializerMethodField(read_only=True)
-    # first_chapter = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
-    # last_chapter = serializers.SerializerMethodField(read_only=True)  # noqa: ERA001
+    # first_chapter = serializers.SerializerMethodField(read_only=True)
+    # last_chapter = serializers.SerializerMethodField(read_only=True)
 
     def get_genres(self, obj):
         items = obj.genres.all()
@@ -196,29 +193,29 @@ class ComicsInfoSerializer(ComicSerializer):
         return serializer.data
 
     # def get_chapters(self, obj):
-    #     items = obj.get_chapters()[0:3]  # noqa: ERA001
-    #     serializer = ChapterSerializer(items, many=True)  # noqa: ERA001
-    #     return serializer.data  # noqa: ERA001
+    #     items = obj.get_chapters()[0:3]
+    #     serializer = ChapterSerializer(items, many=True)
+    #     return serializer.data
 
     # def get_comments(self, obj):
-    #     items = obj.get_comments()  # noqa: ERA001
-    #     serializer = CommentSerializer(items, many=True)  # noqa: ERA001
-    #     return serializer.data  # noqa: ERA001
+    #     items = obj.get_comments()
+    #     serializer = CommentSerializer(items, many=True)
+    #     return serializer.data
 
     # def get_users(self, obj):
-    #     items = obj.get_users()  # noqa: ERA001
-    #     serializer = UserSerializer(items, many=True)  # noqa: ERA001
-    #     return serializer.data  # noqa: ERA001
+    #     items = obj.get_users()
+    #     serializer = UserSerializer(items, many=True)
+    #     return serializer.data
 
     # def get_first_chapter(self, obj):
-    #     items = obj.get_chapters().last()  # noqa: ERA001
-    #     serializer = ChapterSerializer(items, many=False)  # noqa: ERA001
-    #     return serializer.data  # noqa: ERA001
+    #     items = obj.get_chapters().last()
+    #     serializer = ChapterSerializer(items, many=False)
+    #     return serializer.data
 
     # def get_last_chapter(self, obj):
-    #     items = obj.get_chapters().first()  # noqa: ERA001
-    #     serializer = ChapterSerializer(items, many=False)  # noqa: ERA001
-    #     return serializer.data  # noqa: ERA001
+    #     items = obj.get_chapters().first()
+    #     serializer = ChapterSerializer(items, many=False)
+    #     return serializer.data
 
     class Meta:
         model = Comic
@@ -252,7 +249,6 @@ class ComicsInfoSerializer(ComicSerializer):
 
 
 class ComicInfoSerializer(ComicSerializer):
-
     user = UserSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
     website = WebsiteSerializer(read_only=True)

@@ -1,24 +1,18 @@
-import loader from '@/assets/loader.gif';
-import Image from 'next/image';
+import loader from "@/assets/loader.gif";
+import Image from "next/image";
 
 const LoadingPage = () => {
   return (
     <div
       style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        width: '100vw',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        width: "100vw",
       }}
     >
-      <Image
-        unoptimized
-        src={loader}
-        height={150}
-        width={150}
-        alt="Loading..."
-      />
+      <Image unoptimized src={loader} height={150} width={150} alt="Loading..." />
     </div>
   );
 };

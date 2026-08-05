@@ -1,18 +1,13 @@
 from django.contrib.auth.hashers import make_password
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
-from rest_framework import generics
-from rest_framework import status
+from rest_framework import filters, generics, status
 from rest_framework.decorators import api_view
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from api.libary.pagination import StandardResultsSetPagination
 from api.users.models import User
-from api.users.serializers import MyTokenObtainPairSerializer
-from api.users.serializers import UserSerializer
+from api.users.serializers import MyTokenObtainPairSerializer, UserSerializer
 
 
 class UserListAPIView(generics.ListCreateAPIView):

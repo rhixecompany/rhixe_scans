@@ -2,24 +2,16 @@ import asyncio
 import logging
 import platform
 import threading
-from typing import Awaitable  # noqa: UP035
-from typing import Dict  # noqa: UP035
-from typing import Iterator  # noqa: UP035
-from typing import Optional
-from typing import Tuple  # noqa: UP035
+from collections.abc import Awaitable, Iterator
 from typing import Union
 
 import scrapy
-from playwright.async_api import Error
-from playwright.async_api import Page
-from playwright.async_api import Request
-from playwright.async_api import Response
+from playwright.async_api import Error, Page, Request, Response
 from scrapy.http.headers import Headers
 from scrapy.settings import Settings
 from scrapy.utils.python import to_unicode
 from twisted.internet.defer import Deferred
-from w3lib.encoding import html_body_declared_encoding
-from w3lib.encoding import http_content_type_encoding
+from w3lib.encoding import html_body_declared_encoding, http_content_type_encoding
 
 logger = logging.getLogger("scrapy-playwright")
 
@@ -32,12 +24,12 @@ async def _maybe_await(obj):
 
 def _possible_encodings(headers: Headers, text: str) -> Iterator[str]:
     if headers.get("content-type"):
-        content_type = to_unicode(headers["content-type"])  # type: ignore  # noqa: PGH003
-        yield http_content_type_encoding(content_type)  # type: ignore  # noqa: PGH003
-    yield html_body_declared_encoding(text)  # type: ignore  # noqa: PGH003
+        content_type = to_unicode(headers["content-type"])  # type: ignore
+        yield http_content_type_encoding(content_type)  # type: ignore
+    yield html_body_declared_encoding(text)  # type: ignore
 
 
-def _encode_body(headers: Headers, text: str) -> Tuple[bytes, str]:  # noqa: UP006
+def _encode_body(headers: Headers, text: str) -> tuple[bytes, str]:
     for encoding in filter(None, _possible_encodings(headers, text)):
         try:
             body = text.encode(encoding)
@@ -54,14 +46,14 @@ def _is_safe_close_error(error: Error) -> bool:
     https://github.com/microsoft/playwright-python/blob/v1.20.0/playwright/_impl/_helper.py#L234-L238
     """
     message = str(error)
-    return message.endswith(  # noqa: PIE810
+    return message.endswith(
         "Browser has been closed",
     ) or message.endswith(
         "Target page, context or browser has been closed",
     )
 
 
-_NAVIGATION_ERROR_MSG = "Unable to retrieve content because the page is navigating and changing the content."  # noqa: E501
+_NAVIGATION_ERROR_MSG = "Unable to retrieve content because the page is navigating and changing the content."
 
 
 async def _get_page_content(
@@ -94,20 +86,20 @@ async def _get_page_content(
         raise
 
 
-def _get_float_setting(settings: Settings, key: str) -> Optional[float]:  # noqa: UP007
+def _get_float_setting(settings: Settings, key: str) -> float | None:
     try:
         return float(settings[key])
-    except Exception:  # noqa: BLE001
+    except Exception:
         return None
 
 
 async def _get_header_value(
     resource: Union[Request, Response],  # noqa: UP007
     header_name: str,
-) -> Optional[str]:  # noqa: UP007
+) -> str | None:
     try:
         return await resource.header_value(header_name)
-    except Exception:  # noqa: BLE001
+    except Exception:
         return None
 
 
@@ -115,18 +107,18 @@ class _ThreadedLoopAdapter:
     """Utility class to start an asyncio event loop in a new thread and redirect coroutines.
     This allows to run Playwright in a different loop than the Scrapy crawler, allowing to
     use ProactorEventLoop which is supported by Playwright on Windows.
-    """  # noqa: E501
+    """
 
     _loop: asyncio.AbstractEventLoop
     _thread: threading.Thread
     _coro_queue: asyncio.Queue = asyncio.Queue()
-    _stop_events: Dict[int, asyncio.Event] = {}  # noqa: UP006
+    _stop_events: dict[int, asyncio.Event] = {}
 
     @classmethod
     async def _handle_coro(cls, coro, future) -> None:
         try:
             future.set_result(await coro)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             future.set_exception(exc)
 
     @classmethod
@@ -140,7 +132,7 @@ class _ThreadedLoopAdapter:
     def _deferred_from_coro(cls, coro) -> Deferred:
         future: asyncio.Future = asyncio.Future()
         asyncio.run_coroutine_threadsafe(cls._coro_queue.put((coro, future)), cls._loop)
-        return scrapy.utils.defer.deferred_from_coro(future)  # type: ignore  # noqa: PGH003
+        return scrapy.utils.defer.deferred_from_coro(future)  # type: ignore
 
     @classmethod
     def start(cls, caller_id: int) -> None:
@@ -160,7 +152,7 @@ class _ThreadedLoopAdapter:
 
     @classmethod
     def stop(cls, caller_id: int) -> None:
-        """Wait until all handlers are closed to stop the event loop and join the thread."""  # noqa: E501
+        """Wait until all handlers are closed to stop the event loop and join the thread."""
         cls._stop_events[caller_id].set()
         if all(ev.is_set() for ev in cls._stop_events.values()):
             asyncio.run_coroutine_threadsafe(cls._coro_queue.join(), cls._loop)

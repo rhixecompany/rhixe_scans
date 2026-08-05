@@ -2,15 +2,14 @@ import logging
 
 from scrapy.downloadermiddlewares.retry import RetryMiddleware
 from scrapy.utils.response import response_status_message
-from twisted.internet import defer
-from twisted.internet import reactor
+from twisted.internet import defer, reactor
 
 logger = logging.getLogger(__name__)
 
 
 async def async_sleep(delay, return_value=None):
     deferred = defer.Deferred()
-    reactor.callLater(delay, deferred.callback, return_value)  # type: ignore  # noqa: PGH003
+    reactor.callLater(delay, deferred.callback, return_value)  # type: ignore
     return await deferred
 
 
@@ -34,19 +33,19 @@ class TooManyRequestsRetryMiddleware(RetryMiddleware):
             return response
 
         if response.status in self.retry_http_codes:
-            if response.status == 429:  # noqa: PLR2004
+            if response.status == 429:
                 retry_after = response.headers.get("retry-after")
                 try:
-                    retry_after = int(retry_after)  # type: ignore  # noqa: PGH003
+                    retry_after = int(retry_after)  # type: ignore
                 except (ValueError, TypeError):
                     delay = self.DEFAULT_DELAY
                 else:
                     delay = min(self.MAX_DELAY, retry_after)
-                logger.info(f"Retrying {request} in {delay} seconds.")  # noqa: G004
+                logger.info(f"Retrying {request} in {delay} seconds.")
 
-                spider.crawler.engine.pause()  # type: ignore  # noqa: PGH003
+                spider.crawler.engine.pause()  # type: ignore
                 await async_sleep(delay)
-                spider.crawler.engine.unpause()  # type: ignore  # noqa: PGH003
+                spider.crawler.engine.unpause()  # type: ignore
 
             reason = response_status_message(response.status)
             return self._retry(request, reason, spider) or response

@@ -1,8 +1,7 @@
 import django_tables2 as tables
 from django.utils.safestring import mark_safe
 
-from api.libary.models import Chapter
-from api.libary.models import Comic
+from api.libary.models import Chapter, Comic
 
 
 class MaterializeCssCheckboxColumn(tables.CheckBoxColumn):
@@ -13,8 +12,8 @@ class MaterializeCssCheckboxColumn(tables.CheckBoxColumn):
         general = self.attrs.get("input")
         specific = self.attrs.get("td__input")
         attrs = tables.utils.AttributeDict(default, **(specific or general or {}))
-        html = f'<div class="flex items-center"><input {attrs.as_html()} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" /><label class="sr-only"></label></div>'  # noqa: E501
-        return mark_safe(html)  # noqa: S308
+        html = f'<div class="flex items-center"><input {attrs.as_html()} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" /><label class="sr-only"></label></div>'
+        return mark_safe(html)
 
 
 class ComicTable(tables.Table):

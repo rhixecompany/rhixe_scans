@@ -12,8 +12,8 @@ class LargeResultsSetPagination(PageNumberPagination):
             {
                 "next_page": self.get_next_link(),
                 "previous_page": self.get_previous_link(),
-                "total_results": self.page.paginator.count,  # type: ignore  # noqa: PGH003
-                "total_pages": self.page.paginator.num_pages,  # type: ignore  # noqa: PGH003
+                "total_results": self.page.paginator.count,  # type: ignore
+                "total_pages": self.page.paginator.num_pages,  # type: ignore
                 "results": data,
             },
         )
@@ -29,8 +29,8 @@ class StandardResultsSetPagination(PageNumberPagination):
             {
                 "next_page": self.get_next_link(),
                 "previous_page": self.get_previous_link(),
-                "total_results": self.page.paginator.count,  # type: ignore  # noqa: PGH003
-                "total_pages": self.page.paginator.num_pages,  # type: ignore  # noqa: PGH003
+                "total_results": self.page.paginator.count,  # type: ignore
+                "total_pages": self.page.paginator.num_pages,  # type: ignore
                 "results": data,
             },
         )

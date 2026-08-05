@@ -9,9 +9,7 @@ logger = logging.getLogger(__name__)
 class ComicSpider(Spider):
     name = "comic"
     allowed_domains = ["gg.asuracomic.net", "asuracomic.net"]
-    start_urls = [
-        f"https://asuracomic.net/series?page={i}&order=update" for i in range(1, 2)
-    ]
+    start_urls = [f"https://asuracomic.net/series?page={i}&order=update" for i in range(1, 2)]
 
     def start_requests(self):
         # Custom start URLs
@@ -26,6 +24,6 @@ class ComicSpider(Spider):
 
     def comicspage(self, response):
         links = response.xpath(
-            "//div[@class='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3 p-4']/a/@href",  # noqa: E501
+            "//div[@class='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3 p-4']/a/@href",
         ).getall()
         yield {"links": links}

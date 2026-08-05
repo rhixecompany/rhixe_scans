@@ -1,23 +1,16 @@
 from datetime import timedelta
 
-from django.core.paginator import EmptyPage
-from django.core.paginator import PageNotAnInteger
-from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Q
 from django.utils.timezone import now
 from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAdminUser
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 from api.libary.constants import ComicStatus
-from api.libary.models import Comic
-from api.libary.models import ComicImage
-from api.libary.serializers import ComicInfoSerializer
-from api.libary.serializers import ComicSerializer
-from api.libary.serializers import ComicsInfoSerializer
+from api.libary.models import Comic, ComicImage
+from api.libary.serializers import ComicInfoSerializer, ComicSerializer, ComicsInfoSerializer
 
 
 @api_view(["GET"])
@@ -158,9 +151,7 @@ def getselectcomics(request):
         )
         .select_related("user", "author", "category", "artist", "website")
         .filter(
-            Q(rating__gte=9.7)
-            & Q(status=ComicStatus.ONGOING)
-            & Q(updated_at__gte=week),
+            Q(rating__gte=9.7) & Q(status=ComicStatus.ONGOING) & Q(updated_at__gte=week),
         )
         .order_by(
             "-rating",
@@ -175,9 +166,7 @@ def getselectcomics(request):
         )
         .select_related("user", "author", "category", "artist", "website")
         .filter(
-            Q(rating__gte=9.7)
-            & Q(status=ComicStatus.ONGOING)
-            & Q(updated_at__gte=month),
+            Q(rating__gte=9.7) & Q(status=ComicStatus.ONGOING) & Q(updated_at__gte=month),
         )
         .order_by(
             "-rating",

@@ -1,11 +1,11 @@
-import '@/assets/styles/globals.css';
-import Footer from '@/components/footer';
-import Header from '@/components/shared/header';
+import "@/assets/styles/globals.css";
+import Footer from "@/components/footer";
+import Header from "@/components/shared/header";
 
-import { Toaster } from '@/components/ui/toaster';
-import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from '@/lib/constants';
-import type { Metadata } from 'next';
-import { ThemeProvider } from 'next-themes';
+import { Toaster } from "@/components/ui/toaster";
+import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constants";
+import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 // import { Fira_Sans } from 'next/font/google';
 
 // const fira_Sans = Fira_Sans({
@@ -28,16 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       {/* <html lang="en" className={`${fira_Sans.className}`}> */}
-      <body className='antialiased'>
+      <body className="antialiased">
         {/* <body className={` ${fira_Sans.className} antialiased`}> */}
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='dark'
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <Header />
           {children}
           <Footer />

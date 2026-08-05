@@ -2,8 +2,7 @@ import json
 import logging
 
 from extruct.jsonld import JsonLdExtractor
-from playwright.async_api import Dialog
-from playwright.async_api import Page
+from playwright.async_api import Dialog, Page
 from playwright.async_api import Response as PlaywrightResponse
 from scrapy.http.request import Request
 from scrapy.spiders import Spider
@@ -14,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 async def scroll_page(page: Page) -> str:
     await page.wait_for_selector(selector="script#__NEXT_DATA__")
-    # await page.evaluate("window.scrollBy(0, document.body.scrollHeight)")  # noqa: E501, ERA001
+    # await page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
     return page.url
 
 
@@ -74,10 +73,11 @@ class Comick1Spider(Spider):
                 comics = data["props"]["pageProps"]["data"][f"{tag}"]
 
         for comic in comics[0:3]:
-            msg = f"view: {response.urljoin(f"/comic/{comic["slug"]}/")}"
+            comic_slug = comic["slug"]
+            msg = f"view: {response.urljoin(f'/comic/{comic_slug}/')}"
             logger.info(msg)
             yield response.follow(
-                response.urljoin(f"/comic/{comic["slug"]}/"),
+                response.urljoin(f"/comic/{comic['slug']}/"),
                 meta={
                     "playwright": True,
                     "playwright_include_page": True,
@@ -115,8 +115,8 @@ class Comick1Spider(Spider):
         await page.close()
 
     async def handle_dialog(self, dialog: Dialog) -> None:
-        logger.info(f"Handled dialog with message: {dialog.message}")  # noqa: G004
+        logger.info(f"Handled dialog with message: {dialog.message}")
         await dialog.dismiss()
 
     async def handle_response(self, response: PlaywrightResponse) -> None:
-        logger.info(f"Received response with URL {response.url}")  # noqa: G004
+        logger.info(f"Received response with URL {response.url}")

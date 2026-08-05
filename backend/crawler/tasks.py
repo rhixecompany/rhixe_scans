@@ -1,9 +1,6 @@
 import time
 
-from api.libary.models import Chapter
-from api.libary.models import ChapterImage
-from api.libary.models import Comic
-from api.libary.models import ComicImage
+from api.libary.models import Chapter, ChapterImage, Comic, ComicImage
 from api.users.models import User
 from celery import shared_task
 from celery.utils.log import get_task_logger
@@ -56,9 +53,7 @@ def get_comics_count(self, seconds):
         .all()
     )
     comic_images = ComicImage.objects.select_related("comic").all()
-    chapters = (
-        Chapter.objects.prefetch_related("chapteritems").select_related("comic").all()
-    )
+    chapters = Chapter.objects.prefetch_related("chapteritems").select_related("comic").all()
 
     chapter_images = ChapterImage.objects.select_related("comic", "chapter").all()
     context = {
@@ -102,9 +97,7 @@ def crawl_task(self, seconds):
         .all()
     )
     comic_images = ComicImage.objects.select_related("comic").all()
-    chapters = (
-        Chapter.objects.prefetch_related("chapteritems").select_related("comic").all()
-    )
+    chapters = Chapter.objects.prefetch_related("chapteritems").select_related("comic").all()
 
     chapter_images = ChapterImage.objects.select_related("comic", "chapter").all()
     return {

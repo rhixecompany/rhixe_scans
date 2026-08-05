@@ -1,8 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
-from rest_framework import generics
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAdminUser
+from rest_framework import filters, generics
+from rest_framework.permissions import AllowAny, IsAdminUser
 
 from api.libary.models import ComicImage
 from api.libary.pagination import StandardResultsSetPagination
@@ -15,7 +13,7 @@ class ComicImageListAPIView(generics.ListCreateAPIView):
     ).all()
     serializer_class = ComicImageSerializer
     filter_backends = [
-        DjangoFilterBackend,  # type: ignore  # noqa: PGH003
+        DjangoFilterBackend,  # type: ignore
         filters.SearchFilter,
         filters.OrderingFilter,
     ]

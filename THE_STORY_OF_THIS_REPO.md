@@ -1,6 +1,6 @@
 # The Story of rhixe_scans
 
-*How a comic reader became a real-time platform*
+_How a comic reader became a real-time platform_
 
 ---
 
@@ -11,6 +11,7 @@ It started with a simple problem: **reading comics on mobile was terrible.**
 Existing sites: cluttered, slow, no offline, no progress sync, paywalls that broke chapter flow. The solution: build your own reader. Next.js 15, Prisma, Tailwind. Two weeks to MVP.
 
 Then features crept in:
+
 - "I want to upload my own scans" → UploadThing integration
 - "I want notifications when new chapters drop" → WebSocket server
 - "I want to support creators" → Stripe + PayPal subscriptions
@@ -68,39 +69,40 @@ Not Socket.io. Native `ws` library. Next.js custom server for WebSocket upgrade.
 
 ```typescript
 // lib/websocket/server.ts
-const wss = new WebSocket.Server({ noServer: true })
+const wss = new WebSocket.Server({ noServer: true });
 
-wss.on('connection', (ws, req, user) => {
-  ws.userId = user.id
-  ws.on('message', (data) => handleMessage(ws, data))
-  ws.on('close', () => removeConnection(user.id))
-})
+wss.on("connection", (ws, req, user) => {
+  ws.userId = user.id;
+  ws.on("message", (data) => handleMessage(ws, data));
+  ws.on("close", () => removeConnection(user.id));
+});
 
 // Broadcast to user
 function notify(userId: string, event: string, data: any) {
-  const connections = userConnections.get(userId)
-  connections?.forEach(ws => ws.send(JSON.stringify({ event, data })))
+  const connections = userConnections.get(userId);
+  connections?.forEach((ws) => ws.send(JSON.stringify({ event, data })));
 }
 ```
 
 Client hook:
+
 ```typescript
 // hooks/useWebSocket.ts
 export function useWebSocket() {
-  const [connected, setConnected] = useState(false)
-  const [notifications, setNotifications] = useState<Notification[]>([])
-  
+  const [connected, setConnected] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
   useEffect(() => {
-    const ws = new WebSocket('/api/ws')
-    ws.onopen = () => setConnected(true)
+    const ws = new WebSocket("/api/ws");
+    ws.onopen = () => setConnected(true);
     ws.onmessage = (e) => {
-      const { event, data } = JSON.parse(e.data)
-      if (event === 'notification') setNotifications(n => [data, ...n])
-    }
-    return () => ws.close()
-  }, [])
-  
-  return { connected, notifications }
+      const { event, data } = JSON.parse(e.data);
+      if (event === "notification") setNotifications((n) => [data, ...n]);
+    };
+    return () => ws.close();
+  }, []);
+
+  return { connected, notifications };
 }
 ```
 
@@ -123,6 +125,7 @@ npx prisma migrate deploy
 ```
 
 **Rules:**
+
 - Never `db push` in production
 - Never edit migration files after commit
 - Destructive changes = new migration + manual data migration script
@@ -134,14 +137,14 @@ npx prisma migrate deploy
 
 `rhixecompany-comics` (Django + Next.js) is the consolidation target (P1 priority). This project contributes:
 
-| Feature | Status | Migration Effort |
-|---------|--------|------------------|
-| Comic reader | ✅ Complete | Copy components |
-| UploadThing | ✅ Complete | Reuse config |
-| WebSocket | ✅ Complete | Port server |
-| Stripe/PayPal | ✅ Complete | Move services |
+| Feature         | Status      | Migration Effort                  |
+| --------------- | ----------- | --------------------------------- |
+| Comic reader    | ✅ Complete | Copy components                   |
+| UploadThing     | ✅ Complete | Reuse config                      |
+| WebSocket       | ✅ Complete | Port server                       |
+| Stripe/PayPal   | ✅ Complete | Move services                     |
 | Admin dashboard | ✅ Complete | Rebuild in Django Admin + Next.js |
-| Prisma schema | ✅ Complete | Port to Prisma (already shared) |
+| Prisma schema   | ✅ Complete | Port to Prisma (already shared)   |
 
 **The hard part:** NextAuth v5 → Django SimpleJWT + Next.js auth proxy. Session sharing across domains.
 
@@ -149,13 +152,13 @@ npx prisma migrate deploy
 
 ## Chapter 6: What We'd Do Differently
 
-| Decision | Current | Better |
-|----------|---------|--------|
+| Decision        | Current                             | Better                                               |
+| --------------- | ----------------------------------- | ---------------------------------------------------- |
 | **Single repo** | Monorepo with `rhixecompany-comics` | Separate repos, shared Prisma schema via npm package |
-| **WebSocket** | Custom server | Pusher/Ably (managed) |
-| **UploadThing** | Direct integration | S3 + presigned URLs (cost control) |
-| **PayPal** | Secondary | Remove (Stripe covers 95% of users) |
-| **Admin** | Custom Next.js | Django Admin + Forest Admin |
+| **WebSocket**   | Custom server                       | Pusher/Ably (managed)                                |
+| **UploadThing** | Direct integration                  | S3 + presigned URLs (cost control)                   |
+| **PayPal**      | Secondary                           | Remove (Stripe covers 95% of users)                  |
+| **Admin**       | Custom Next.js                      | Django Admin + Forest Admin                          |
 
 ---
 
@@ -166,9 +169,9 @@ Became: real-time, multi-payment, multi-tenant, admin-panelled, webhook-driven p
 
 The code is good. The architecture is sound. The consolidation will be clean.
 
-But the *next* personal project? **Managed services first. Custom code last.**
+But the _next_ personal project? **Managed services first. Custom code last.**
 
 ---
 
-*Written by the workspace chronicler, July 25, 2025.  
-Filed at `projects/rhixe_scans/THE_STORY_OF_THIS_REPO.md`.*
+_Written by the workspace chronicler, July 25, 2025.  
+Filed at `projects/rhixe_scans/THE_STORY_OF_THIS_REPO.md`._

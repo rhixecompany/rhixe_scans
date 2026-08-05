@@ -3,17 +3,8 @@ from django.forms import BoundField
 from django.utils.translation import gettext_lazy as _
 from django_ckeditor_5.widgets import CKEditor5Widget
 
-from api.libary.forms_helpers import MyCustomImageWidget
-from api.libary.forms_helpers import MyDateInput
-from api.libary.models import Artist
-from api.libary.models import Author
-from api.libary.models import Category
-from api.libary.models import Chapter
-from api.libary.models import ChapterImage
-from api.libary.models import Comic
-from api.libary.models import ComicImage
-from api.libary.models import Comment
-from api.libary.models import Genre
+from api.libary.forms_helpers import MyCustomImageWidget, MyDateInput
+from api.libary.models import Artist, Author, Category, Chapter, ChapterImage, Comic, ComicImage, Comment, Genre
 
 
 class CustomeBoundField(BoundField):

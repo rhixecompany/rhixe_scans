@@ -12,19 +12,17 @@ from scrapy.pipelines.images import ImagesPipeline
 
 
 class MyImagesPipeline(ImagesPipeline):
-
-
     def check_gif(self, image):
         if image.format == "GIF":
             return True
         return image.info.get("version") in ["GIF89a", "GIF87a"]
 
     def persist_gif(self, key, data, info):
-        root, ext = os.path.splitext(key)  # noqa: PTH122
+        _root, _ext = os.path.splitext(key)
         key = key + ".gif"
-        absolute_path = self.store._get_filesystem_path(key)  # type: ignore  # noqa: PGH003, SLF001
-        self.store._mkdir(os.path.dirname(absolute_path), info)  # type: ignore  # noqa: PGH003, PTH120, SLF001
-        with open(absolute_path, "wb") as f:  # noqa: PTH123
+        absolute_path = self.store._get_filesystem_path(key)  # type: ignore
+        self.store._mkdir(os.path.dirname(absolute_path), info)  # type: ignore
+        with open(absolute_path, "wb") as f:
             f.write(data)
 
     def image_downloaded(self, response, request, info, *, item=None):
@@ -43,7 +41,7 @@ class MyImagesPipeline(ImagesPipeline):
                         checksum = _md5sum(buf)
                     width, height = image.size
 
-                    if path.startswith(adapter.get("slug")) and self.check_gif(image):  # type: ignore  # noqa: PGH003
+                    if path.startswith(adapter.get("slug")) and self.check_gif(image):  # type: ignore
                         self.persist_gif(path, response.body, info)
                     else:
                         self.store.persist_file(
@@ -51,15 +49,11 @@ class MyImagesPipeline(ImagesPipeline):
                             buf,
                             info,
                             meta={"width": width, "height": height},
-                            headers={"Content-Type": "image/jpeg"},  # type: ignore  # noqa: PGH003
+                            headers={"Content-Type": "image/jpeg"},  # type: ignore
                         )
                 assert checksum is not None
                 return checksum
-            if (
-                adapter.get("image_urls")
-                and adapter.get("comicslug")
-                and adapter.get("chapterslug")
-            ):
+            if adapter.get("image_urls") and adapter.get("comicslug") and adapter.get("chapterslug"):
                 checksum = None
                 for path, image, buf in self.get_images(
                     response,
@@ -72,7 +66,7 @@ class MyImagesPipeline(ImagesPipeline):
                         checksum = _md5sum(buf)
                     width, height = image.size
 
-                    if path.startswith(adapter.get("comicslug")) and self.check_gif(  # type: ignore  # noqa: PGH003
+                    if path.startswith(adapter.get("comicslug")) and self.check_gif(  # type: ignore
                         image,
                     ):
                         self.persist_gif(path, response.body, info)
@@ -82,7 +76,7 @@ class MyImagesPipeline(ImagesPipeline):
                             buf,
                             info,
                             meta={"width": width, "height": height},
-                            headers={"Content-Type": "image/jpeg"},  # type: ignore  # noqa: PGH003
+                            headers={"Content-Type": "image/jpeg"},  # type: ignore
                         )
                 assert checksum is not None
                 return checksum
@@ -135,23 +129,17 @@ class MyImagesPipeline(ImagesPipeline):
                         u,
                         callback=NO_CALLBACK,
                         meta={
-
                             "comicslug": item.get("slug"),
                         },
                     )
                     for u in urls
                 ]
-            if (
-                adapter.get("image_urls")
-                and adapter.get("comicslug")
-                and adapter.get("chapterslug")
-            ):
+            if adapter.get("image_urls") and adapter.get("comicslug") and adapter.get("chapterslug"):
                 return [
                     Request(
                         u,
                         callback=NO_CALLBACK,
                         meta={
-
                             "comicslug": item.get("comicslug"),
                             "chapterslug": item.get("chapterslug"),
                         },
@@ -177,12 +165,8 @@ class MyImagesPipeline(ImagesPipeline):
             if adapter.get("image_urls") and adapter.get("slug"):
                 image_file = request.url.split("/")[-1]
                 return f"{request.meta['comicslug']}/{image_file}"
-            if (
-                adapter.get("image_urls")
-                and adapter.get("comicslug")
-                and adapter.get("chapterslug")
-            ):
+            if adapter.get("image_urls") and adapter.get("comicslug") and adapter.get("chapterslug"):
                 image_file = request.url.split("/")[-1]
-                return f"{request.meta['comicslug']}/{request.meta['chapterslug']}/{image_file}"  # noqa: E501
+                return f"{request.meta['comicslug']}/{request.meta['chapterslug']}/{image_file}"
         msg = f"Missing field in file_path: {item!r}"
         raise DropItem(msg)

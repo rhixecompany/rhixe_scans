@@ -4,8 +4,7 @@ from django.core.management.base import BaseCommand
 from scrapy.crawler import CrawlerRunner as Crawler
 from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
-from twisted.internet import defer
-from twisted.internet import reactor
+from twisted.internet import defer, reactor
 
 from crawler.spiders.asuracomic import AsuracomicSpider
 
@@ -25,8 +24,8 @@ class Command(BaseCommand):
         def run():
             yield runner.crawl(AsuracomicSpider)
 
-            reactor.stop()  # type: ignore  # noqa: PGH003
+            reactor.stop()  # type: ignore
 
         run()
-        reactor.run()  # type: ignore  # noqa: PGH003
+        reactor.run()  # type: ignore
         logger.info("ending spider")

@@ -18,6 +18,6 @@ def avatar(request):
         avatar = User.objects.filter(Q(email=user))
 
         return {
-            "avatar": avatar,  # type: ignore  # noqa: PGH003
+            "avatar": avatar,  # type: ignore
         }
-    return {"NotLoggedIn": User.objects.none()}  # type: ignore  # noqa: PGH003
+    return {"NotLoggedIn": User.objects.none()}  # type: ignore

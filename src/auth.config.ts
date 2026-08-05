@@ -1,10 +1,10 @@
-import db from '@/lib/db';
-import { schema } from '@/lib/schema';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import type { NextAuthConfig } from 'next-auth';
+import db from "@/lib/db";
+import { schema } from "@/lib/schema";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { NextAuthConfig } from "next-auth";
 // import { encode as defaultEncode } from 'next-auth/jwt';
-import Credentials from 'next-auth/providers/credentials';
-import GitHub from 'next-auth/providers/github';
+import Credentials from "next-auth/providers/credentials";
+import GitHub from "next-auth/providers/github";
 // import { v4 as uuid } from 'uuid';
 
 const adapter = PrismaAdapter(db);
@@ -30,7 +30,7 @@ export default {
         });
 
         if (!user) {
-          throw new Error('Invalid credentials.');
+          throw new Error("Invalid credentials.");
         }
 
         return user;
@@ -38,12 +38,12 @@ export default {
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
     maxAge: 60 * 60 * 24, //  1 day
   },
   pages: {
-    signIn: '/sign-in',
-    newUser: '/sign-up',
+    signIn: "/sign-in",
+    newUser: "/sign-up",
     // signOut: '/logout',
   },
   // callbacks: {

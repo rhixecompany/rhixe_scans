@@ -3,8 +3,7 @@ import logging
 import os
 
 from selenium_driverless import webdriver
-from selenium_driverless.scripts.network_interceptor import InterceptedRequest
-from selenium_driverless.scripts.network_interceptor import NetworkInterceptor
+from selenium_driverless.scripts.network_interceptor import InterceptedRequest, NetworkInterceptor
 
 logger = logging.getLogger(__name__)
 
@@ -15,13 +14,13 @@ if proxy is None:
 
 async def on_request(data: InterceptedRequest):
     if "api" in data.request.url and data.request.method == "POST":
-        global auth  # noqa: PLW0603
+        global auth
         try:
             if data.request.headers["authorization"]:
                 auth = data.request.headers
                 logger.info(auth)
         except KeyError:
-            logger.error("no auth header found in req")  # noqa: TRY400
+            logger.error("no auth header found in req")
 
 
 async def main():

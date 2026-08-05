@@ -20,11 +20,11 @@ class MyCustomMiddleware:
         # This method is used by Scrapy to create your spiders.
         s = cls()
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
-        crawler.signals.connect(s.spider_closed, signal=signals.spider_closed)  # type: ignore  # noqa: PGH003
+        crawler.signals.connect(s.spider_closed, signal=signals.spider_closed)  # type: ignore
         return s
 
     def process_request(self, request, spider):
-        self.driver.get(request.url)  # type: ignore  # noqa: PGH003
+        self.driver.get(request.url)  # type: ignore
         # Called for each request that goes through the downloader
         # middleware.
 
@@ -55,7 +55,7 @@ class MyCustomMiddleware:
         pass
 
     def spider_opened(self, spider):
-        logger.info("Spider opened: %s" % spider.name)  # noqa: G002, UP031
+        logger.info("Spider opened: %s" % spider.name)  # noqa: UP031
 
     def spider_closed(self):
         """Shutdown the driver when spider is closed"""

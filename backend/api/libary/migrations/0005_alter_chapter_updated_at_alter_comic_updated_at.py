@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('libary', '0004_alter_comic_artist_alter_comic_author_and_more'),
+        ("libary", "0004_alter_comic_artist_alter_comic_author_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='chapter',
-            name='updated_at',
-            field=models.DateTimeField(verbose_name='Updated At'),
+            model_name="chapter",
+            name="updated_at",
+            field=models.DateTimeField(verbose_name="Updated At"),
         ),
         migrations.AlterField(
-            model_name='comic',
-            name='updated_at',
-            field=models.DateTimeField(verbose_name='Updated At'),
+            model_name="comic",
+            name="updated_at",
+            field=models.DateTimeField(verbose_name="Updated At"),
         ),
     ]

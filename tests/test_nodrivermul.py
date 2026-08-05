@@ -23,9 +23,7 @@ async def scraper():
 
         # loop through each container to extract names and prices
         for product in products:
-            product_name = await product.query_selector(
-                ".woocommerce-loop-product__title"
-            )
+            product_name = await product.query_selector(".woocommerce-loop-product__title")
             product_price = await product.query_selector(".price")
 
             # get all product texts into a dictionary

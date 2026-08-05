@@ -1,20 +1,20 @@
-'use server';
+"use server";
 
-import { auth } from '@/lib/auth';
+import { auth } from "@/lib/auth";
 
-import db from '@/lib/prisma';
-import { BookmarkItem } from '@/types';
-import { Prisma } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
-import { convertToPlainObject, formatError } from '../utils';
-import { bookmarkItemSchema, insertBookmarkSchema } from '../validators';
+import db from "@/lib/prisma";
+import { BookmarkItem } from "@/types";
+import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+import { convertToPlainObject, formatError } from "../utils";
+import { bookmarkItemSchema, insertBookmarkSchema } from "../validators";
 
 export async function addItemToBookmark(data: BookmarkItem) {
   try {
     // Check for bookmark cookie
-    const sessionBookmarkId = (await cookies()).get('sessionBookmarkId')?.value;
-    if (!sessionBookmarkId) throw new Error('Bookmark session not found');
+    const sessionBookmarkId = (await cookies()).get("sessionBookmarkId")?.value;
+    if (!sessionBookmarkId) throw new Error("Bookmark session not found");
 
     // Get session and user ID
     const session = await auth();
@@ -30,7 +30,7 @@ export async function addItemToBookmark(data: BookmarkItem) {
     const comic = await db.comic.findFirst({
       where: { id: item.id },
     });
-    if (!comic) throw new Error('Comic not found');
+    if (!comic) throw new Error("Comic not found");
 
     if (!bookmark) {
       // Create new bookmark object
@@ -54,14 +54,11 @@ export async function addItemToBookmark(data: BookmarkItem) {
       };
     } else {
       // Check if item is already in bookmark
-      const existItem = (bookmark.items as BookmarkItem[]).find(
-        (x) => x.id === item.id
-      );
+      const existItem = (bookmark.items as BookmarkItem[]).find((x) => x.id === item.id);
 
       if (existItem) {
         // Increase the quantity
-        (bookmark.items as BookmarkItem[]).find((x) => x.id === item.id)!.qty =
-          existItem.qty + 1;
+        (bookmark.items as BookmarkItem[]).find((x) => x.id === item.id)!.qty = existItem.qty + 1;
       } else {
         // If item does not exist in bookmark
 
@@ -81,9 +78,7 @@ export async function addItemToBookmark(data: BookmarkItem) {
 
       return {
         success: true,
-        message: `${comic.title} ${
-          existItem ? 'updated in' : 'added to'
-        } bookmark`,
+        message: `${comic.title} ${existItem ? "updated in" : "added to"} bookmark`,
       };
     }
   } catch (error) {
@@ -96,8 +91,8 @@ export async function addItemToBookmark(data: BookmarkItem) {
 
 export async function getMyBookmark() {
   // Check for bookmark cookie
-  const sessionBookmarkId = (await cookies()).get('sessionBookmarkId')?.value;
-  if (!sessionBookmarkId) throw new Error('Bookmark session not found');
+  const sessionBookmarkId = (await cookies()).get("sessionBookmarkId")?.value;
+  if (!sessionBookmarkId) throw new Error("Bookmark session not found");
 
   // Get session and user ID
   const session = await auth();
@@ -105,9 +100,7 @@ export async function getMyBookmark() {
 
   // Get user bookmark from database
   const bookmark = await db.bookmark.findFirst({
-    where: userId
-      ? { userId: userId }
-      : { sessionBookmarkId: sessionBookmarkId },
+    where: userId ? { userId: userId } : { sessionBookmarkId: sessionBookmarkId },
   });
 
   if (!bookmark) return undefined;
@@ -122,33 +115,30 @@ export async function getMyBookmark() {
 export async function removeItemFromBookmark(id: string) {
   try {
     // Check for bookmark cookie
-    const sessionBookmarkId = (await cookies()).get('sessionBookmarkId')?.value;
-    if (!sessionBookmarkId) throw new Error('Bookmark session not found');
+    const sessionBookmarkId = (await cookies()).get("sessionBookmarkId")?.value;
+    if (!sessionBookmarkId) throw new Error("Bookmark session not found");
 
     // Get Comic
     const comic = await db.comic.findFirst({
       where: { id: id },
     });
-    if (!comic) throw new Error('Comic not found');
+    if (!comic) throw new Error("Comic not found");
 
     // Get user bookmark
     const bookmark = await getMyBookmark();
-    if (!bookmark) throw new Error('Bookmark not found');
+    if (!bookmark) throw new Error("Bookmark not found");
 
     // Check for item
     const exist = (bookmark.items as BookmarkItem[]).find((x) => x.id === id);
-    if (!exist) throw new Error('Item not found');
+    if (!exist) throw new Error("Item not found");
 
     // Check if only one in qty
     if (exist.qty === 1) {
       // Remove from bookmark
-      bookmark.items = (bookmark.items as BookmarkItem[]).filter(
-        (x) => x.id !== exist.id
-      );
+      bookmark.items = (bookmark.items as BookmarkItem[]).filter((x) => x.id !== exist.id);
     } else {
       // Decrease qty
-      (bookmark.items as BookmarkItem[]).find((x) => x.id === id)!.qty =
-        exist.qty - 1;
+      (bookmark.items as BookmarkItem[]).find((x) => x.id === id)!.qty = exist.qty - 1;
     }
 
     // Update bookmark in database

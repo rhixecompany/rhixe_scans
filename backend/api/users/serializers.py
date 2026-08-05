@@ -53,7 +53,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
 
-        serializer = UserSerializerWithToken(self.user).data  # type: ignore  # noqa: PGH003
+        serializer = UserSerializerWithToken(self.user).data  # type: ignore
         for k, v in serializer.items():
             data[k] = v
 

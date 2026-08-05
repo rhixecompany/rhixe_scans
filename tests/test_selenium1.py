@@ -14,7 +14,7 @@ options.add_argument("--headless")
 
 # Chrome is controlled by automated test software
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
-options.add_experimental_option("useAutomationExtension", False)  # noqa: FBT003
+options.add_experimental_option("useAutomationExtension", False)
 s = ChromeService(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=s, options=options)
 
@@ -40,7 +40,7 @@ parent_element = driver.find_element(
 # child_element = parent_element.find_element(By.XPATH, ".//h1/text()")
 element = driver.find_element(By.XPATH, "//*[@id='__NEXT_DATA__']")
 # assert parent_element.is_displayed()
-print(parent_element)  # noqa: T201
-print(element)  # noqa: T201
+print(parent_element)
+print(element)
 # close browser
 driver.quit()

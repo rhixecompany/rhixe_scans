@@ -258,11 +258,20 @@
         { "pitfall": "Prisma connection leaks", "avoidance": "Singleton + `connection_limit` in DATABASE_URL" },
         { "pitfall": "Missing idempotency", "avoidance": "DB event ID deduplication in transaction" },
         { "pitfall": "Migrations from app container", "avoidance": "Separate init container" },
-        { "pitfall": "Webhook routes behind auth middleware", "avoidance": "Exclude `/api/webhooks/*` in middleware matcher" },
+        {
+          "pitfall": "Webhook routes behind auth middleware",
+          "avoidance": "Exclude `/api/webhooks/*` in middleware matcher"
+        },
         { "pitfall": "Forgetting `\"use client\"`", "avoidance": "Explicit directive on interactive components" },
-        { "pitfall": "Global middleware protecting webhooks", "avoidance": "Exclude webhook paths in `config.matcher`" },
+        {
+          "pitfall": "Global middleware protecting webhooks",
+          "avoidance": "Exclude webhook paths in `config.matcher`"
+        },
         { "pitfall": "No `output: \"standalone\"`", "avoidance": "Enable in next.config.ts for minimal Docker images" },
-        { "pitfall": "Mutating without Server Actions", "avoidance": "Use `\"use server\"` functions for all mutations" }
+        {
+          "pitfall": "Mutating without Server Actions",
+          "avoidance": "Use `\"use server\"` functions for all mutations"
+        }
       ]
     },
     {
@@ -279,9 +288,18 @@
         { "topic": "Cloudflare Images", "url": "https://developers.cloudflare.com/images" },
         { "topic": "React Email", "url": "https://react.email" },
         { "topic": "NextAuth v5 Migration", "url": "https://authjs.dev/getting-started/migrating-to-v5" },
-        { "topic": "Supabase RLS Best Practices", "url": "https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices" },
-        { "topic": "Prisma Production Guide", "url": "https://www.digitalapplied.com/blog/prisma-orm-production-guide-nextjs" },
-        { "topic": "Next.js Security 2026", "url": "https://www.turbostarter.dev/blog/complete-nextjs-security-guide-2025-authentication-api-protection-and-best-practices" },
+        {
+          "topic": "Supabase RLS Best Practices",
+          "url": "https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices"
+        },
+        {
+          "topic": "Prisma Production Guide",
+          "url": "https://www.digitalapplied.com/blog/prisma-orm-production-guide-nextjs"
+        },
+        {
+          "topic": "Next.js Security 2026",
+          "url": "https://www.turbostarter.dev/blog/complete-nextjs-security-guide-2025-authentication-api-protection-and-best-practices"
+        },
         { "topic": "Stripe Next.js Integration", "url": "https://designrevision.com/blog/stripe-nextjs" },
         { "topic": "Docker Next.js Prisma", "url": "https://blog.jonrshar.pe/2024/Dec/24/nextjs-prisma-docker.html" }
       ]

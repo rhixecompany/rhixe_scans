@@ -10,10 +10,10 @@
 
 ## Architecture
 
-| Property | Value |
-|----------|-------|
-| **Type** | Next.js comic reader platform |
-| **Pattern** | App Router with Prisma, multiple payment providers, real-time features |
+| Property      | Value                                                                  |
+| ------------- | ---------------------------------------------------------------------- |
+| **Type**      | Next.js comic reader platform                                          |
+| **Pattern**   | App Router with Prisma, multiple payment providers, real-time features |
 | **Reference** | [Workflow Analysis](../docs/Project_Architecture/Workflow_Analysis.md) |
 
 Full-featured comic reader with uploads, WebSocket notifications, subscriptions, and admin dashboard.
@@ -22,18 +22,18 @@ Full-featured comic reader with uploads, WebSocket notifications, subscriptions,
 
 ## Technology Stack
 
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | React 19, TypeScript (strict), Tailwind 3 + Radix/shadcn/ui |
-| **State** | Zustand, TanStack Query |
-| **Database** | Prisma 6 / PostgreSQL |
-| **Auth** | NextAuth v5 |
-| **Media** | UploadThing |
-| **Realtime** | WebSocket |
-| **Payments** | Stripe, PayPal |
-| **Email** | Resend |
-| **Deploy** | Vercel or Docker |
-| **Package Manager** | npm |
+| Layer               | Technology                                                  |
+| ------------------- | ----------------------------------------------------------- |
+| **Frontend**        | React 19, TypeScript (strict), Tailwind 3 + Radix/shadcn/ui |
+| **State**           | Zustand, TanStack Query                                     |
+| **Database**        | Prisma 6 / PostgreSQL                                       |
+| **Auth**            | NextAuth v5                                                 |
+| **Media**           | UploadThing                                                 |
+| **Realtime**        | WebSocket                                                   |
+| **Payments**        | Stripe, PayPal                                              |
+| **Email**           | Resend                                                      |
+| **Deploy**          | Vercel or Docker                                            |
+| **Package Manager** | npm                                                         |
 
 ---
 
@@ -102,14 +102,14 @@ npm test
 
 ## Key Features
 
-| Feature | Implementation |
-|---------|----------------|
-| **Comic Upload** | UploadThing → Prisma media records |
-| **Chapter Reading** | Next.js Image optimization, lazy loading |
-| **Subscriptions** | Stripe (primary) + PayPal (secondary) |
-| **Real-time Notifications** | WebSocket server + client hooks |
-| **Admin Dashboard** | Role-based access, analytics |
-| **Search** | Full-text via PostgreSQL |
+| Feature                     | Implementation                           |
+| --------------------------- | ---------------------------------------- |
+| **Comic Upload**            | UploadThing → Prisma media records       |
+| **Chapter Reading**         | Next.js Image optimization, lazy loading |
+| **Subscriptions**           | Stripe (primary) + PayPal (secondary)    |
+| **Real-time Notifications** | WebSocket server + client hooks          |
+| **Admin Dashboard**         | Role-based access, analytics             |
+| **Search**                  | Full-text via PostgreSQL                 |
 
 ---
 

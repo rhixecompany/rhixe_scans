@@ -1,4 +1,3 @@
-# ruff: noqa: ERA001, E501
 """Base settings to build other settings files upon."""
 
 # import inspect
@@ -16,7 +15,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 APPS_DIR = BASE_DIR / "api"
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)  # type: ignore  # noqa: PGH003
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)  # type: ignore
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(BASE_DIR / ".env"))
@@ -24,7 +23,7 @@ if READ_DOT_ENV_FILE:
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = env.bool("DJANGO_DEBUG", False)  # type: ignore  # noqa: PGH003
+DEBUG = env.bool("DJANGO_DEBUG", False)  # type: ignore
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
@@ -267,16 +266,16 @@ X_FRAME_OPTIONS = "DENY"
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
-    default="django.core.mail.backends.smtp.EmailBackend",  # type: ignore  # noqa: PGH003
+    default="django.core.mail.backends.smtp.EmailBackend",  # type: ignore
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 
 # Other email settings
-EMAIL_HOST = env("DJANGO_EMAIL_HOST", default=None)  # type: ignore  # noqa: PGH003
-EMAIL_PORT = env("DJANGO_EMAIL_PORT", default=None)  # type: ignore  # noqa: PGH003
-EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER", default=None)  # type: ignore  # noqa: PGH003
-EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD", default=None)  # type: ignore  # noqa: PGH003
+EMAIL_HOST = env("DJANGO_EMAIL_HOST", default=None)  # type: ignore
+EMAIL_PORT = env("DJANGO_EMAIL_PORT", default=None)  # type: ignore
+EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER", default=None)  # type: ignore
+EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD", default=None)  # type: ignore
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
@@ -290,7 +289,7 @@ ADMINS = [("""Alexander E Iseghohi""", "rhixecompany@gmail.com")]
 MANAGERS = ADMINS
 # https://cookiecutter-django.readthedocs.io/en/latest/settings.html#other-environment-settings
 # Force the `admin` sign in process to go through the `django-allauth` workflow
-DJANGO_ADMIN_FORCE_ALLAUTH = env.bool("DJANGO_ADMIN_FORCE_ALLAUTH", default=False)  # type: ignore  # noqa: PGH003
+DJANGO_ADMIN_FORCE_ALLAUTH = env.bool("DJANGO_ADMIN_FORCE_ALLAUTH", default=False)  # type: ignore
 
 # LOGGING
 # ------------------------------------------------------------------------------
@@ -315,8 +314,8 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
-REDIS_URL = env("REDIS_URL", default="redis://redis:6379/0")  # type: ignore  # noqa: PGH003
-REDIS_SSL = REDIS_URL.startswith("rediss://")  # type: ignore  # noqa: PGH003
+REDIS_URL = env("REDIS_URL", default="redis://redis:6379/0")  # type: ignore
+REDIS_SSL = REDIS_URL.startswith("rediss://")  # type: ignore
 
 # Celery
 # ------------------------------------------------------------------------------
@@ -360,7 +359,7 @@ CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 # django-allauth
 # ------------------------------------------------------------------------------
-ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)  # type: ignore  # noqa: PGH003
+ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)  # type: ignore
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_LOGIN_METHODS = {"email"}
 # https://docs.allauth.org/en/latest/account/configuration.html

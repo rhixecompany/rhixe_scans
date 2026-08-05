@@ -1,22 +1,17 @@
 import json
 import logging
 
-from api.libary.models import Artist
-from api.libary.models import Author
-from api.libary.models import Category
-from api.libary.models import Chapter
-from api.libary.models import ChapterImage
-from api.libary.models import Comic
-from api.libary.models import ComicImage
-from api.libary.models import Genre
-from api.libary.serializers import ArtistSerializer
-from api.libary.serializers import AuthorSerializer
-from api.libary.serializers import CategorySerializer
-from api.libary.serializers import ChapterImageSerializer
-from api.libary.serializers import ChaptersInfoSerializer
-from api.libary.serializers import ComicImageSerializer
-from api.libary.serializers import ComicsInfoSerializer
-from api.libary.serializers import GenreSerializer
+from api.libary.models import Artist, Author, Category, Chapter, ChapterImage, Comic, ComicImage, Genre
+from api.libary.serializers import (
+    ArtistSerializer,
+    AuthorSerializer,
+    CategorySerializer,
+    ChapterImageSerializer,
+    ChaptersInfoSerializer,
+    ComicImageSerializer,
+    ComicsInfoSerializer,
+    GenreSerializer,
+)
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
@@ -26,7 +21,7 @@ logger = logging.getLogger(__name__)
 class Command(BaseCommand):
     help = "Generates comics for apps"
 
-    def handle(self, *args, **options):  # noqa: PLR0915
+    def handle(self, *args, **options):
         def save_comics():
             # save the data to a JSON file
             base = settings.BASE_DIR
@@ -40,25 +35,25 @@ class Command(BaseCommand):
             genres = Genre.objects.all()
             genreserializer = GenreSerializer(genres, many=True)
             # Open the JSON file in write mode and dump the Python list to the JSON file
-            with open(genre_file, "w") as json_file:  # noqa: PTH123
+            with open(genre_file, "w") as json_file:
                 json.dump(genreserializer.data, json_file)
                 logger.info("Genre JSON created successfully")
             categorys = Category.objects.all()
             categoryserializer = CategorySerializer(categorys, many=True)
             # Open the JSON file in write mode and dump the Python list to the JSON file
-            with open(category_file, "w") as json_file:  # noqa: PTH123
+            with open(category_file, "w") as json_file:
                 json.dump(categoryserializer.data, json_file)
                 logger.info("Category JSON created successfully")
             authors = Author.objects.all()
             authorserializer = AuthorSerializer(authors, many=True)
             # Open the JSON file in write mode and dump the Python list to the JSON file
-            with open(author_file, "w") as json_file:  # noqa: PTH123
+            with open(author_file, "w") as json_file:
                 json.dump(authorserializer.data, json_file)
                 logger.info("Author JSON created successfully")
             artists = Artist.objects.all()
             artistserializer = ArtistSerializer(artists, many=True)
             # Open the JSON file in write mode and dump the Python list to the JSON file
-            with open(artist_file, "w") as json_file:  # noqa: PTH123
+            with open(artist_file, "w") as json_file:
                 json.dump(artistserializer.data, json_file)
                 logger.info("Artist JSON created successfully")
 
@@ -66,7 +61,7 @@ class Command(BaseCommand):
             comicserializer = ComicsInfoSerializer(comics, many=True)
 
             # Open the JSON file in write mode and dump the Python list to the JSON file
-            with open(comic_file, "w") as json_file:  # noqa: PTH123
+            with open(comic_file, "w") as json_file:
                 json.dump(comicserializer.data, json_file)
                 logger.info("Comic JSON created successfully")
 
@@ -74,7 +69,7 @@ class Command(BaseCommand):
             comicimageserializer = ComicImageSerializer(comicimages, many=True)
 
             # Open the JSON file in write mode and dump the Python list to the JSON file
-            with open(comicimage_file, "w") as json_file:  # noqa: PTH123
+            with open(comicimage_file, "w") as json_file:
                 json.dump(comicimageserializer.data, json_file)
                 logger.info("Comic Image JSON created successfully")
 
@@ -89,14 +84,14 @@ class Command(BaseCommand):
             chapterserializer = ChaptersInfoSerializer(chapters, many=True)
 
             # Open the JSON file in write mode and dump the Python list to the JSON file
-            with open(chapter_file, "w") as json_file:  # noqa: PTH123
+            with open(chapter_file, "w") as json_file:
                 json.dump(chapterserializer.data, json_file)
                 logger.info("Chapter JSON created successfully")
             chapterimages = ChapterImage.objects.all()
             chapterimageserializer = ChapterImageSerializer(chapterimages, many=True)
 
             # Open the JSON file in write mode and dump the Python list to the JSON file
-            with open(chapterimage_file, "w") as json_file:  # noqa: PTH123
+            with open(chapterimage_file, "w") as json_file:
                 json.dump(chapterimageserializer.data, json_file)
                 logger.info("Chapterimage JSON created successfully")
 
