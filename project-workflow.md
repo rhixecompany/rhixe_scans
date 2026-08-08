@@ -4,28 +4,28 @@
 
 ```bash
 # Setup
-npm install
+bun install
 cp .env.example .env
-npx prisma migrate dev
-npm run db:seed
+bunx prisma migrate dev
+bun run db:seed
 
 # Development
-npm run dev                    # Turbopack dev server
-npm run lint                   # ESLint
-npx prettier --write .         # Format
+bun run dev                    # Turbopack dev server
+bun run lint                   # ESLint
+bunx prettier --write .         # Format
 
 # Database Changes
-# Edit prisma schema → npx prisma migrate dev --name desc
-npm run db:seed                # Re-seed
+# Edit prisma schema → bunx prisma migrate dev --name desc
+bun run db:seed                # Re-seed
 
 # Testing
-npm test                       # Jest tests
-npm run test:watch             # Watch mode
+bun run test                       # Jest tests
+bun run test:watch             # Watch mode
 
 # Build
-npm run clean
-npm run build
-npm start
+bun run clean
+bun run build
+bun run start
 ```
 
 ## Adding a Feature

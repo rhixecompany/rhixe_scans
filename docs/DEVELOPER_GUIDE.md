@@ -14,7 +14,7 @@
 ```bash
 git clone https://github.com/rhixecompany/rhixe_scans.git
 cd rhixe_scans
-npm install
+bun install
 ```
 
 ### 2. Environment Variables
@@ -51,16 +51,16 @@ PAYPAL_CLIENT_ID="your-paypal-client-id"
 
 ```bash
 # Run migrations
-npm run db:migrate
+bun run db:migrate
 
 # Seed the database (optional)
-npm run db:seed
+bun run db:seed
 ```
 
 ### 4. Run Development Server
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 The application will be available at `http://localhost:3000`.
@@ -69,16 +69,16 @@ The application will be available at `http://localhost:3000`.
 
 | Command              | Description                         |
 | -------------------- | ----------------------------------- |
-| `npm run dev`        | Start development server with Turbo |
-| `npm run build`      | Build for production                |
-| `npm run start`      | Start production server             |
-| `npm run lint`       | Run ESLint                          |
-| `npm run db:migrate` | Run Prisma migrations               |
-| `npm run db:reset`   | Reset database and re-migrate       |
-| `npm run db:studio`  | Open Prisma Studio                  |
-| `npm run db:format`  | Format Prisma schema                |
-| `npm run db:seed`    | Seed database                       |
-| `npm test`           | Run Jest tests                      |
+| `bun run dev`        | Start development server with Turbo |
+| `bun run build`      | Build for production                |
+| `bun run start`      | Start production server             |
+| `bun run lint`       | Run ESLint                          |
+| `bun run db:migrate` | Run Prisma migrations               |
+| `bun run db:reset`   | Reset database and re-migrate       |
+| `bun run db:studio`  | Open Prisma Studio                  |
+| `bun run db:format`  | Format Prisma schema                |
+| `bun run db:seed`    | Seed database                       |
+| `bun run test`           | Run Jest tests                      |
 
 ## Project Structure
 
@@ -131,7 +131,7 @@ All form inputs are validated using Zod schemas defined in `src/lib/validators.t
 1. Use shadcn/ui for base components:
 
    ```bash
-   npx shadcn@latest add button
+   bunx shadcn@latest add button
    ```
 
 2. Create feature components in appropriate folder:
@@ -142,7 +142,7 @@ All form inputs are validated using Zod schemas defined in `src/lib/validators.t
 ### Adding a New Database Model
 
 1. Define schema in `prisma/schema.prisma`
-2. Run migration: `npm run db:migrate`
+2. Run migration: `bun run db:migrate`
 3. Generate types: (automatic with Prisma)
 4. Add validation schema in `src/lib/validators.ts`
 5. Create data access in `src/lib/data/`
@@ -152,13 +152,13 @@ All form inputs are validated using Zod schemas defined in `src/lib/validators.t
 
 ```bash
 # Run all tests
-npm test
+bun run test
 
 # Run tests in watch mode
-npm run test:watch
+bun run test:watch
 
 # Run specific test file
-npm test -- path/to/test.ts
+bun run test -- path/to/test.ts
 ```
 
 ## Docker Development
@@ -170,7 +170,7 @@ npm test -- path/to/test.ts
 docker-compose -f docker-compose.local.yml up -d
 
 # Start the application
-npm run dev
+bun run dev
 ```
 
 ### Production with Docker
@@ -192,10 +192,10 @@ docker-compose -f docker-compose.production.yml up -d
 
 ```bash
 # Clean the build cache
-npm run clean
+bun run clean
 
 # Rebuild
-npm run build
+bun run build
 ```
 
 ### TypeScript Errors
@@ -203,7 +203,7 @@ npm run build
 Ensure TypeScript is properly configured and all dependencies are installed:
 
 ```bash
-npx tsc --noEmit
+bunx tsc --noEmit
 ```
 
 ## Further Reading

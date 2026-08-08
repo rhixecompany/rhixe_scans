@@ -245,39 +245,39 @@ export const ourFileRouter = {
 
 ```bash
 # Install
-npm install
+bun install
 
 # Setup
 cp .env.example .env
-npx prisma migrate dev
-npm run db:seed
+bunx prisma migrate dev
+bun run db:seed
 
 # Development
-npm run dev              # Next.js + Turbopack
+bun run dev              # Next.js + Turbopack
 
 # Database
-npm run db:generate      # prisma generate
-npm run db:push          # prisma db push
-npm run db:migrate       # prisma migrate dev
-npm run db:studio        # prisma studio
-npm run db:seed          # tsx prisma/seed.ts
+bun run db:generate      # prisma generate
+bun run db:push          # prisma db push
+bun run db:migrate       # prisma migrate dev
+bun run db:studio        # prisma studio
+bun run db:seed          # tsx prisma/seed.ts
 
 # Quality
-npm run lint             # next lint
-npm run format           # prettier --write
-npm run format:check     # prettier --check
+bun run lint             # next lint
+bun run format           # prettier --write
+bun run format:check     # prettier --check
 
 # Testing
-npm run test             # jest
-npm run test:watch       # jest --watch
+bun run test             # jest
+bun run test:watch       # jest --watch
 
 # Build
-npm run build            # next build
-npm run start            # next start
+bun run build            # next build
+bun run start            # next start
 
 # Email dev
-npm run dev:email        # react-email dev server
-npm run dev:upstash      # qstash dev CLI
+bun run dev:email        # react-email dev server
+bun run dev:upstash      # qstash dev CLI
 ```
 
 ---
@@ -335,12 +335,12 @@ rhixe_scans/
 
 **Workflow:** `.github/workflows/rhixe_scans-ci.yml`
 
-1. **Install** → `npm ci`
-2. **Type Check** → `npx tsc --noEmit`
-3. **Lint** → `npm run lint`
-4. **Format Check** → `npm run format:check`
-5. **Test** → `npm run test`
-6. **Build** → `npm run build`
+1. **Install** → `bun install --frozen-lockfile`
+2. **Type Check** → `bunx tsc --noEmit`
+3. **Lint** → `bun run lint`
+4. **Format Check** → `bun run format:check`
+5. **Test** → `bun run test`
+6. **Build** → `bun run build`
 7. **Deploy** → Vercel (on merge to `staged`)
 
 ---

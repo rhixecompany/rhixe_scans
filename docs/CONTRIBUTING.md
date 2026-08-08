@@ -65,13 +65,13 @@ See [DEVELOPER_GUIDE.md](./DEVELOPER_GUIDE.md) for detailed setup instructions.
 # Clone and install
 git clone https://github.com/rhixecompany/rhixe_scans.git
 cd rhixe_scans
-npm install
+bun install
 
 # Set up environment
 cp .env.example .env
 
 # Run development server
-npm run dev
+bun run dev
 ```
 
 ## Coding Standards
@@ -134,13 +134,13 @@ Closes #123
 
 ```bash
 # All tests
-npm test
+bun run test
 
 # Watch mode
-npm run test:watch
+bun run test:watch
 
 # Coverage
-npm run test:coverage
+bun run test:coverage
 ```
 
 ### Writing Tests

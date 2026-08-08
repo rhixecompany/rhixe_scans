@@ -8,7 +8,7 @@
 
 **TypeScript**: Strict mode; React 19; Next.js 15 App Router; TypeScript strict enabled; Tailwind CSS 3 + Radix UI primitives (`shadcn/ui`); TanStack Query for server state; Zustand for client state.
 
-**Database**: PostgreSQL via Prisma 6 ORM; schema-first approach; always use `npx prisma migrate dev` for migrations (never `db:push` except prototyping); Prisma Studio for browsing; NextAuth v5 adapter.
+**Database**: PostgreSQL via Prisma 6 ORM; schema-first approach; always use `bunx prisma migrate dev` for migrations (never `db:push` except prototyping); Prisma Studio for browsing; NextAuth v5 adapter.
 
 **Payments**: Stripe for subscriptions; PayPal as secondary payment provider; server-side keys only; webhook handling for payment lifecycle events.
 
@@ -18,4 +18,4 @@
 
 **Env**: `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, Stripe keys, PayPal keys, UploadThing keys, Resend API key.
 
-**Commands**: `npm install && cp .env.example .env` (setup); `npx prisma migrate dev && npm run db:seed` (DB); `npm run dev` (dev); `npm run lint && npx prettier --write .` (format); `npm run build && npm start` (production); `npm test` (test); `npm run clean` (reset).
+**Commands**: `bun install && cp .env.example .env` (setup); `bunx prisma migrate dev && bun run db:seed` (DB); `bun run dev` (dev); `bun run lint && bunx prettier --write .` (format); `bun run build && bun run start` (production); `bun run test` (test); `bun run clean` (reset).

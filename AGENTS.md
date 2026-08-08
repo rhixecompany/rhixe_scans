@@ -23,19 +23,19 @@ Next.js 15 + TypeScript + Prisma 6 + Tailwind CSS + Stripe/PayPal. Full-featured
 ## Commands
 
 ```bash
-npm install
+bun install
 cp .env.example .env
-npx prisma migrate dev && npm run db:seed
-npm run dev
-npm run lint && npx prettier --write .
-npx prisma generate
-npm test
+bunx prisma migrate dev && bun run db:seed
+bun run dev
+bun run lint && bunx prettier --write .
+bunx prisma generate
+bun run test
 ```
 
 ## Build
 
 ```bash
-npm run clean && npm run build && npm start
+bun run clean && bun run build && bun run start
 ```
 
 ## Conventions

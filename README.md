@@ -77,25 +77,25 @@ rhixe_scans/
 # Prerequisites: Node.js 18+, PostgreSQL
 
 # Install dependencies
-npm install
+bun install
 
 # Set up environment
 cp .env.example .env
 # Configure database, Stripe, PayPal, and other credentials
 
 # Database setup
-npx prisma migrate dev
-npm run db:seed
+bunx prisma migrate dev
+bun run db:seed
 
 # Start development
-npm run dev
+bun run dev
 
 # Run tests
-npm test
+bun run test
 
 # Lint and format
-npm run lint
-npx prettier --write .
+bun run lint
+bunx prettier --write .
 ```
 
 ## Key Features
@@ -112,14 +112,14 @@ npx prettier --write .
 ## Development Workflow
 
 ```bash
-npm run dev              # Next.js dev with Turbopack
-npm run build            # Production build
-npm run lint             # ESLint
-npm run db:migrate       # Prisma migrations
-npm run db:seed          # Database seeding
-npm run db:studio        # Prisma Studio
-npm test                 # Jest tests
-npm run clean            # Clean build artifacts
+bun run dev              # Next.js dev with Turbopack
+bun run build            # Production build
+bun run lint             # ESLint
+bun run db:migrate       # Prisma migrations
+bun run db:seed          # Database seeding
+bun run db:studio        # Prisma Studio
+bun run test                 # Jest tests
+bun run clean            # Clean build artifacts
 ```
 
 ## Coding Standards

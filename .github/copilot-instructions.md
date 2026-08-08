@@ -15,16 +15,16 @@ Project-wide guidance for Rhixescans.
 Run from the project root:
 
 ```bash
-npm install
-npx prisma migrate dev
-npm run db:seed
-npm run dev
-npm run lint
-npx prettier --write .
-npm test
-npm run test:watch
-npx prisma studio
-npm run build
+bun install
+bunx prisma migrate dev
+bun run db:seed
+bun run dev
+bun run lint
+bunx prettier --write .
+bun run test
+bun run test:watch
+bunx prisma studio
+bun run build
 ```
 
 ## Architecture

@@ -69,7 +69,7 @@
         },
         {
           "title": "Prisma in Docker",
-          "detail": "`npx prisma generate` must run during build. Copy `prisma/` directory into final stage for migrations at startup. Alpine needs `libc6-compat` for native modules; use `sh` not `bash`."
+          "detail": "`bunx prisma generate` must run during build. Copy `prisma/` directory into final stage for migrations at startup. Alpine needs `libc6-compat` for native modules; use `sh` not `bash`."
         },
         {
           "title": "Standalone Output",
@@ -204,7 +204,7 @@
         },
         {
           "title": "Best Practices",
-          "detail": "Mock only external APIs (fetch) and Next.js modules. Don't mock code under test. Use `waitFor`/`act` for async operations. Check coverage with `npm test -- --coverage`. Ensure React 19 + Jest version compatibility."
+          "detail": "Mock only external APIs (fetch) and Next.js modules. Don't mock code under test. Use `waitFor`/`act` for async operations. Check coverage with `bun run test -- --coverage`. Ensure React 19 + Jest version compatibility."
         }
       ]
     },
@@ -225,7 +225,7 @@
         },
         {
           "title": "Supply Chain",
-          "detail": "Regular `npm audit` / `bun audit`. Dependabot/Renovate for automated updates. Vet new dependencies carefully."
+          "detail": "Regular `bun audit` / `bun audit`. Dependabot/Renovate for automated updates. Vet new dependencies carefully."
         }
       ]
     },

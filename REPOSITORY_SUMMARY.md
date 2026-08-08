@@ -78,24 +78,24 @@ rhixe_scans/
 
 ```bash
 # Install
-npm install
+bun install
 
 # Database
 cp .env.example .env
-npx prisma migrate dev && npm run db:seed
+bunx prisma migrate dev && bun run db:seed
 
 # Development
-npm run dev
+bun run dev
 
 # Quality
-npm run lint && npx prettier --write .
+bun run lint && bunx prettier --write .
 
 # Database tools
-npx prisma generate
-npx prisma studio
+bunx prisma generate
+bunx prisma studio
 
 # Test
-npm test
+bun run test
 ```
 
 ---

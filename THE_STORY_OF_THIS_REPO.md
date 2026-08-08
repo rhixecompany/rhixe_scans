@@ -116,11 +116,11 @@ export function useWebSocket() {
 
 ```bash
 # Every schema change
-npx prisma migrate dev --name descriptive_name
+bunx prisma migrate dev --name descriptive_name
 # Creates migration file + applies to dev DB
 
 # Production
-npx prisma migrate deploy
+bunx prisma migrate deploy
 # Applies pending migrations only
 ```
 
